@@ -12,9 +12,3 @@
 void rumble_controller() {
   master.rumble("...."); //⁡⁢⁣⁢THIS USES MORSE CODE!!!!⁡
 }
-
-void move_claw(float dist){
-  pros::delay(750); // ⁡⁢⁣⁢REMOVE THIS ONCE THINGS ARE EPIC⁡
-  //set velocity
-  //move dist 
-}

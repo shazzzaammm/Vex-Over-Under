@@ -17,9 +17,10 @@ The user control is very basic.
 Tank drive, PTO, intake, and a linear puncher.
 
 ### Ports
-Left PTO -
-Left Back -
-Left Front -
-Right PTO -
-Right Back -
-Right Front -
+#### Negative sign means the port is reversed
+Left PTO - 9
+Left Back - -15
+Left Front - -17
+Right PTO - -10
+Right Back - 8
+Right Front - 2

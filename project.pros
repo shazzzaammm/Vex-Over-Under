@@ -331,8 +331,8 @@
       }
     },
     "upload_options": {
-      "after": "run",
-      "description": "Made by monkeys",
+      "after": "screen",
+      "description": "Made by 4303X",
       "icon": "X"
     }
   }

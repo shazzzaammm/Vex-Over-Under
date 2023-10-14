@@ -1,12 +1,6 @@
 #include "helpers.hpp"
 #include "main.h"
 
-
-// extern okapi::MotorGroup flywheel;
-// extern okapi::MotorGroup intake;
-// extern pros::ADIDigitalOut indexer;
-// extern pros::ADIDigitalOut expansion;
-
 const int DRIVE_SPEED = 115;
 const int TURN_SPEED = 90;
 const int SWING_SPEED = 90;

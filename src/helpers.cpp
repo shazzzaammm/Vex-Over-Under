@@ -19,6 +19,14 @@ void shoot_catapult(){
   return;
 }
 
+void spin_intake_for(float dist){
+  return;
+}
+
+void set_intake_volts(int volts){
+  return;
+}
+
 void pto_toggle(bool toggle) {
   //This prevents extreme air loss using a cooldown
   if (pto_cooldown > 0) {

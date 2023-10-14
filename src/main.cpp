@@ -1,9 +1,5 @@
 #include "main.h"
 #include "helpers.hpp"
-#include "okapi/api.hpp"
-
-// Define the okapi controller
-okapi::Controller controller;
 
 // ⁡⁣⁢⁣(left_motor_ports, right_motor_ports, imu_port, wheel_diameter, ticks, ratio);
 // Define the chassis (PTO motors are in the middle of the curly braces)⁡

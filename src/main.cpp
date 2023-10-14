@@ -7,7 +7,8 @@ Drive chassis({-15, 9, -17}, {8, -10, 2}, 20, 4.125, 200, 0.5);
 // Define Motors
 pros::Motor& PTO_left = chassis.left_motors[1];
 pros::Motor& PTO_right = chassis.right_motors[1];
-
+pros::Motor intake (19, false);
+pros::Motor catapult (20, false);
 // Define pneumatics
 pros::ADIDigitalOut PTO_piston('A');
 

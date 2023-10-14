@@ -6,6 +6,10 @@ extern float pto_cooldown;
 extern pros::Motor& PTO_left;
 extern pros::Motor& PTO_right;
 extern pros::ADIDigitalOut PTO_piston;
+extern pros::Motor intake;
+extern pros::Motor catapult;
+
+const int intake_max_speed = 127;
 
 void rumble_controller() {
   master.rumble("...."); //⁡⁢⁣⁢THIS USES MORSE CODE!!!!⁡
@@ -20,11 +24,11 @@ void shoot_catapult(){
 }
 
 void spin_intake_for(float dist){
-  return;
+  intake.move_relative(dist, intake_max_speed);
 }
 
 void set_intake_volts(int volts){
-  return;
+  intake.move(volts);
 }
 
 void pto_toggle(bool toggle) {

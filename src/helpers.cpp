@@ -19,7 +19,7 @@ void shoot_catapult(){
   return;
 }
 
-void pto_intake(bool toggle) {
+void pto_toggle(bool toggle) {
   //This prevents extreme air loss using a cooldown
   if (pto_cooldown > 0) {
     return;
@@ -36,7 +36,7 @@ void pto_intake(bool toggle) {
   }
 }
 
-void set_intake(int volts) {
+void set_pto_volts(int volts) {
   if (!pto_intake_enabled)
     return;
   // Sets intake voltage to the input value
@@ -44,19 +44,19 @@ void set_intake(int volts) {
   PTO_right = volts;
 }
 
-void intake_control() {
+void pto_control() {
   // Handle PTO activation /deactivation
   if (master.get_digital(DIGITAL_A))
-    pto_intake(!pto_intake_enabled);
+    pto_toggle(!pto_intake_enabled);
   else if (master.get_digital(DIGITAL_DOWN))
-    pto_intake(0);
+    pto_toggle(0);
   else if (master.get_digital(DIGITAL_UP))
-    pto_intake(1);
+    pto_toggle(1);
   //move with buttons if PTO set to intake :3
   if (master.get_digital(DIGITAL_L1))
-    set_intake(127);
+    set_pto_volts(127);
   else if (master.get_digital(DIGITAL_L2))
-    set_intake(-127);
+    set_pto_volts(-127);
   else
-    set_intake(0);
+    set_pto_volts(0);
 }

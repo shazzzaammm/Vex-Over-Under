@@ -7,7 +7,10 @@ Drive chassis({-15, 9, -17}, {8, -10, 2}, 20, 4.125, 200, 0.5);
 // Define Motors
 pros::Motor& PTO_left = chassis.left_motors[1];
 pros::Motor& PTO_right = chassis.right_motors[1];
+
+// Define pneumatics
 pros::ADIDigitalOut PTO_piston('A');
+
 bool pto_intake_enabled = false;
 float pto_cooldown = 0;
 
@@ -35,7 +38,7 @@ void initialize() {
   ez::as::initialize();
 
   // Set PTO to 6 motor drive configuration
-  pto_intake(false);
+  pto_toggle(false);
 }
 
 void autonomous() {
@@ -54,7 +57,7 @@ void opcontrol() {
     chassis.tank();
 
     // Handle intake control
-    intake_control();
+    pto_control();
 
     pto_cooldown -= ez::util::DELAY_TIME;
     pros::delay(ez::util::DELAY_TIME);

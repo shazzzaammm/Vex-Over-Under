@@ -1,8 +1,10 @@
-# Vex-Over-Under
-This is where team 4303X will be saving and documenting their code.
+### Description
+### Autons
+### User Control
+### Ports 
 
-## The Only Program
-This program is, as the name suggests, the only program that 4303X is using this year. 
+## Description
+This program is the only program that 4303X is using this year. 
 There are a few disadvantages to this, but they are quickly out-weighed by the advantages.
 The autonomous selector is one of the many things that will make this file format much easier than having multiple different repositories.
 
@@ -18,9 +20,9 @@ Tank drive, PTO, intake, and a linear puncher.
 
 ### Ports
 #### Negative sign means the port is reversed
-Left PTO - 9
-Left Back - -15
-Left Front - -17
-Right PTO - -10
-Right Back - 8
-Right Front - 2
+Left PTO = 9,
+Left Back = -15,
+Left Front = -17,
+Right PTO = -10,
+Right Back = 8,
+Right Front = 2,

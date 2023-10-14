@@ -68,10 +68,9 @@ void initialize() {
 
   default_constants();
   exit_condition_defaults();
-  // All of these autons are deprecated at the moment
+  // Define autons for the selector
   ez::as::auton_selector.add_autons({
       Auton("Test Auton\n\nchat is this real", test_auton),
-      Auton("Opposite Zone AWP\n\nstart on the right side, get half awp", opposite_zone_awp),
       Auton("Same Zone AutonWinPoint\n\nstart on the left side, get half awp", same_zone_awp),
       Auton("Opposite Zone Score\n\nstart on the right side, get 3<=x<=3 triballs", opposite_zone_score),
   });

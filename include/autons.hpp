@@ -6,8 +6,6 @@ extern Drive chassis;
 
 void test_auton();
 void same_zone_awp();
-void opposite_zone_awp();
-// void same_zone_score();
 void opposite_zone_score();
 
 void default_constants();

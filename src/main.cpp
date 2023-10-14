@@ -67,8 +67,8 @@ void initialize() {
   // Define autons for the selector
   ez::as::auton_selector.add_autons({
       Auton("Test Auton\n\nchat is this real", test_auton),
-      Auton("Same Zone AutonWinPoint\n\nstart on the left side, get half awp", same_zone_awp),
-      Auton("Opposite Zone Score\n\nstart on the right side, get 3<=x<=3 triballs", opposite_zone_score),
+      Auton("Same Zone Score\n\nstart on the right side, score 4 triballs ", same_zone_score),
+      Auton("Opposite Zone AutonWinPoint\n\nstart on the left side, score 4 triballs, end touching the elevation bar", opposite_zone_awp),
   });
 
   // Set the motor brake modes

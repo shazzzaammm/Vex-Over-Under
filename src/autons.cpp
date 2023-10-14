@@ -35,10 +35,10 @@ void test_auton() {
   chassis.set_drive_pid(10, DRIVE_SPEED, true);
 }
 
-void same_zone_awp() {
+void same_zone_score() {
   return;
 }
 
-void opposite_zone_score() {
+void opposite_zone_awp() {
   return;
 }

@@ -22,6 +22,10 @@ void charge_catapult(){
 }
 
 void shoot_catapult(){
+  // shoot the catapult
+
+  // automatically recharge the catapult
+  charge_catapult();
   return;
 }
 

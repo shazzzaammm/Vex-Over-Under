@@ -48,7 +48,7 @@ void initialize() {
   intake_right.set_voltage_limit(5500);
   catapult_left.set_voltage_limit(5500);
   catapult_right.set_voltage_limit(5500);
-
+  
   // Set PTO to 6 motor drive configuration
   pto_toggle(false);
 }

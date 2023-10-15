@@ -6,8 +6,10 @@ extern float pto_cooldown;
 extern pros::Motor& PTO_left;
 extern pros::Motor& PTO_right;
 extern pros::ADIDigitalOut PTO_piston;
-extern pros::Motor intake;
-extern pros::Motor catapult;
+extern pros::Motor intake_left;
+extern pros::Motor intake_right;
+extern pros::Motor catapult_left;
+extern pros::Motor catapult_right;
 
 const int intake_max_speed = 127;
 
@@ -24,11 +26,13 @@ void shoot_catapult(){
 }
 
 void spin_intake_for(float dist){
-  intake.move_relative(dist, intake_max_speed);
+  intake_left.move_relative(dist, intake_max_speed);
+  intake_right.move_relative(dist, intake_max_speed);
 }
 
 void set_intake_volts(int volts){
-  intake.move(volts);
+  intake_left.move(volts);
+  intake_right.move(volts);
 }
 
 void pto_toggle(bool toggle) {

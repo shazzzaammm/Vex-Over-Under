@@ -25,11 +25,30 @@ void exit_condition_defaults() {
 }
 
 void test_auton() {
-  chassis.set_drive_pid(10, DRIVE_SPEED, true);
+  chassis.set_drive_pid(10, DRIVE_SPEED, false);
   chassis.wait_drive();
   chassis.set_turn_pid(180, TURN_SPEED);
   chassis.wait_drive();
-  chassis.set_drive_pid(10, DRIVE_SPEED, true);
+  chassis.set_drive_pid(10, DRIVE_SPEED, false);
+  chassis.wait_drive();
+
+  set_intake_volts(100);
+  pros::delay(1500);
+  set_intake_volts(0);
+
+  pto_toggle(true);
+  chassis.set_turn_pid(-180, TURN_SPEED);
+  chassis.wait_drive();
+
+  charge_catapult();
+  pros::delay(1500);
+
+  chassis.set_drive_pid(10, DRIVE_SPEED, false);
+  chassis.wait_drive();
+  chassis.set_turn_pid(180, TURN_SPEED);
+  chassis.wait_drive();
+
+  shoot_catapult();
 }
 
 void same_zone_score() {

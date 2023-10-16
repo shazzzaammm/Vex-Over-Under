@@ -34,6 +34,32 @@ void test_auton() {
 
 void same_zone_score() {
   // charge cata
+  // drive forward
+  // turn left
+  // shoot cata
+  // turn right
+  // charge cata
+  // drive forward
+  // intake
+  // shoot cata
+  // charge cata
+  // drive forward
+  // intake 
+  // shoot cata
+  // turn right
+  // drive forward
+  // intake
+  // drive backwards
+  // turn right
+  // shoot cata
+  // turn left
+  // drive forward
+  // shift PTO
+  // grab pole
+  // charge cata
+}
+
+void opposite_zone_awp() {
   charge_catapult();
   // drive forward 
   chassis.set_drive_pid(52.8, DRIVE_SPEED, true);
@@ -101,30 +127,4 @@ void same_zone_score() {
   // drive forward
   chassis.set_drive_pid(20, DRIVE_SPEED);
   chassis.wait_drive();
-}
-
-void opposite_zone_awp() {
-  // charge cata
-  // drive forward
-  // turn left
-  // shoot cata
-  // turn right
-  // charge cata
-  // drive forward
-  // intake
-  // shoot cata
-  // charge cata
-  // drive forward
-  // intake 
-  // shoot cata
-  // turn right
-  // drive forward
-  // intake
-  // drive backwards
-  // turn right
-  // shoot cata
-  // turn left
-  // drive forward
-  // shift PTO
-  // grab pole
 }

@@ -15,7 +15,7 @@ pros::Motor catapult_right (-14, false);
 // Define pneumatics
 pros::ADIDigitalOut PTO_piston('A');
 
-bool pto_intake_enabled = false;
+bool pto_endgame_enabled = false;
 float pto_cooldown = 0;
 
 void initialize() {

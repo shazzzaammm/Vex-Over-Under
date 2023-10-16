@@ -1,7 +1,7 @@
 #include "main.h"
 
 
-extern bool pto_intake_enabled;
+extern bool pto_endgame_enabled;
 extern float pto_cooldown;
 extern pros::Motor& PTO_left;
 extern pros::Motor& PTO_right;
@@ -11,7 +11,7 @@ extern pros::Motor intake_right;
 extern pros::Motor catapult_left;
 extern pros::Motor catapult_right;
 
-const int intake_max_speed = 127;
+const int INTAKE_SPEED = 127;
 
 void rumble_controller() {
   master.rumble("...."); //⁡⁢⁣⁢THIS USES MORSE CODE!!!!⁡
@@ -30,8 +30,8 @@ void shoot_catapult(){
 }
 
 void spin_intake_for(float dist){
-  intake_left.move_relative(dist, intake_max_speed);
-  intake_right.move_relative(dist, intake_max_speed);
+  intake_left.move_relative(dist, INTAKE_SPEED);
+  intake_right.move_relative(dist, INTAKE_SPEED);
 }
 
 void set_intake_volts(int volts){
@@ -45,7 +45,7 @@ void pto_toggle(bool toggle) {
     return;
   }
   pto_cooldown = ez::util::DELAY_TIME * 10;
-  pto_intake_enabled = toggle;
+  pto_endgame_enabled = toggle;
   chassis.pto_toggle({PTO_left, PTO_right}, toggle);
 
   //⁡⁢⁢⁣TODO ⁡make sure this line isnt the issue in the chassis
@@ -57,7 +57,7 @@ void pto_toggle(bool toggle) {
 }
 
 void set_pto_volts(int volts) {
-  if (!pto_intake_enabled)
+  if (!pto_endgame_enabled)
     return;
   // Sets intake voltage to the input value
   PTO_left = volts;
@@ -67,7 +67,7 @@ void set_pto_volts(int volts) {
 void pto_control() {
   // Handle PTO activation /deactivation
   if (master.get_digital(DIGITAL_A))
-    pto_toggle(!pto_intake_enabled);
+    pto_toggle(!pto_endgame_enabled);
   else if (master.get_digital(DIGITAL_DOWN))
     pto_toggle(0);
   else if (master.get_digital(DIGITAL_UP))

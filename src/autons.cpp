@@ -63,7 +63,7 @@ void same_zone_score() {
   // shoot cata
   // charge cata
   // drive forward
-  // intake 
+  // intake
   // shoot cata
   // turn right
   // drive forward
@@ -79,71 +79,66 @@ void same_zone_score() {
 }
 
 void opposite_zone_awp() {
-  charge_catapult();
-  // drive forward 
-  chassis.set_drive_pid(52.8, DRIVE_SPEED, true);
+  // drive forward
+  chassis.set_drive_pid(69, DRIVE_SPEED, true);
   chassis.wait_drive();
-  // turn right
+  // face enemy goal
+  chassis.set_turn_pid(-90, TURN_SPEED);
+  chassis.wait_drive();
+  // shoot cata
+  shoot_catapult();
+  pros::delay(100);
+  // face first triball
+  chassis.set_turn_pid(40, TURN_SPEED);
+  chassis.wait_drive();
+  // move forward
+  chassis.set_drive_pid(2.5, DRIVE_SPEED / 2);
+  chassis.wait_drive();
+  // intake
+  spin_intake_for(2024);
+  pros::delay(100);
+  // face alliance goal
   chassis.set_turn_pid(90, TURN_SPEED);
   chassis.wait_drive();
   // shoot cata
   shoot_catapult();
-  pros::delay(350);
-  // turn left
-  chassis.set_turn_pid(-150, TURN_SPEED);
+  pros::delay(150);
+  // drive forward
+  chassis.set_drive_pid(25, DRIVE_SPEED);
   chassis.wait_drive();
-  // move forward
-  chassis.set_drive_pid(4.5, DRIVE_SPEED);
-  chassis.wait_drive();
-  // intake 
-  spin_intake_for(2024);
-  pros::delay(600);
-  // turn right
-  chassis.set_turn_pid(150, TURN_SPEED);
-  chassis.wait_drive();
-  // shoot cata
-  shoot_catapult();
-  pros::delay(350);
-  // turn left
-  chassis.set_turn_pid(-167, TURN_SPEED);  
+  // face second triball
+  chassis.set_turn_pid(40, TURN_SPEED);
   chassis.wait_drive();
   // drive forward
-  chassis.set_drive_pid(14, DRIVE_SPEED);
+  chassis.set_drive_pid(5, DRIVE_SPEED);
   chassis.wait_drive();
   // intake
+  pros::delay(100);
   spin_intake_for(2024);
-  pros::delay(600);
-  // turn right
-  chassis.set_turn_pid(167, TURN_SPEED);  
+  // drive backward
+  chassis.set_drive_pid(-5, DRIVE_SPEED);
+  chassis.wait_drive();
+  // face alliance goal
+  chassis.set_turn_pid(90, TURN_SPEED);
   chassis.wait_drive();
   // shoot cata
+  pros::delay(150);
   shoot_catapult();
-  pros::delay(350);
-  // turn right
-  chassis.set_turn_pid(32, TURN_SPEED);
+  // drive backwards
+  chassis.set_drive_pid(-30, DRIVE_SPEED);
   chassis.wait_drive();
-  // drive forward
-  chassis.set_drive_pid(9.5, DRIVE_SPEED);
+  // face forward
+  chassis.set_turn_pid(0, TURN_SPEED);
   chassis.wait_drive();
-  // turn left
-  chassis.set_turn_pid(105, TURN_SPEED);
+  // drive backwards towards engame
+  chassis.set_drive_pid(-69, DRIVE_SPEED);
   chassis.wait_drive();
-  // drive forward
-  chassis.set_drive_pid(9.25, DRIVE_SPEED);
+  // turn away from endgame
+  chassis.set_turn_pid(-90, TURN_SPEED);
   chassis.wait_drive();
-  // intake
-  spin_intake_for(2024);
-  pros::delay(600);
-  // turn right
-  chassis.set_turn_pid(-153, TURN_SPEED);
+  // drive backwards to endgame
+  chassis.set_drive_pid(-40, DRIVE_SPEED);
   chassis.wait_drive();
-  // shoot cata
-  shoot_catapult();
-  pros::delay(350);
-  // turn right
-  chassis.set_turn_pid(52, TURN_SPEED);
-  chassis.wait_drive();
-  // drive forward
-  chassis.set_drive_pid(20, DRIVE_SPEED);
-  chassis.wait_drive();
+  // swap pid to endgame
+  // do the endgame thing
 }

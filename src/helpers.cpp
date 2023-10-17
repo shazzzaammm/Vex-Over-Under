@@ -13,6 +13,8 @@ extern pros::Motor catapult_right;
 
 const int INTAKE_SPEED = 127;
 const int CATAPULT_SPEED = 127;
+const int RELATIVE_CHARGE_DIST = 720;
+const int RELATIVE_SHOOT_DIST = 50;
 void rumble_controller() {
   master.rumble("...."); //⁡⁢⁣⁢THIS USES MORSE CODE!!!!⁡
 }
@@ -23,14 +25,13 @@ void move_catapult(int degrees){
 }
 
 void charge_catapult(){
-  move_catapult(720);
+  // Charge the catapult (not likely to be used often)
+  move_catapult(RELATIVE_CHARGE_DIST);
 }
 
 void shoot_catapult(){
-  // shoot the catapult
-  move_catapult(50);
-  // automatically recharge the catapult
-  charge_catapult();
+  // Shoot the catapult and recharge it
+  move_catapult(RELATIVE_SHOOT_DIST + RELATIVE_CHARGE_DIST);
   return;
 }
 

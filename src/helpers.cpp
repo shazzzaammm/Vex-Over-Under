@@ -12,18 +12,23 @@ extern pros::Motor catapult_left;
 extern pros::Motor catapult_right;
 
 const int INTAKE_SPEED = 127;
-
+const int CATAPULT_SPEED = 127;
 void rumble_controller() {
   master.rumble("...."); //⁡⁢⁣⁢THIS USES MORSE CODE!!!!⁡
 }
 
+void move_catapult(int degrees){
+  catapult_left.move_relative(degrees, CATAPULT_SPEED);
+  catapult_right.move_relative(degrees, CATAPULT_SPEED);
+}
+
 void charge_catapult(){
-  return;
+  move_catapult(720);
 }
 
 void shoot_catapult(){
   // shoot the catapult
-
+  move_catapult(50);
   // automatically recharge the catapult
   charge_catapult();
   return;
@@ -72,7 +77,8 @@ void pto_control() {
     pto_toggle(0);
   else if (master.get_digital(DIGITAL_UP))
     pto_toggle(1);
-  //move with buttons if PTO set to intake :3
+  // Move with buttons if PTO set to endgame :3
+  // Likely to be replaced with a different control scheme
   if (master.get_digital(DIGITAL_L1))
     set_pto_volts(127);
   else if (master.get_digital(DIGITAL_L2))

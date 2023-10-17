@@ -1,4 +1,5 @@
 void rumble_controller();
+void print_stats_controller(bool pto);
 void charge_catapult();
 void shoot_catapult();
 void move_catapult(int degrees);

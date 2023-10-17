@@ -18,6 +18,10 @@ void rumble_controller() {
   master.rumble("....");  //⁡⁢⁣⁢THIS USES MORSE CODE!!!!⁡
 }
 
+void print_stats_controller(bool pto) {
+  master.set_text(0, 0, pto ? "6 motor" : "4 motor");
+}
+
 void move_catapult(int degrees) {
   catapult_left.move_relative(degrees, CATAPULT_SPEED);
   catapult_right.move_relative(degrees, CATAPULT_SPEED);

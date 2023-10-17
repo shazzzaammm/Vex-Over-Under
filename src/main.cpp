@@ -72,7 +72,7 @@ void opcontrol() {
     pto_control();
 
     // Print to the controller screen
-
+    print_stats_controller(pto_endgame_enabled);
 
     pto_cooldown -= ez::util::DELAY_TIME;
     pros::delay(ez::util::DELAY_TIME);

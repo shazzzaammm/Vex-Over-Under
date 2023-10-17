@@ -14,13 +14,14 @@ We use a tank drive with 6 motors, 2 of which are PTO motors. We also have a lin
 
 ### Ports
 Note: A negative sign means that the port is reversed
-Left PTO = 9,
-Left Back = -15,
-Left Front = -17,
-Right PTO = -10,
+Left PTO = 2,
+Left Back = -1,
+Left Front = -3,
+Right PTO = -7,
 Right Back = 8,
-Right Front = 2,
+Right Front = 10,
 Intake Left = ?,
 Intake Right = ?,
 Puncher Left = ?,
-Puncher Right = ?
+Puncher Right = ?,
+IMU = 17

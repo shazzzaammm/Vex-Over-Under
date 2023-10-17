@@ -1,6 +1,5 @@
 #include "main.h"
 
-
 extern bool pto_endgame_enabled;
 extern float pto_cooldown;
 extern pros::Motor& PTO_left;
@@ -16,31 +15,31 @@ const int CATAPULT_SPEED = 127;
 const int RELATIVE_CHARGE_DIST = 720;
 const int RELATIVE_SHOOT_DIST = 50;
 void rumble_controller() {
-  master.rumble("...."); //⁡⁢⁣⁢THIS USES MORSE CODE!!!!⁡
+  master.rumble("....");  //⁡⁢⁣⁢THIS USES MORSE CODE!!!!⁡
 }
 
-void move_catapult(int degrees){
+void move_catapult(int degrees) {
   catapult_left.move_relative(degrees, CATAPULT_SPEED);
   catapult_right.move_relative(degrees, CATAPULT_SPEED);
 }
 
-void charge_catapult(){
+void charge_catapult() {
   // Charge the catapult (not likely to be used often)
   move_catapult(RELATIVE_CHARGE_DIST);
 }
 
-void shoot_catapult(){
+void shoot_catapult() {
   // Shoot the catapult and recharge it
   move_catapult(RELATIVE_SHOOT_DIST + RELATIVE_CHARGE_DIST);
   return;
 }
 
-void spin_intake_for(float dist){
+void spin_intake_for(float dist) {
   intake_left.move_relative(dist, INTAKE_SPEED);
   intake_right.move_relative(dist, INTAKE_SPEED);
 }
 
-void set_intake_volts(int volts){
+void set_intake_volts(int volts) {
   intake_left.move(volts);
   intake_right.move(volts);
 }
@@ -50,7 +49,7 @@ void pto_toggle(bool toggle) {
   if (pto_cooldown > 0) {
     return;
   }
-  pto_cooldown = ez::util::DELAY_TIME * 10;
+  pto_cooldown = ez::util::DELAY_TIME * 50;
   pto_endgame_enabled = toggle;
   chassis.pto_toggle({PTO_left, PTO_right}, toggle);
 

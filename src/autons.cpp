@@ -140,5 +140,6 @@ void opposite_zone_awp() {
   chassis.set_drive_pid(-40, DRIVE_SPEED);
   chassis.wait_drive();
   // swap pid to endgame
+  pto_toggle(true);
   // do the endgame thing
 }

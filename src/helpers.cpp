@@ -44,8 +44,8 @@ void spin_intake_for(float dist) {
 }
 
 void set_intake_volts(int volts) {
-  intake_left.move(volts);
-  intake_right.move(volts);
+  intake_left.move_voltage(volts);
+  intake_right.move_voltage(volts);
 }
 
 void pto_toggle(bool toggle) {
@@ -71,6 +71,18 @@ void set_pto_volts(int volts) {
   // Sets intake voltage to the input value
   PTO_left = volts;
   PTO_right = volts;
+}
+
+void intake_control(){
+  if(master.get_digital(DIGITAL_L1)){
+    set_intake_volts(12000);
+  }
+  else if(master.get_digital(DIGITAL_L2)){
+    set_intake_volts(-12000);
+  }
+  else{
+    set_intake_volts(0);
+  }
 }
 
 void pto_control() {

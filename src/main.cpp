@@ -42,12 +42,6 @@ void initialize() {
   // Initialize
   chassis.initialize();
   ez::as::initialize();
-
-  // Limit the voltage of motors
-  intake_left.set_voltage_limit(5500);
-  intake_right.set_voltage_limit(5500);
-  catapult_left.set_voltage_limit(5500);
-  catapult_right.set_voltage_limit(5500);
   
   // Set PTO to 6 motor drive configuration
   pto_toggle(false);
@@ -68,9 +62,12 @@ void opcontrol() {
     // Handle the drive movement
     chassis.tank();
 
-    // Handle intake control
+    // Handle pto control
     pto_control();
-
+    
+    // Handle intake control
+    intake_control();
+    
     // Print to the controller screen
     print_stats_controller(pto_endgame_enabled);
 

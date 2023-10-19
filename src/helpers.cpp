@@ -18,8 +18,12 @@ void rumble_controller() {
   master.rumble("....");  //⁡⁢⁣⁢THIS USES MORSE CODE!!!!⁡
 }
 
-void print_stats_controller(bool pto) {
-  master.set_text(0, 0, pto ? "6 motor" : "4 motor");
+void print_stats_controller() {
+  if (pto_endgame_enabled) {
+    master.set_text(0, 0, "4 motor");
+  } else {
+    master.set_text(0, 0, "6 motor");
+  }
 }
 
 void move_catapult(int degrees) {
@@ -73,14 +77,12 @@ void set_pto_volts(int volts) {
   PTO_right = volts;
 }
 
-void intake_control(){
-  if(master.get_digital(DIGITAL_L1)){
+void intake_control() {
+  if (master.get_digital(DIGITAL_L1)) {
     set_intake_volts(12000);
-  }
-  else if(master.get_digital(DIGITAL_L2)){
+  } else if (master.get_digital(DIGITAL_L2)) {
     set_intake_volts(-12000);
-  }
-  else{
+  } else {
     set_intake_volts(0);
   }
 }

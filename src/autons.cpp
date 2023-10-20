@@ -90,14 +90,18 @@ void opposite_zone_awp() {
   chassis.set_turn_pid(40, TURN_SPEED);
   chassis.wait_drive();
   
-  // Move forward
-  chassis.set_drive_pid(2.5, DRIVE_SPEED / 2);
+  // Drive forward
+  chassis.set_drive_pid(2.5, DRIVE_SPEED);
   chassis.wait_drive();
   
   // Intake
   spin_intake_for(2024);
   pros::delay(500);
   
+  // Drive backward
+  chassis.set_drive_pid(-2.5, DRIVE_SPEED);
+  chassis.wait_drive();
+
   // Face alliance goal
   chassis.set_turn_pid(90, TURN_SPEED);
   chassis.wait_drive();

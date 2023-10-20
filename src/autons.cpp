@@ -25,7 +25,7 @@ void exit_condition_defaults() {
 }
 
 void test_auton() {
-  // test the drive  
+  // test the drive
   chassis.set_drive_pid(10, DRIVE_SPEED, false);
   chassis.wait_drive();
   chassis.set_turn_pid(180, TURN_SPEED);
@@ -74,67 +74,90 @@ void same_zone_score() {
 }
 
 void opposite_zone_awp() {
-  // drive forward
+  // Drive forward
   chassis.set_drive_pid(69, DRIVE_SPEED, true);
   chassis.wait_drive();
-  // face enemy goal
+  
+  // Face enemy goal
   chassis.set_turn_pid(-90, TURN_SPEED);
   chassis.wait_drive();
-  // shoot cata
+  
+  // Shoot cata
   shoot_catapult();
   pros::delay(100);
-  // face first triball
+  
+  // Face first triball
   chassis.set_turn_pid(40, TURN_SPEED);
   chassis.wait_drive();
-  // move forward
+  
+  // Move forward
   chassis.set_drive_pid(2.5, DRIVE_SPEED / 2);
   chassis.wait_drive();
-  // intake
+  
+  // Intake
   spin_intake_for(2024);
   pros::delay(500);
-  // face alliance goal
+  
+  // Face alliance goal
   chassis.set_turn_pid(90, TURN_SPEED);
   chassis.wait_drive();
-  // shoot cata
+  
+  // Shoot cata
   shoot_catapult();
   pros::delay(150);
-  // drive forward
+  
+  // Drive forward
   chassis.set_drive_pid(25, DRIVE_SPEED);
   chassis.wait_drive();
-  // face second triball
+  
+  // Face second triball
   chassis.set_turn_pid(40, TURN_SPEED);
   chassis.wait_drive();
-  // drive forward
+  
+  // Drive forward
   chassis.set_drive_pid(5, DRIVE_SPEED);
   chassis.wait_drive();
-  // intake
+  
+  // Intake
   spin_intake_for(2024);
   pros::delay(500);
-  // drive backward
+  
+  // Drive backward
   chassis.set_drive_pid(-5, DRIVE_SPEED);
   chassis.wait_drive();
-  // face alliance goal
+  
+  // Face alliance goal
   chassis.set_turn_pid(90, TURN_SPEED);
   chassis.wait_drive();
-  // shoot cata
+  
+  // Shoot cata
   shoot_catapult();
   pros::delay(150);
-  // drive backwards
+  
+  // Drive backwards
   chassis.set_drive_pid(-30, DRIVE_SPEED);
   chassis.wait_drive();
-  // face forward
+  
+  // Face forward
   chassis.set_turn_pid(0, TURN_SPEED);
   chassis.wait_drive();
-  // drive backwards towards endgame
+  
+  // Drive backwards towards endgame
   chassis.set_drive_pid(-69, DRIVE_SPEED);
   chassis.wait_drive();
-  // turn away from endgame
+  
+  // Turn away from endgame
   chassis.set_turn_pid(-90, TURN_SPEED);
   chassis.wait_drive();
-  // drive backwards to endgame
+  
+  // Drive backwards to endgame
   chassis.set_drive_pid(-40, DRIVE_SPEED);
   chassis.wait_drive();
-  // swap pid to endgame
+  
+  // Swap pid to endgame
   pto_toggle(true);
-  // do the endgame thing
+  pros::delay(250);
+  
+  // Do the endgame thing
+  toggle_endgame(true);
 }

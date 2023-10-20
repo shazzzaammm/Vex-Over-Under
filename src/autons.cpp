@@ -25,6 +25,7 @@ void exit_condition_defaults() {
 }
 
 void test_auton() {
+  // test the drive  
   chassis.set_drive_pid(10, DRIVE_SPEED, false);
   chassis.wait_drive();
   chassis.set_turn_pid(180, TURN_SPEED);
@@ -32,23 +33,17 @@ void test_auton() {
   chassis.set_drive_pid(10, DRIVE_SPEED, false);
   chassis.wait_drive();
 
-  set_intake_volts(100);
-  pros::delay(1500);
-  set_intake_volts(0);
+  // test the intake
+  spin_intake_for(500);
 
+  // test the PTO
   pto_toggle(true);
-  chassis.set_turn_pid(-180, TURN_SPEED);
-  chassis.wait_drive();
 
-  charge_catapult();
-  pros::delay(1500);
+  // test the endgame
+  toggle_endgame(true);
 
-  chassis.set_drive_pid(10, DRIVE_SPEED, false);
-  chassis.wait_drive();
-  chassis.set_turn_pid(180, TURN_SPEED);
-  chassis.wait_drive();
-
-  shoot_catapult();
+  // test the wings????
+  // TODO ask how wings are going to work
 }
 
 void same_zone_score() {
@@ -96,7 +91,7 @@ void opposite_zone_awp() {
   chassis.wait_drive();
   // intake
   spin_intake_for(2024);
-  pros::delay(100);
+  pros::delay(500);
   // face alliance goal
   chassis.set_turn_pid(90, TURN_SPEED);
   chassis.wait_drive();
@@ -113,8 +108,8 @@ void opposite_zone_awp() {
   chassis.set_drive_pid(5, DRIVE_SPEED);
   chassis.wait_drive();
   // intake
-  pros::delay(100);
   spin_intake_for(2024);
+  pros::delay(500);
   // drive backward
   chassis.set_drive_pid(-5, DRIVE_SPEED);
   chassis.wait_drive();
@@ -122,15 +117,15 @@ void opposite_zone_awp() {
   chassis.set_turn_pid(90, TURN_SPEED);
   chassis.wait_drive();
   // shoot cata
-  pros::delay(150);
   shoot_catapult();
+  pros::delay(150);
   // drive backwards
   chassis.set_drive_pid(-30, DRIVE_SPEED);
   chassis.wait_drive();
   // face forward
   chassis.set_turn_pid(0, TURN_SPEED);
   chassis.wait_drive();
-  // drive backwards towards engame
+  // drive backwards towards endgame
   chassis.set_drive_pid(-69, DRIVE_SPEED);
   chassis.wait_drive();
   // turn away from endgame

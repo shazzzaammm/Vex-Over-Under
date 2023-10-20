@@ -9,3 +9,4 @@ void pto_toggle(bool toggle);
 void set_pto_volts(int volts);
 void pto_control();
 void intake_control();
+void toggle_endgame(bool toggle);

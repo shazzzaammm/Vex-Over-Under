@@ -15,8 +15,8 @@ pros::Motor catapult_right (100, false);
 // Define pneumatics
 pros::ADIDigitalOut PTO_piston('A');
 
-bool pto_endgame_enabled = false;
-float pto_cooldown = 0;
+// Retrieve necessary constants
+extern float pto_cooldown;
 
 void initialize() {
 
@@ -31,7 +31,7 @@ void initialize() {
 
   // Define autons for the selector
   ez::as::auton_selector.add_autons({
-      Auton("Opposite Zone AutonWinPoint\n\nstart on the left side, score 4 triballs, end touching the elevation bar", opposite_zone_awp),
+      Auton("Opposite Zone AutonWinPoint\n\nstart on the left side, score 3 triballs, end touching the elevation bar", opposite_zone_awp),
       Auton("Same Zone Score\n\nstart on the right side, score 4 triballs ", same_zone_score),
       Auton("Test Auton\n\nchat is this real", test_auton), 
   });
@@ -57,6 +57,7 @@ void autonomous() {
 }
 
 void opcontrol() {
+  // TODO Automatically deactivate the endgame and switch PTO to 6 motor
   while (true) {
     chassis.set_drive_brake(MOTOR_BRAKE_BRAKE);
     // Handle the drive movement
@@ -71,7 +72,10 @@ void opcontrol() {
     // Print to the controller screen
     print_stats_controller();
 
+    // Decrease the PTO timer
     pto_cooldown -= ez::util::DELAY_TIME;
+
+    // Keep the time between cycles constant
     pros::delay(ez::util::DELAY_TIME);
   }
 }

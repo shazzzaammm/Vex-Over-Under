@@ -43,7 +43,7 @@ void test_auton() {
   toggle_endgame(true);
 
   // test the wings????
-  // TODO ask how wings are going to work
+  wing_toggle(true);
 }
 
 void same_zone_score() {
@@ -147,7 +147,7 @@ void opposite_zone_awp() {
   chassis.wait_drive();
   
   // Drive backwards towards endgame
-  chassis.set_drive_pid(-69, DRIVE_SPEED);
+  chassis.set_drive_pid(-69.420, DRIVE_SPEED);
   chassis.wait_drive();
   
   // Turn away from endgame

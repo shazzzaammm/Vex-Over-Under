@@ -3,6 +3,7 @@
 extern pros::Motor& PTO_left;
 extern pros::Motor& PTO_right;
 extern pros::ADIDigitalOut PTO_piston;
+extern pros::ADIDigitalOut wing_piston;
 extern pros::Motor intake_left;
 extern pros::Motor intake_right;
 extern pros::Motor catapult_left;
@@ -16,6 +17,7 @@ const int RELATIVE_SHOOT_DIST = 50;
 bool pto_endgame_enabled = false;
 float pto_cooldown = 0;
 bool intake_toggle_enabled = false;
+bool wing_enabled = false;
 
 void rumble_controller() {
   master.rumble("....");
@@ -33,14 +35,15 @@ void print_stats_controller() {
   }
 }
 
-void toggle_endgame(bool toggle){
+void toggle_endgame(bool toggle) {
   // Only use endgame if PTO is in 4 motor mode
-  if(!pto_endgame_enabled) return;
+  if (!pto_endgame_enabled)
+    return;
 
   // Set the endgame motors to the correct position
-  if(toggle){
+  if (toggle) {
     // TODO turn on the endgame
-  } else{
+  } else {
     // TODO turn off the endgame
   }
 }
@@ -61,6 +64,42 @@ void shoot_catapult() {
   return;
 }
 
+void pto_toggle(bool toggle) {
+  // This prevents extreme air loss using a cooldown
+  if (pto_cooldown > 0) {
+    return;
+  }
+  // Set the PTO cooldown
+  pto_cooldown = ez::util::DELAY_TIME * 50;
+
+  // Toggle PTO motors + bool
+  pto_endgame_enabled = toggle;
+  chassis.pto_toggle({PTO_left, PTO_right}, toggle);
+
+  // Actuate the piston
+  PTO_piston.set_value(!toggle);
+}
+
+void set_pto_volts(int volts) {
+  // Only activates if engame is enabled
+  if (!pto_endgame_enabled)
+    return;
+
+  // Sets endgame voltage to the input value
+  PTO_left = volts;
+  PTO_right = volts;
+}
+
+void pto_control() {
+  // Handle PTO activation/deactivation in user control
+  if (master.get_digital(DIGITAL_A))
+    pto_toggle(!pto_endgame_enabled);
+  else if (master.get_digital(DIGITAL_DOWN))
+    pto_toggle(0);
+  else if (master.get_digital(DIGITAL_UP))
+    pto_toggle(1);
+}
+
 void spin_intake_for(float dist) {
   intake_left.move_relative(dist, INTAKE_SPEED);
   intake_right.move_relative(dist, INTAKE_SPEED);
@@ -69,32 +108,6 @@ void spin_intake_for(float dist) {
 void set_intake_volts(int volts) {
   intake_left.move_voltage(volts);
   intake_right.move_voltage(volts);
-}
-
-void pto_toggle(bool toggle) {
-  // This prevents extreme air loss using a cooldown
-  if (pto_cooldown > 0) {
-    return;
-  }
-  // Set the PTO cooldown
-  pto_cooldown = ez::util::DELAY_TIME * 50;
-  
-  // Toggle PTO motors + bool
-  pto_endgame_enabled = toggle;
-  chassis.pto_toggle({PTO_left, PTO_right}, toggle);
-
-  // Actuate the piston 
-  PTO_piston.set_value(!toggle);
-}
-
-void set_pto_volts(int volts) {
-  // Only activates if engame is enabled
-  if (!pto_endgame_enabled)
-    return;
-  
-  // Sets endgame voltage to the input value
-  PTO_left = volts;
-  PTO_right = volts;
 }
 
 void intake_control() {
@@ -119,12 +132,17 @@ void intake_control() {
   }
 }
 
-void pto_control() {
-  // Handle PTO activation/deactivation
-  if (master.get_digital(DIGITAL_A))
-    pto_toggle(!pto_endgame_enabled);
-  else if (master.get_digital(DIGITAL_DOWN))
-    pto_toggle(0);
-  else if (master.get_digital(DIGITAL_UP))
-    pto_toggle(1);
+void wing_toggle(bool toggle) {
+  wing_piston.set_value(toggle);
+  wing_enabled = toggle;
+}
+
+void wing_control(){
+  // Handle enabling/disabling the wings in user control
+  if(master.get_digital(DIGITAL_B))
+    wing_toggle(!wing_enabled);
+  else if (master.get_digital(DIGITAL_LEFT))
+    wing_toggle(0);
+  else if (master.get_digital(DIGITAL_RIGHT))
+    wing_toggle(1);
 }

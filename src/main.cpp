@@ -14,6 +14,7 @@ pros::Motor catapult_right (100, false);
 
 // Define pneumatics
 pros::ADIDigitalOut PTO_piston('A');
+pros::ADIDigitalOut wing_piston('B');
 
 // Retrieve necessary constants
 extern float pto_cooldown;
@@ -60,7 +61,7 @@ void opcontrol() {
   // TODO Automatically deactivate the endgame and switch PTO to 6 motor
   while (true) {
     chassis.set_drive_brake(MOTOR_BRAKE_BRAKE);
-    // Handle the drive movement
+    // Handle chassis control
     chassis.tank();
 
     // Handle pto control
@@ -68,6 +69,9 @@ void opcontrol() {
     
     // Handle intake control
     intake_control();
+
+    // Handle wing control
+    wing_control();
     
     // Print to the controller screen
     print_stats_controller();

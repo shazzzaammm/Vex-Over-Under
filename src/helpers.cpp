@@ -1,5 +1,6 @@
 #include "main.h"
 
+// Get motors
 extern pros::Motor& PTO_left;
 extern pros::Motor& PTO_right;
 extern pros::ADIDigitalOut PTO_piston;
@@ -9,31 +10,17 @@ extern pros::Motor intake_right;
 extern pros::Motor catapult_left;
 extern pros::Motor catapult_right;
 
+// Define constants
 const int INTAKE_SPEED = 127;
 const int CATAPULT_SPEED = 127;
 const int RELATIVE_CHARGE_DIST = 720;
 const int RELATIVE_SHOOT_DIST = 50;
 
+// Define useful variables
 bool pto_endgame_enabled = false;
 float pto_cooldown = 0;
 bool intake_toggle_enabled = false;
 bool wing_enabled = false;
-
-void rumble_controller() {
-  master.rumble("....");
-}
-
-void print_stats_controller() {
-  // Clear the controller screen
-  master.clear();
-
-  // Print PTO mode
-  if (pto_endgame_enabled) {
-    master.set_text(0, 0, "4 motor");
-  } else {
-    master.set_text(0, 0, "6 motor");
-  }
-}
 
 void toggle_endgame(bool toggle) {
   // Only use endgame if PTO is in 4 motor mode
@@ -48,7 +35,7 @@ void toggle_endgame(bool toggle) {
   }
 }
 
-void move_catapult(int degrees) {
+void move_catapult(float degrees) {
   catapult_left.move_relative(degrees, CATAPULT_SPEED);
   catapult_right.move_relative(degrees, CATAPULT_SPEED);
 }
@@ -100,9 +87,15 @@ void pto_control() {
     pto_toggle(1);
 }
 
-void spin_intake_for(float dist) {
-  intake_left.move_relative(dist, INTAKE_SPEED);
-  intake_right.move_relative(dist, INTAKE_SPEED);
+int get_pto_mode() {
+  if (pto_endgame_enabled)
+    return 4;
+  return 6;
+}
+
+void spin_intake_for(float degrees) {
+  intake_left.move_relative(degrees, INTAKE_SPEED);
+  intake_right.move_relative(degrees, INTAKE_SPEED);
 }
 
 void set_intake_volts(int volts) {
@@ -137,12 +130,28 @@ void wing_toggle(bool toggle) {
   wing_enabled = toggle;
 }
 
-void wing_control(){
+void wing_control() {
   // Handle enabling/disabling the wings in user control
-  if(master.get_digital(DIGITAL_B))
+  if (master.get_digital(DIGITAL_B))
     wing_toggle(!wing_enabled);
   else if (master.get_digital(DIGITAL_LEFT))
     wing_toggle(0);
   else if (master.get_digital(DIGITAL_RIGHT))
     wing_toggle(1);
 }
+
+void rumble_controller() {
+  master.rumble("....");
+}
+
+void print_stats_controller() {
+  // Clear the controller screen
+  master.clear();
+
+  // Print PTO mode
+  master.print(0, 0, "PTO mode: %d", get_pto_mode());
+
+  // Print the heading (0-360) of the robot
+  master.print(1, 0, "Heading: %d", chassis.imu.get_heading());
+}
+

@@ -7,10 +7,10 @@ Drive chassis({-1, 2, -3}, {8, -7, 10}, 17, 4.125, 200, 0.5);
 // Define Motors
 pros::Motor& PTO_left = chassis.left_motors[1];
 pros::Motor& PTO_right = chassis.right_motors[1];
-pros::Motor intake_left (100, false);
-pros::Motor intake_right (-5, false);
-pros::Motor catapult_left (100, false);
-pros::Motor catapult_right (100, false);
+pros::Motor intake_left(100, false);
+pros::Motor intake_right(-5, false);
+pros::Motor catapult_left(100, false);
+pros::Motor catapult_right(100, false);
 
 // Define pneumatics
 pros::ADIDigitalOut PTO_piston('A');
@@ -18,6 +18,7 @@ pros::ADIDigitalOut wing_piston('B');
 
 // Retrieve necessary constants
 extern float pto_cooldown;
+extern float controller_stats_cooldown;
 
 void initialize() {
 
@@ -34,7 +35,7 @@ void initialize() {
   ez::as::auton_selector.add_autons({
       Auton("Opposite Zone AutonWinPoint\n\nstart on the left side, score 3 triballs, end touching the elevation bar", opposite_zone_awp),
       Auton("Same Zone Score\n\nstart on the right side, score 4 triballs ", same_zone_score),
-      Auton("Test Auton\n\nchat is this real", test_auton), 
+      Auton("Test Auton\n\nchat is this real", test_auton),
   });
 
   // Set the motor brake modes
@@ -43,7 +44,7 @@ void initialize() {
   // Initialize
   chassis.initialize();
   ez::as::initialize();
-  
+
   // Set PTO to 6 motor drive configuration
   pto_toggle(false);
 }
@@ -66,18 +67,19 @@ void opcontrol() {
 
     // Handle pto control
     pto_control();
-    
+
     // Handle intake control
     intake_control();
 
     // Handle wing control
     wing_control();
-    
+
     // Print to the controller screen
     print_stats_controller();
 
-    // Decrease the PTO timer
+    // Decrease the timers
     pto_cooldown -= ez::util::DELAY_TIME;
+    controller_stats_cooldown -= ez::util::DELAY_TIME;
 
     // Keep the time between cycles constant
     pros::delay(ez::util::DELAY_TIME);

@@ -21,6 +21,7 @@ bool pto_endgame_enabled = false;
 float pto_cooldown = 0;
 bool intake_toggle_enabled = false;
 bool wing_enabled = false;
+float controller_stats_cooldown = 0;
 
 void toggle_endgame(bool toggle) {
   // Only use endgame if PTO is in 4 motor mode
@@ -111,15 +112,15 @@ void intake_control() {
 
   // If toggled, intake stays on
   if (intake_toggle_enabled) {
-    set_intake_volts(12000);
+    set_intake_volts(-8000);
     return;
   }
 
   // Hold buttons to control the intake (while not toggled)
   if (master.get_digital(DIGITAL_L1)) {
-    set_intake_volts(12000);
+    set_intake_volts(8000);
   } else if (master.get_digital(DIGITAL_L2)) {
-    set_intake_volts(-12000);
+    set_intake_volts(-8000);
   } else {
     set_intake_volts(0);
   }
@@ -145,6 +146,14 @@ void rumble_controller() {
 }
 
 void print_stats_controller() {
+  // Test if the cooldown is over
+  if(controller_stats_cooldown>0){
+    return;
+  }
+
+  // Reset the cooldown
+  controller_stats_cooldown = ez::util::DELAY_TIME * 50;
+  
   // Clear the controller screen
   master.clear();
 
@@ -154,4 +163,3 @@ void print_stats_controller() {
   // Print the heading (0-360) of the robot
   master.print(1, 0, "Heading: %d", chassis.imu.get_heading());
 }
-

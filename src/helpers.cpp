@@ -5,10 +5,8 @@ extern pros::Motor& PTO_left;
 extern pros::Motor& PTO_right;
 extern pros::ADIDigitalOut PTO_piston;
 extern pros::ADIDigitalOut wing_piston;
-extern pros::Motor intake_left;
-extern pros::Motor intake_right;
-extern pros::Motor catapult_left;
-extern pros::Motor catapult_right;
+extern pros::Motor intake;
+extern pros::Motor catapult;
 
 // Define constants
 const int INTAKE_SPEED = 127;
@@ -37,8 +35,7 @@ void toggle_endgame(bool toggle) {
 }
 
 void move_catapult(float degrees) {
-  catapult_left.move_relative(degrees, CATAPULT_SPEED);
-  catapult_right.move_relative(degrees, CATAPULT_SPEED);
+  catapult.move_relative(degrees, CATAPULT_SPEED);
 }
 
 void charge_catapult() {
@@ -95,13 +92,11 @@ int get_pto_mode() {
 }
 
 void spin_intake_for(float degrees) {
-  intake_left.move_relative(degrees, INTAKE_SPEED);
-  intake_right.move_relative(degrees, INTAKE_SPEED);
+  intake.move_relative(degrees, INTAKE_SPEED);
 }
 
 void set_intake_volts(int volts) {
-  intake_left.move_voltage(volts);
-  intake_right.move_voltage(volts);
+  intake.move_voltage(volts);
 }
 
 void intake_control() {

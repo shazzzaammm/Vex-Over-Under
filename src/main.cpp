@@ -2,7 +2,7 @@
 #include "helpers.hpp"
 
 // Define the chassis (PTO motors are in the middle of the curly braces)
-Drive chassis({-1, 2, -3}, {8, -7, 10}, 17, 4.125, 200, 0.5);
+Drive chassis({-18, 9, -17}, {1, -8, 2}, 10, 4.125, 200, 0.5);
 
 // Define Motors
 pros::Motor& PTO_left = chassis.left_motors[1];

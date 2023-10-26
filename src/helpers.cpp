@@ -34,6 +34,22 @@ void toggle_endgame(bool toggle) {
   }
 }
 
+void test_cata_movement(bool forward) {
+  if (forward) {
+    catapult.move_voltage(12000);
+  } else {
+    catapult.move_voltage(-12000);
+  }
+}
+
+void test_cata_user_control() {
+  if (master.get_digital(DIGITAL_B)) {
+    test_cata_movement(true);
+  } else if (master.get_digital(DIGITAL_Y)) {
+    test_cata_movement(false);
+  }
+}
+
 void move_catapult(float degrees) {
   catapult.move_relative(degrees, CATAPULT_SPEED);
 }
@@ -128,7 +144,7 @@ void wing_toggle(bool toggle) {
 
 void wing_control() {
   // Handle enabling/disabling the wings in user control
-  if (master.get_digital(DIGITAL_B))
+  if (master.get_digital(DIGITAL_X))
     wing_toggle(!wing_enabled);
   else if (master.get_digital(DIGITAL_LEFT))
     wing_toggle(0);
@@ -142,13 +158,13 @@ void rumble_controller() {
 
 void print_stats_controller() {
   // Test if the cooldown is over
-  if(controller_stats_cooldown>0){
+  if (controller_stats_cooldown > 0) {
     return;
   }
 
   // Reset the cooldown
   controller_stats_cooldown = ez::util::DELAY_TIME * 50;
-  
+
   // Clear the controller screen
   master.clear();
 

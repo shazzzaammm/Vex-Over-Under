@@ -72,6 +72,10 @@ void opcontrol() {
     // Handle wing control
     wing_control();
 
+    // Test the catapult movement
+    // !Remove once the catapult is working
+    test_cata_user_control();
+
     // Print to the controller screen
     print_stats_controller();
 

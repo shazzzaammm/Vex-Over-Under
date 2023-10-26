@@ -18,3 +18,5 @@ void wing_toggle(bool toggle);
 void wing_control();
 
 void toggle_endgame(bool toggle);
+
+void test_cata_user_control();

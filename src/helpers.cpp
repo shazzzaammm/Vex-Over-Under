@@ -18,6 +18,7 @@ const int RELATIVE_SHOOT_DIST = 50;
 bool pto_endgame_enabled = false;
 float pto_cooldown = 0;
 bool intake_toggle_enabled = false;
+bool outtake_toggle_enabled = false;
 bool wing_enabled = false;
 float controller_stats_cooldown = 0;
 
@@ -43,10 +44,10 @@ void test_cata_movement(bool forward) {
 }
 
 void test_cata_user_control() {
-  if (master.get_digital(DIGITAL_B)) {
-    test_cata_movement(true);
-  } else if (master.get_digital(DIGITAL_Y)) {
-    test_cata_movement(false);
+  if (master.get_digital(DIGITAL_X)) {
+    catapult.move_voltage(12000);
+  } else{
+    catapult.move_voltage(0);
   }
 }
 
@@ -117,8 +118,11 @@ void set_intake_volts(int volts) {
 
 void intake_control() {
   // Toggle the intake (inward direction only)
-  if (master.get_digital_new_press(DIGITAL_R1) || master.get_digital_new_press(DIGITAL_R2)) {
+  if (master.get_digital_new_press(DIGITAL_R1)) {
     intake_toggle_enabled = !intake_toggle_enabled;
+  }
+  if (master.get_digital_new_press(DIGITAL_L1)) {
+    outtake_toggle_enabled = !outtake_toggle_enabled;
   }
 
   // If toggled, intake stays on
@@ -127,10 +131,15 @@ void intake_control() {
     return;
   }
 
-  // Hold buttons to control the intake (while not toggled)
-  if (master.get_digital(DIGITAL_L1)) {
+  if (outtake_toggle_enabled) {
     set_intake_volts(8000);
-  } else if (master.get_digital(DIGITAL_L2)) {
+    return;
+  }
+
+  // Hold buttons to control the intake (while not toggled)
+  if (master.get_digital(DIGITAL_L2)) {
+    set_intake_volts(8000);
+  } else if (master.get_digital(DIGITAL_R2)) {
     set_intake_volts(-8000);
   } else {
     set_intake_volts(0);

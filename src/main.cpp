@@ -12,7 +12,10 @@ pros::Motor catapult(5, false);
 
 // Define pneumatics
 pros::ADIDigitalOut PTO_piston('A');
-pros::ADIDigitalOut wing_piston('B');
+pros::ADIDigitalOut wing_piston('C');
+
+// Define sensors (excluding IMU)
+pros::ADIDigitalIn catapult_limit_switch('B');
 
 // Retrieve necessary constants
 extern float pto_cooldown;
@@ -77,6 +80,7 @@ void opcontrol() {
     test_cata_user_control();
 
     // Print to the controller screen
+    // TODO Make this work?????
     print_stats_controller();
 
     // Decrease the timers

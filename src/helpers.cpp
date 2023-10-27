@@ -5,14 +5,13 @@ extern pros::Motor& PTO_left;
 extern pros::Motor& PTO_right;
 extern pros::ADIDigitalOut PTO_piston;
 extern pros::ADIDigitalOut wing_piston;
+extern pros::ADIDigitalIn catapult_limit_switch;
 extern pros::Motor intake;
 extern pros::Motor catapult;
 
 // Define constants
 const int INTAKE_SPEED = 127;
 const int CATAPULT_SPEED = 127;
-const int RELATIVE_CHARGE_DIST = 720;
-const int RELATIVE_SHOOT_DIST = 50;
 
 // Define useful variables
 bool pto_endgame_enabled = false;
@@ -35,35 +34,27 @@ void toggle_endgame(bool toggle) {
   }
 }
 
-void test_cata_movement(bool forward) {
-  if (forward) {
-    catapult.move_voltage(12000);
-  } else {
-    catapult.move_voltage(-12000);
-  }
-}
-
-void test_cata_user_control() {
-  if (master.get_digital(DIGITAL_X)) {
-    catapult.move_voltage(12000);
-  } else{
-    catapult.move_voltage(0);
-  }
-}
-
-void move_catapult(float degrees) {
-  catapult.move_relative(degrees, CATAPULT_SPEED);
-}
-
 void charge_catapult() {
-  // Charge the catapult (not likely to be used often)
-  move_catapult(RELATIVE_CHARGE_DIST);
+  // Only move if the catapult is not charged
+  if (catapult_limit_switch.get_value() == false) {
+    catapult.move_voltage(CATAPULT_SPEED);
+  }
 }
 
 void shoot_catapult() {
-  // Shoot the catapult and recharge it
-  move_catapult(RELATIVE_SHOOT_DIST + RELATIVE_CHARGE_DIST);
-  return;
+  // Dont try and shoot unless cata is ready
+  if (!catapult_limit_switch.get_value()){
+    return;
+  }
+  // Move the catapult enough to slip the gear
+  catapult.move_relative(90, CATAPULT_SPEED);
+}
+
+void test_cata_user_control() {
+  charge_catapult();
+  if(master.get_digital(DIGITAL_X)){
+    shoot_catapult();
+  }
 }
 
 void pto_toggle(bool toggle) {
@@ -117,12 +108,14 @@ void set_intake_volts(int volts) {
 }
 
 void intake_control() {
-  // Toggle the intake (inward direction only)
+  // Toggle the intake (inward direction)
   if (master.get_digital_new_press(DIGITAL_R1)) {
     intake_toggle_enabled = !intake_toggle_enabled;
   }
+  // Toggle the intake (outward direction)
   if (master.get_digital_new_press(DIGITAL_L1)) {
     outtake_toggle_enabled = !outtake_toggle_enabled;
+    intake_toggle_enabled = false;
   }
 
   // If toggled, intake stays on

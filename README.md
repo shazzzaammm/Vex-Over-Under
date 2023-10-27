@@ -24,4 +24,6 @@ Intake = 20,
 Catapult = 5,
 IMU = 10,
 PTO piston = A,
-wing piston = B
+Limit Switch = B,
+Left Wing Piston  = C,
+Right Wing Piston  = D,

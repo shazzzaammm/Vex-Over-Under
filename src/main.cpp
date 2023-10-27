@@ -12,7 +12,8 @@ pros::Motor catapult(5, false);
 
 // Define pneumatics
 pros::ADIDigitalOut PTO_piston('A');
-pros::ADIDigitalOut wing_piston('C');
+pros::ADIDigitalOut wing_piston_left('C');
+pros::ADIDigitalOut wing_piston_right('D');
 
 // Define sensors (excluding IMU)
 pros::ADIDigitalIn catapult_limit_switch('B');

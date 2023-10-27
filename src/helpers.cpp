@@ -4,7 +4,8 @@
 extern pros::Motor& PTO_left;
 extern pros::Motor& PTO_right;
 extern pros::ADIDigitalOut PTO_piston;
-extern pros::ADIDigitalOut wing_piston;
+extern pros::ADIDigitalOut wing_piston_left;
+extern pros::ADIDigitalOut wing_piston_right;
 extern pros::ADIDigitalIn catapult_limit_switch;
 extern pros::Motor intake;
 extern pros::Motor catapult;
@@ -140,7 +141,8 @@ void intake_control() {
 }
 
 void wing_toggle(bool toggle) {
-  wing_piston.set_value(toggle);
+  wing_piston_left.set_value(toggle);
+  wing_piston_right.set_value(toggle);
   wing_enabled = toggle;
 }
 

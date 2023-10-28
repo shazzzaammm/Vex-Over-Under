@@ -13,7 +13,6 @@ There are currently only two autons planned for this year. One starts on the all
 We use a tank drive with 6 motors, 2 of which are PTO motors. We also have a linear puncher, an intake, wings, and an end game. The linear puncher and intake recieve 1 motor each, and the end game uses the 2 PTO motors. The PTO should only be activated during the AWP auton and at the end of the game, which is why the activation will require 2 buttons instead of 1. The wings are controlled by pistons, allowing for single button activation/deactivation. 
 
 ### Ports
-Note: A negative sign means that the port is reversed
 Left PTO = 9,
 Left Back = -18,
 Left Front = -17,

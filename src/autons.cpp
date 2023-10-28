@@ -26,11 +26,13 @@ void exit_condition_defaults() {
 
 void test_auton() {
   // test the drive
-  chassis.set_drive_pid(10, DRIVE_SPEED, false);
+  chassis.set_drive_pid(20, DRIVE_SPEED);
   chassis.wait_drive();
+
   chassis.set_turn_pid(180, TURN_SPEED);
   chassis.wait_drive();
-  chassis.set_drive_pid(10, DRIVE_SPEED, false);
+
+  chassis.set_drive_pid(20, DRIVE_SPEED);
   chassis.wait_drive();
 
   // test the intake

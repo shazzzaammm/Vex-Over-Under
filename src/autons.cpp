@@ -75,6 +75,65 @@ void same_zone_score() {
   // charge cata
 }
 
+void same_zone_awp(){
+  // Drive forward
+  chassis.set_drive_pid(20, DRIVE_SPEED);
+  chassis.wait_drive();
+  // Drop preload
+  spin_intake_for(-360);
+  pros::delay(150);
+  // Turn towards safest triball
+  chassis.set_turn_pid(-90, TURN_SPEED);
+  chassis.wait_drive();
+  // Move towards safest triball
+  chassis.set_drive_pid(16, DRIVE_SPEED);
+  chassis.wait_drive();
+  // Intake safest triball
+  spin_intake_for(1000);
+  pros::delay(500);
+  // Back away towards the center of all remaining triballs
+  chassis.set_drive_pid(-5, DRIVE_SPEED);
+  chassis.wait_drive();
+  // Extend the wings
+  wing_toggle(true);
+  // Turn towards the remaining triballs
+  chassis.set_turn_pid(0, TURN_SPEED);
+  chassis.wait_drive();
+  // Drive towards the remaining triballs
+  chassis.set_drive_pid(10, DRIVE_SPEED);
+  chassis.wait_drive();
+  // Swing towards the goal (bringing remaining triballs using wings)
+  chassis.set_swing_pid(ez::LEFT_SWING, 90, SWING_SPEED);
+  chassis.wait_drive();
+  // Push triballs into goal
+  chassis.set_drive_pid(11, DRIVE_SPEED);
+  chassis.wait_drive();
+  // Turn off the wings
+  wing_toggle(false);
+  // Back away from the goal
+  chassis.set_drive_pid(-8, DRIVE_SPEED);
+  chassis.wait_drive();
+  // Turn towards the elevation bar
+  chassis.set_turn_pid(180,TURN_SPEED);
+  chassis.wait_drive();
+  // Drive towards the elevation bar
+  chassis.set_drive_pid(54, DRIVE_SPEED);
+  chassis.wait_drive();
+  // Turn to face the elevation bar with the endgame
+  chassis.set_turn_pid(90, TURN_SPEED);
+  chassis.wait_drive();
+
+  // Drive to the bar
+  chassis.set_drive_pid(-22, DRIVE_SPEED);
+  chassis.wait_until(-16);
+  // Switch PTO to endgame mode while driving
+  pto_toggle(true);
+  chassis.wait_drive();
+
+  // Turn on the endgame once arrived at the bar
+  toggle_endgame(true);
+}
+
 void opposite_zone_awp() {
   // Drive forward
   chassis.set_drive_pid(69, DRIVE_SPEED, true);

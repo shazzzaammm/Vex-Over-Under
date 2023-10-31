@@ -11,7 +11,6 @@ extern pros::Motor catapult;
 
 // Define constants
 const int INTAKE_SPEED = 127;
-const int CATAPULT_SPEED = -1200;
 
 // Define useful variables
 bool pto_endgame_enabled = false;

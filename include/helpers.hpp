@@ -19,4 +19,4 @@ void wing_control();
 
 void toggle_endgame(bool toggle);
 
-void test_cata_user_control();
+void catapult_control();

@@ -4,7 +4,6 @@
 extern pros::Motor& PTO_left;
 extern pros::Motor& PTO_right;
 extern pros::ADIDigitalOut PTO_piston;
-extern pros::ADIDigitalOut wing_piston;
 extern pros::ADIDigitalIn catapult_limit_switch;
 extern pros::Motor intake;
 extern pros::Motor catapult;
@@ -35,37 +34,31 @@ void toggle_endgame(bool toggle) {
 
 void charge_catapult() {
   // Only move if the catapult is not charged
-  if (catapult_limit_switch.get_value() == false) {
-    catapult.move_voltage(-50000);
-  }
-  else if (!master.get_digital(DIGITAL_X)){
-    catapult.move_voltage(-2000); // this speed makes the cata stationary
+  if (catapult_limit_switch.get_value() == 0) {
+    catapult.move_voltage(-7000);
   }
 }
 
 void shoot_catapult() {
   // Dont try and shoot unless cata is ready
-  if (!catapult_limit_switch.get_value()){
-    return;
+  if (catapult_limit_switch.get_value() == 1) {
+    catapult.move_relative(-360, 7000);
   }
   // Move the catapult enough to slip the gear
-  catapult.move_relative(-90, 70000);
 }
 
-void test_cata_user_control() {
-  charge_catapult();
-  if(master.get_digital(DIGITAL_X)){
-    shoot_catapult();
+void catapult_control() {
+
+  if (master.get_digital(DIGITAL_X)) {
+    catapult.move_voltage(12000);
+    return;
   }
-  // if (master.get_digital(DIGITAL_X)){
-  //   catapult.move_voltage(-12000); 
-  // }
-  // else if (master.get_digital(DIGITAL_Y)){
-  //   catapult.move_voltage(12000);
-  // }
-  // else{
-  //   catapult.move_voltage(-2000);
-  // }
+
+  if (catapult_limit_switch.get_value() == 0) {
+    catapult.move_voltage(9000);
+  } else if (catapult_limit_switch.get_value() == 1) {
+    catapult.move_voltage(500);
+  }
 }
 
 void pto_toggle(bool toggle) {
@@ -151,18 +144,18 @@ void intake_control() {
 }
 
 void wing_toggle(bool toggle) {
-  wing_piston.set_value(toggle);
-  wing_enabled = toggle;
+  // wing_piston.set_value(toggle);
+  // wing_enabled = toggle;
 }
 
 void wing_control() {
   // Handle enabling/disabling the wings in user control
-  if (master.get_digital(DIGITAL_X))
-    wing_toggle(!wing_enabled);
-  else if (master.get_digital(DIGITAL_LEFT))
-    wing_toggle(0);
-  else if (master.get_digital(DIGITAL_RIGHT))
-    wing_toggle(1);
+  // if (master.get_digital(DIGITAL_X))
+  //   wing_toggle(!wing_enabled);
+  // else if (master.get_digital(DIGITAL_LEFT))
+  //   wing_toggle(0);
+  // else if (master.get_digital(DIGITAL_RIGHT))
+  //   wing_toggle(1);
 }
 
 void rumble_controller() {

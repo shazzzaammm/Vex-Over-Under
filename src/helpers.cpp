@@ -1,19 +1,17 @@
 #include "main.h"
 
-#pragma region // Variables 
 // Get motors
 extern pros::Motor& PTO_left;
 extern pros::Motor& PTO_right;
 extern pros::ADIDigitalOut PTO_piston;
-extern pros::ADIDigitalOut wing_piston_left;
-extern pros::ADIDigitalOut wing_piston_right;
+extern pros::ADIDigitalOut wing_piston;
 extern pros::ADIDigitalIn catapult_limit_switch;
 extern pros::Motor intake;
 extern pros::Motor catapult;
 
 // Define constants
 const int INTAKE_SPEED = 127;
-const int CATAPULT_SPEED = 12000;
+const int CATAPULT_SPEED = -1200;
 
 // Define useful variables
 bool pto_endgame_enabled = false;
@@ -22,7 +20,6 @@ bool intake_toggle_enabled = false;
 bool outtake_toggle_enabled = false;
 bool wing_enabled = false;
 float controller_stats_cooldown = 0;
-#pragma endregion
 
 void toggle_endgame(bool toggle) {
   // Only use endgame if PTO is in 4 motor mode
@@ -40,10 +37,10 @@ void toggle_endgame(bool toggle) {
 void charge_catapult() {
   // Only move if the catapult is not charged
   if (catapult_limit_switch.get_value() == false) {
-    catapult.move_voltage(CATAPULT_SPEED);
+    catapult.move_voltage(-50000);
   }
-  else{
-    catapult.move_voltage(6000);
+  else if (!master.get_digital(DIGITAL_X)){
+    catapult.move_voltage(-2000); // this speed makes the cata stationary
   }
 }
 
@@ -53,14 +50,23 @@ void shoot_catapult() {
     return;
   }
   // Move the catapult enough to slip the gear
-  catapult.move_relative(90, -127);
+  catapult.move_relative(-90, 70000);
 }
 
 void test_cata_user_control() {
   charge_catapult();
-  if(master.get_digital(DIGITAL_Y)){
+  if(master.get_digital(DIGITAL_X)){
     shoot_catapult();
-  } 
+  }
+  // if (master.get_digital(DIGITAL_X)){
+  //   catapult.move_voltage(-12000); 
+  // }
+  // else if (master.get_digital(DIGITAL_Y)){
+  //   catapult.move_voltage(12000);
+  // }
+  // else{
+  //   catapult.move_voltage(-2000);
+  // }
 }
 
 void pto_toggle(bool toggle) {
@@ -146,19 +152,18 @@ void intake_control() {
 }
 
 void wing_toggle(bool toggle) {
-  wing_piston_left.set_value(toggle);
-  wing_piston_right.set_value(toggle);
+  wing_piston.set_value(toggle);
   wing_enabled = toggle;
 }
 
 void wing_control() {
   // Handle enabling/disabling the wings in user control
-  if (master.get_digital(DIGITAL_RIGHT))
+  if (master.get_digital(DIGITAL_X))
     wing_toggle(!wing_enabled);
-  // else if (master.get_digital(DIGITAL_LEFT))
-  //   wing_toggle(0);
-  // else if (master.get_digital(DIGITAL_RIGHT))
-  //   wing_toggle(1);
+  else if (master.get_digital(DIGITAL_LEFT))
+    wing_toggle(0);
+  else if (master.get_digital(DIGITAL_RIGHT))
+    wing_toggle(1);
 }
 
 void rumble_controller() {

@@ -1,5 +1,6 @@
 #include "main.h"
 
+#pragma region // Variables 
 // Get motors
 extern pros::Motor& PTO_left;
 extern pros::Motor& PTO_right;
@@ -12,7 +13,7 @@ extern pros::Motor catapult;
 
 // Define constants
 const int INTAKE_SPEED = 127;
-const int CATAPULT_SPEED = 127;
+const int CATAPULT_SPEED = 12000;
 
 // Define useful variables
 bool pto_endgame_enabled = false;
@@ -21,6 +22,7 @@ bool intake_toggle_enabled = false;
 bool outtake_toggle_enabled = false;
 bool wing_enabled = false;
 float controller_stats_cooldown = 0;
+#pragma endregion
 
 void toggle_endgame(bool toggle) {
   // Only use endgame if PTO is in 4 motor mode
@@ -40,6 +42,9 @@ void charge_catapult() {
   if (catapult_limit_switch.get_value() == false) {
     catapult.move_voltage(CATAPULT_SPEED);
   }
+  else{
+    catapult.move_voltage(6000);
+  }
 }
 
 void shoot_catapult() {
@@ -48,14 +53,14 @@ void shoot_catapult() {
     return;
   }
   // Move the catapult enough to slip the gear
-  catapult.move_relative(90, CATAPULT_SPEED);
+  catapult.move_relative(90, -127);
 }
 
 void test_cata_user_control() {
   charge_catapult();
-  if(master.get_digital(DIGITAL_X)){
+  if(master.get_digital(DIGITAL_Y)){
     shoot_catapult();
-  }
+  } 
 }
 
 void pto_toggle(bool toggle) {
@@ -148,12 +153,12 @@ void wing_toggle(bool toggle) {
 
 void wing_control() {
   // Handle enabling/disabling the wings in user control
-  if (master.get_digital(DIGITAL_X))
+  if (master.get_digital(DIGITAL_RIGHT))
     wing_toggle(!wing_enabled);
-  else if (master.get_digital(DIGITAL_LEFT))
-    wing_toggle(0);
-  else if (master.get_digital(DIGITAL_RIGHT))
-    wing_toggle(1);
+  // else if (master.get_digital(DIGITAL_LEFT))
+  //   wing_toggle(0);
+  // else if (master.get_digital(DIGITAL_RIGHT))
+  //   wing_toggle(1);
 }
 
 void rumble_controller() {

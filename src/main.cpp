@@ -36,8 +36,8 @@ void initialize() {
   // Define autons for the selector
   ez::as::auton_selector.add_autons({
       Auton("Opposite Zone AutonWinPoint\n\nstart on the left side, score 3 triballs, end touching the elevation bar", opposite_zone_awp),
-      Auton("Same Zone Steal\n\nstart on the right side, steal the middle triballs, score preload ", same_zone_steal),
       Auton("Same Zone AWP\n\nstart on the right side, score 4 triballs, end touching the elevation bar", same_zone_awp),
+      Auton("Same Zone Steal\n\nstart on the right side, steal the middle triballs, score preload ", same_zone_steal),
       Auton("Test Auton\n\nchat is this real", test_auton),
   });
 
@@ -77,9 +77,8 @@ void opcontrol() {
     // Handle wing control
     wing_control();
 
-    // Test the catapult movement
-    // !Remove once the catapult is working
-    test_cata_user_control();
+    // Handle catapult control
+    catapult_control();
 
     // if(master.get_digital(DIGITAL_X)){
     //   catapult.move_voltage(12000);

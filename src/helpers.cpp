@@ -57,6 +57,7 @@ void catapult_control() {
   if (catapult_limit_switch.get_value() == 0) {
     catapult.move_voltage(9000);
   } else if (catapult_limit_switch.get_value() == 1) {
+    // TODO change to 0 when ratchet
     catapult.move_voltage(500);
   }
 }

@@ -1,10 +1,6 @@
 void rumble_controller();
 void print_stats_controller();
 
-void charge_catapult();
-void shoot_catapult();
-void move_catapult(float degrees);
-
 void set_intake_volts(int volts);
 void spin_intake_for(float degrees);
 void intake_control();

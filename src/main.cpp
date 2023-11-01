@@ -20,7 +20,6 @@ pros::ADIDigitalIn catapult_limit_switch('B');
 
 // Retrieve necessary constants
 extern float pto_cooldown;
-extern float controller_stats_cooldown;
 
 void initialize() {
 
@@ -96,7 +95,6 @@ void opcontrol() {
 
     // Decrease the timers
     pto_cooldown -= ez::util::DELAY_TIME;
-    controller_stats_cooldown -= ez::util::DELAY_TIME;
 
     // Keep the time between cycles constant
     pros::delay(ez::util::DELAY_TIME);

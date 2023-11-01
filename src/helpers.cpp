@@ -4,12 +4,16 @@
 extern pros::Motor& PTO_left;
 extern pros::Motor& PTO_right;
 extern pros::ADIDigitalOut PTO_piston;
+extern pros::ADIDigitalOut wing_piston_left;
+extern pros::ADIDigitalOut wing_piston_right;
 extern pros::ADIDigitalIn catapult_limit_switch;
 extern pros::Motor intake;
 extern pros::Motor catapult;
 
 // Define constants
 const int INTAKE_SPEED = 127;
+const int CHARGED_CATAPULT = 1;
+const int NOT_CHARGED_CATAPUT = 0;
 
 // Define useful variables
 bool pto_endgame_enabled = false;
@@ -17,7 +21,6 @@ float pto_cooldown = 0;
 bool intake_toggle_enabled = false;
 bool outtake_toggle_enabled = false;
 bool wing_enabled = false;
-float controller_stats_cooldown = 0;
 
 void toggle_endgame(bool toggle) {
   // Only use endgame if PTO is in 4 motor mode
@@ -32,31 +35,21 @@ void toggle_endgame(bool toggle) {
   }
 }
 
-void charge_catapult() {
-  // Only move if the catapult is not charged
-  if (catapult_limit_switch.get_value() == 0) {
-    catapult.move_voltage(-7000);
-  }
-}
-
-void shoot_catapult() {
-  // Dont try and shoot unless cata is ready
-  if (catapult_limit_switch.get_value() == 1) {
-    catapult.move_relative(-360, 7000);
-  }
-  // Move the catapult enough to slip the gear
-}
-
 void catapult_control() {
 
+  // Shoot the catapult if button pressed
   if (master.get_digital(DIGITAL_X)) {
     catapult.move_voltage(12000);
     return;
   }
 
-  if (catapult_limit_switch.get_value() == 0) {
+  // Charge if not ready and not shooting
+  if (catapult_limit_switch.get_value() == NOT_CHARGED_CATAPUT) {
     catapult.move_voltage(9000);
-  } else if (catapult_limit_switch.get_value() == 1) {
+  }
+
+  // Resist the rubberbands when ready and not shooting
+  else if (catapult_limit_switch.get_value() == CHARGED_CATAPULT) {
     // TODO change to 0 when ratchet
     catapult.move_voltage(500);
   }
@@ -92,10 +85,6 @@ void pto_control() {
   // Handle PTO activation/deactivation in user control
   if (master.get_digital(DIGITAL_A))
     pto_toggle(!pto_endgame_enabled);
-  else if (master.get_digital(DIGITAL_DOWN))
-    pto_toggle(0);
-  else if (master.get_digital(DIGITAL_UP))
-    pto_toggle(1);
 }
 
 int get_pto_mode() {
@@ -116,6 +105,7 @@ void intake_control() {
   // Toggle the intake (inward direction)
   if (master.get_digital_new_press(DIGITAL_R1)) {
     intake_toggle_enabled = !intake_toggle_enabled;
+    outtake_toggle_enabled = false;
   }
   // Toggle the intake (outward direction)
   if (master.get_digital_new_press(DIGITAL_L1)) {
@@ -145,18 +135,15 @@ void intake_control() {
 }
 
 void wing_toggle(bool toggle) {
-  // wing_piston.set_value(toggle);
-  // wing_enabled = toggle;
+  wing_piston_right.set_value(toggle);
+  wing_piston_left.set_value(toggle);
+  wing_enabled = toggle;
 }
 
 void wing_control() {
   // Handle enabling/disabling the wings in user control
-  // if (master.get_digital(DIGITAL_X))
-  //   wing_toggle(!wing_enabled);
-  // else if (master.get_digital(DIGITAL_LEFT))
-  //   wing_toggle(0);
-  // else if (master.get_digital(DIGITAL_RIGHT))
-  //   wing_toggle(1);
+  if (master.get_digital(DIGITAL_B))
+    wing_toggle(!wing_enabled);
 }
 
 void rumble_controller() {
@@ -164,14 +151,6 @@ void rumble_controller() {
 }
 
 void print_stats_controller() {
-  // Test if the cooldown is over
-  if (controller_stats_cooldown > 0) {
-    return;
-  }
-
-  // Reset the cooldown
-  controller_stats_cooldown = ez::util::DELAY_TIME * 50;
-
   // Clear the controller screen
   master.clear();
 

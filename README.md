@@ -2,6 +2,7 @@
 ### Autons
 ### User Control
 ### Ports 
+### Controls
 
 ### Description
 This program is the only program that 4303X is using this year. There are a few disadvantages to this, but they are quickly out-weighed by the advantages. The autonomous selector is one of the many things that will make this file format much easier than having multiple repositories.
@@ -26,3 +27,17 @@ PTO piston = A,
 Limit Switch = B,
 Left Wing Piston  = C,
 Right Wing Piston  = D,
+
+### Controls
+B = Toggle Wings
+A = Toggle PTO
+X = Shoot Catapult
+Y = 
+UP = 
+DOWN = 
+LEFT = 
+RIGHT = 
+R1 = Toggle Intake
+L1 = Toggle Outtake
+R2 = Hold Intake
+L2 = Hold Outtake

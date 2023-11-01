@@ -35,6 +35,19 @@ void toggle_endgame(bool toggle) {
   }
 }
 
+void catapult_auton_task(void* paramater) {
+  // Used to keep the catapult charged during the auton
+  while (true) {
+    if (catapult_limit_switch.get_value() == NOT_CHARGED_CATAPUT) {
+      catapult.move_voltage(9000);
+    } else{
+      // TODO change to 0 once ratchet
+      catapult.move_voltage(500);
+    }
+    pros::delay(20);
+  }
+}
+
 void catapult_control() {
 
   // Shoot the catapult if button pressed

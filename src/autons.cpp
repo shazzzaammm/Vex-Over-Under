@@ -25,27 +25,17 @@ void exit_condition_defaults() {
 }
 
 void test_auton() {
-  // test the drive
-  chassis.set_drive_pid(20, DRIVE_SPEED);
-  chassis.wait_drive();
+  // Test the task functionality
+  pros::Task my_task(catapult_auton_task, NULL, "Cata Charge Task");
 
-  chassis.set_turn_pid(180, TURN_SPEED);
-  chassis.wait_drive();
+  // Wait for a while
+  pros::delay(4000);
 
-  chassis.set_drive_pid(20, DRIVE_SPEED);
-  chassis.wait_drive();
+  // Stop charging the cata
+  my_task.remove();
 
-  // test the intake
-  spin_intake_for(500);
-
-  // test the PTO
-  pto_toggle(true);
-
-  // test the endgame
-  toggle_endgame(true);
-
-  // test the wings????
-  wing_toggle(true);
+  // Test the intake (mostly to show that the auton can keep running)
+  spin_intake_for(420);
 }
 
 void same_zone_steal() {
@@ -103,11 +93,11 @@ void same_zone_steal() {
   toggle_endgame(true);
 }
 
-void same_zone_awp(){
+void same_zone_awp() {
   // Drive forward
   chassis.set_drive_pid(69, DRIVE_SPEED);
   chassis.wait_drive();
-  
+
   // Drop preload
   spin_intake_for(360);
   pros::delay(500);
@@ -115,9 +105,9 @@ void same_zone_awp(){
 
 void opposite_zone_awp() {
   // Drive forward
-  chassis.set_drive_pid(66, DRIVE_SPEED, true);
+  chassis.set_drive_pid(69, DRIVE_SPEED, true);
   chassis.wait_drive();
-  
+
   // Face same goal
   chassis.set_turn_pid(-90, TURN_SPEED);
   chassis.wait_drive();
@@ -127,14 +117,40 @@ void opposite_zone_awp() {
 
   spin_intake_for(360);
   pros::delay(500);
-  
 
   chassis.set_drive_pid(-10.5, DRIVE_SPEED);
   chassis.wait_drive();
 
-  chassis.set_drive_pid(10.5, DRIVE_SPEED);
+  chassis.set_drive_pid(11.5, DRIVE_SPEED);
   chassis.wait_drive();
-  
+
   spin_intake_for(360);
   pros::delay(500);
+
+  chassis.set_drive_pid(-10.5, DRIVE_SPEED);
+  chassis.wait_drive();
+
+  chassis.set_turn_pid(90, TURN_SPEED);
+  chassis.wait_drive();
+  
+  wing_toggle(true);
+  spin_intake_for(-3000);
+
+  chassis.set_drive_pid(20, DRIVE_SPEED);
+  chassis.wait_drive();
+
+  chassis.set_swing_pid(ez::LEFT_SWING, 180, SWING_SPEED);
+  chassis.wait_drive();
+
+  chassis.set_drive_pid(20, DRIVE_SPEED);
+  chassis.wait_drive();
+
+  chassis.set_turn_pid(-90, TURN_SPEED);
+  chassis.wait_drive();
+
+  chassis.set_drive_pid(40, DRIVE_SPEED);
+  chassis.wait_drive();
+
+  chassis.set_turn_pid(0, TURN_SPEED);
+  chassis.wait_drive();
 }

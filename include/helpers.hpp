@@ -16,3 +16,4 @@ void wing_control();
 void toggle_endgame(bool toggle);
 
 void catapult_control();
+void catapult_auton_task(void* parameter);

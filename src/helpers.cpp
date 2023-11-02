@@ -45,13 +45,12 @@ void catapult_control() {
 
   // Charge if not ready and not shooting
   if (catapult_limit_switch.get_value() == NOT_CHARGED_CATAPUT) {
-    catapult.move_voltage(9000);
+    catapult.move_voltage(8000);
   }
 
   // Resist the rubberbands when ready and not shooting
   else if (catapult_limit_switch.get_value() == CHARGED_CATAPULT) {
-    // TODO change to 0 when ratchet
-    catapult.move_voltage(500);
+    catapult.brake();
   }
 }
 

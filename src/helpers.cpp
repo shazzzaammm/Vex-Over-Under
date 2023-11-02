@@ -39,9 +39,9 @@ void catapult_auton_task(void* paramater) {
   // Used to keep the catapult charged during the auton
   while (true) {
     if (catapult_limit_switch.get_value() == NOT_CHARGED_CATAPUT) {
-      catapult.move_voltage(9000);
+      catapult.move_voltage(8000);
     } else{
-      catapult.brake();
+      catapult.move_voltage(0);
     }
     pros::delay(20);
   }
@@ -57,12 +57,12 @@ void catapult_control() {
 
   // Charge if not ready and not shooting
   if (catapult_limit_switch.get_value() == NOT_CHARGED_CATAPUT) {
-    catapult.move_voltage(8000);
+    catapult.move_voltage(7000);
   }
-
+   
   // Resist the rubberbands when ready and not shooting
   else if (catapult_limit_switch.get_value() == CHARGED_CATAPULT) {
-    catapult.brake();
+    catapult.move_voltage(0);
   }
 }
 

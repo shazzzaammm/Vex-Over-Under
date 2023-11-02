@@ -41,7 +41,7 @@ void initialize() {
   });
 
   // Set the motor brake modes
-  catapult.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
+  catapult.set_brake_mode(pros::E_MOTOR_BRAKE_COAST);
 
   // Initialize
   chassis.initialize();

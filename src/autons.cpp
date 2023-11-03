@@ -39,16 +39,11 @@ void test_auton() {
 }
 
 void same_zone_steal() {
+  return;
 }
 
 void same_zone_awp() {
-  // Drive forward
-  chassis.set_drive_pid(69, DRIVE_SPEED);
-  chassis.wait_drive();
-
-  // Drop preload
-  spin_intake_for(360);
-  pros::delay(500);
+  return;
 }
 
 void opposite_zone_awp() {

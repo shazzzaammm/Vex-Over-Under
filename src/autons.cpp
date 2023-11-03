@@ -25,17 +25,7 @@ void exit_condition_defaults() {
 }
 
 void test_auton() {
-  // Test the task functionality
-  pros::Task cata_charge_task(catapult_auton_task, NULL, "Cata Charge Task");
-
-  // Wait for a while
-  pros::delay(4000);
-
-  // Stop charging the cata
-  cata_charge_task.remove();
-
-  // Test the intake (mostly to show that the auton can keep running)
-  spin_intake_for(420);
+  return;
 }
 
 void same_zone_steal() {
@@ -94,13 +84,7 @@ void same_zone_steal() {
 }
 
 void same_zone_awp() {
-  // Drive forward
-  chassis.set_drive_pid(69, DRIVE_SPEED);
-  chassis.wait_drive();
-
-  // Drop preload
-  spin_intake_for(360);
-  pros::delay(500);
+  return;
 }
 
 void opposite_zone_awp() {

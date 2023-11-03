@@ -34,8 +34,10 @@ void initialize() {
 
   // Define autons for the selector
   ez::as::auton_selector.add_autons({
-      Auton("Opposite Zone AutonWinPoint\n\nstart on the left side, score 3 triballs, end touching the elevation bar", opposite_zone_awp),
-      Auton("Same Zone AWP\n\nstart on the right side, score 4 triballs, end touching the elevation bar", same_zone_awp),
+      Auton("Opposite Zone AutonWinPoint\n\nstart on the left side, score 3 triballs, end touching the elevation bar",
+            opposite_zone_awp),
+      Auton("Same Zone AWP\n\nstart on the right side, score 4 triballs, end touching the elevation bar",
+            same_zone_awp),
       Auton("Same Zone Steal\n\nstart on the right side, steal the middle triballs, score preload ", same_zone_steal),
       Auton("Test Auton\n\nchat is this real", test_auton),
   });
@@ -61,9 +63,9 @@ void autonomous() {
 }
 
 void opcontrol() {
-  // TODO Automatically deactivate the endgame and switch PTO to 6 motor
+  // TODO Automatically deactivate the endgame
+  pto_toggle(false);
   while (true) {
-    chassis.set_drive_brake(MOTOR_BRAKE_BRAKE);
     // Handle chassis control
     chassis.tank();
 
@@ -79,18 +81,8 @@ void opcontrol() {
     // Handle catapult control
     catapult_control();
 
-    // if(master.get_digital(DIGITAL_X)){
-    //   catapult.move_voltage(12000);
-    // }
-    // else if(master.get_digital(DIGITAL_Y)){
-    //   catapult.move_voltage(-12000);
-    // }
-    // else{
-    //   catapult.move_voltage(0);
-    // }
-
     // Print to the controller screen
-    // TODO Make this work?????
+    // ? Why doesnt this work
     print_stats_controller();
 
     // Decrease the timers

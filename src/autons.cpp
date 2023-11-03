@@ -49,3 +49,6 @@ void same_zone_awp() {
 void opposite_zone_awp() {
   return;
 }
+void opposite_zone_elim() {
+  return;
+}

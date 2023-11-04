@@ -59,6 +59,7 @@ void catapult_auton_task(void* paramater) {
 void catapult_control() {
 
   // Shoot the catapult if button pressed
+  /*
   if (master.get_digital(DIGITAL_X)) {
     catapult.move_voltage(CATAPULT_SHOOTING_VOLTAGE);
     return;
@@ -73,6 +74,37 @@ void catapult_control() {
   else if (catapult_limit_switch.get_value() == CHARGED_CATAPULT) {
     catapult.brake();
   }
+  */
+
+  /*
+  if (master.get_digital(DIGITAL_X)) {
+    catapult.move_voltage(CATAPULT_SHOOTING_VOLTAGE);
+    return;
+  }
+
+  // Charge if not ready and not shooting
+  if (catapult_limit_switch.get_value() == NOT_CHARGED_CATAPUT) {
+    catapult.move_voltage(CATAPULT_CHARGING_VOLTAGE);
+  }
+
+  // Turn off motor once charged
+  else{
+    catapult.brake();
+  }
+  */
+
+  //
+  if (master.get_digital(DIGITAL_X)){
+  catapult.move_voltage(-12000); 
+  }
+  else if (master.get_digital(DIGITAL_Y)){
+  catapult.move_voltage(12000);
+  }
+  else{
+  //catapult.move_voltage(-5000);
+  catapult.brake();
+  }
+  //
 }
 
 void pto_toggle(bool toggle) {
@@ -146,8 +178,12 @@ void intake_control() {
 
   // Hold buttons to control the intake (while not toggled)
   if (master.get_digital(DIGITAL_L2)) {
+    intake_toggle_enabled = false;
+    outtake_toggle_enabled = false;
     set_intake_volts(INTAKE_VOLTAGE);
   } else if (master.get_digital(DIGITAL_R2)) {
+    intake_toggle_enabled = false;
+    outtake_toggle_enabled = false;
     set_intake_volts(-INTAKE_VOLTAGE);
   } else {
     set_intake_volts(0);

@@ -16,8 +16,7 @@ pros::ADIDigitalOut wing_piston_left('C');
 pros::ADIDigitalOut wing_piston_right('D');
 
 // Define sensors (excluding IMU)
-pros::ADIDigitalIn catapult_limit_switch('B');
-
+pros::Rotation catapult_rotation_sensor('B');
 // Retrieve necessary constants
 extern float pto_cooldown;
 

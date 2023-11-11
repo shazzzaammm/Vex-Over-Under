@@ -17,7 +17,7 @@ extern pros::Motor catapult;
 const int INTAKE_SPEED = 127;
 const int INTAKE_VOLTAGE = 8000;
 
-const int CATAPULT_CHARGED_DEGREES = 2850;
+const int CATAPULT_CHARGED_DEGREES = 2000;
 
 const int CATAPULT_CHARGING_VOLTAGE = 7750;
 const int CATAPULT_SHOOTING_VOLTAGE = 12000;
@@ -47,10 +47,10 @@ void toggle_endgame(bool toggle) {
 void catapult_auton_task(void* paramater) {
   // Used to keep the catapult charged during the auton
   while (true) {
-    if (catapult_rotation_sensor.get_angle() > CATAPULT_CHARGED_DEGREES) {
-      catapult.move_voltage(CATAPULT_CHARGING_VOLTAGE);
-    } else {
+    if (catapult_rotation_sensor.get_angle() > CATAPULT_CHARGED_DEGREES && catapult_rotation_sensor.get_angle() < (CATAPULT_CHARGED_DEGREES+500) ) {
       catapult.brake();
+    } else {
+      catapult.move_voltage(CATAPULT_CHARGING_VOLTAGE);
     }
     pros::delay(20);
   }
@@ -63,13 +63,13 @@ void catapult_control() {
   }
 
   // Charge if not ready and not shooting
-  if (catapult_rotation_sensor.get_angle() > CATAPULT_CHARGED_DEGREES) {
-    catapult.move_voltage(CATAPULT_CHARGING_VOLTAGE);
-  }
+  if ((catapult_rotation_sensor.get_angle() > CATAPULT_CHARGED_DEGREES && catapult_rotation_sensor.get_angle() < (CATAPULT_CHARGED_DEGREES+1000) )) {
+      catapult.move_voltage(0);
+    }
 
   // Turn off motor once charged
   else{
-    catapult.brake();
+    catapult.move_voltage(CATAPULT_CHARGING_VOLTAGE);
   }
 }
 

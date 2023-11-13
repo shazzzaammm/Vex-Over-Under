@@ -10,6 +10,7 @@ void same_zone_steal();
 void same_zone_awp();
 
 void opposite_zone_awp();
+void opposite_zone_elim();
 
 void default_constants();
 void exit_condition_defaults();

@@ -7,17 +7,17 @@ extern pros::Motor& PTO_right;
 extern pros::ADIDigitalOut PTO_piston;
 extern pros::ADIDigitalOut wing_piston_left;
 extern pros::ADIDigitalOut wing_piston_right;
-extern pros::ADIDigitalIn catapult_limit_switch;
+extern pros::Rotation catapult_rotation_sensor;
 
 extern pros::Motor intake;
 extern pros::Motor catapult;
+
 
 // Define constants
 const int INTAKE_SPEED = 127;
 const int INTAKE_VOLTAGE = 8000;
 
-const int CHARGED_CATAPULT = 1;
-const int NOT_CHARGED_CATAPUT = 0;
+const int CATAPULT_CHARGED_DEGREES = 2850;
 
 const int CATAPULT_CHARGING_VOLTAGE = 7750;
 const int CATAPULT_SHOOTING_VOLTAGE = 12000;
@@ -47,7 +47,7 @@ void toggle_endgame(bool toggle) {
 void catapult_auton_task(void* paramater) {
   // Used to keep the catapult charged during the auton
   while (true) {
-    if (catapult_limit_switch.get_value() == NOT_CHARGED_CATAPUT) {
+    if (catapult_rotation_sensor.get_angle() > CATAPULT_CHARGED_DEGREES) {
       catapult.move_voltage(CATAPULT_CHARGING_VOLTAGE);
     } else {
       catapult.brake();
@@ -57,20 +57,18 @@ void catapult_auton_task(void* paramater) {
 }
 
 void catapult_control() {
-
-  // Shoot the catapult if button pressed
   if (master.get_digital(DIGITAL_X)) {
     catapult.move_voltage(CATAPULT_SHOOTING_VOLTAGE);
     return;
   }
 
   // Charge if not ready and not shooting
-  if (catapult_limit_switch.get_value() == NOT_CHARGED_CATAPUT) {
+  if (catapult_rotation_sensor.get_angle() > CATAPULT_CHARGED_DEGREES) {
     catapult.move_voltage(CATAPULT_CHARGING_VOLTAGE);
   }
 
   // Turn off motor once charged
-  else if (catapult_limit_switch.get_value() == CHARGED_CATAPULT) {
+  else{
     catapult.brake();
   }
 }
@@ -146,8 +144,12 @@ void intake_control() {
 
   // Hold buttons to control the intake (while not toggled)
   if (master.get_digital(DIGITAL_L2)) {
+    intake_toggle_enabled = false;
+    outtake_toggle_enabled = false;
     set_intake_volts(INTAKE_VOLTAGE);
   } else if (master.get_digital(DIGITAL_R2)) {
+    intake_toggle_enabled = false;
+    outtake_toggle_enabled = false;
     set_intake_volts(-INTAKE_VOLTAGE);
   } else {
     set_intake_volts(0);

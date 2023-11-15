@@ -7,19 +7,19 @@ extern pros::Motor& PTO_right;
 extern pros::ADIDigitalOut PTO_piston;
 extern pros::ADIDigitalOut wing_piston_left;
 extern pros::ADIDigitalOut wing_piston_right;
-extern pros::Rotation catapult_rotation_sensor;
+extern pros::ADIAnalogIn catapult_rotation_sensor;
 
 extern pros::Motor intake;
 extern pros::Motor catapult;
 
 // Define constants
 const int INTAKE_SPEED = 127;
-const int INTAKE_VOLTAGE = 8000;
+const int INTAKE_VOLTAGE = 9000;
 
-const int CATAPULT_CHARGED_DEGREES_MIN = 2000;
-const int CATAPULT_CHARGED_DEGREES_MAX = 2100;
+const int CATAPULT_CHARGING_DEGREES_MIN = 2370;  
+const int CATAPULT_CHARGING_DEGREES_MAX = 4500;
 
-const int CATAPULT_CHARGING_VOLTAGE = 7750;
+const int CATAPULT_CHARGING_VOLTAGE = 11000;
 const int CATAPULT_SHOOTING_VOLTAGE = 12000;
 
 // Define useful variables
@@ -44,15 +44,16 @@ void toggle_endgame(bool toggle) {
   }
 }
 
-bool is_catapult_charged() {
-  return catapult_rotation_sensor.get_angle() >= CATAPULT_CHARGED_DEGREES_MIN &&
-         catapult_rotation_sensor.get_angle() <= CATAPULT_CHARGED_DEGREES_MAX;
+bool is_catapult_charging() {
+  return (catapult_rotation_sensor.get_value() >= CATAPULT_CHARGING_DEGREES_MIN &&
+         catapult_rotation_sensor.get_value() <= CATAPULT_CHARGING_DEGREES_MAX) ||
+         catapult_rotation_sensor.get_value() < 2080;
 }
 
 void catapult_auton_task(void* paramater) {
   // Used to keep the catapult charged during the auton
   while (true) {
-    if (is_catapult_charged()) {
+    if (is_catapult_charging()) {
       catapult.brake();
     } else {
       catapult.move_voltage(CATAPULT_CHARGING_VOLTAGE);
@@ -68,7 +69,7 @@ void catapult_control() {
   }
 
   // Charge if not ready and not shooting
-  if (is_catapult_charged()) {
+  if (is_catapult_charging()) {
     catapult.move_voltage(CATAPULT_CHARGING_VOLTAGE);
   }
 
@@ -169,7 +170,7 @@ void wing_toggle(bool toggle) {
 
 void wing_control() {
   // Handle enabling/disabling the wings in user control
-  if (master.get_digital(DIGITAL_B))
+  if (master.get_digital_new_press(DIGITAL_B))
     wing_toggle(!wing_enabled);
 }
 

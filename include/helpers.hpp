@@ -17,4 +17,4 @@ void toggle_endgame(bool toggle);
 
 void catapult_control();
 void catapult_auton_task(void* parameter);
-bool is_catapult_charged();
+bool is_catapult_charging();

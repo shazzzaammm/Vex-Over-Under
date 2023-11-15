@@ -16,7 +16,8 @@ pros::ADIDigitalOut wing_piston_left('C');
 pros::ADIDigitalOut wing_piston_right('D');
 
 // Define sensors (excluding IMU)
-pros::Rotation catapult_rotation_sensor('B');
+pros::ADIAnalogIn catapult_rotation_sensor('B');
+
 // Retrieve necessary constants
 extern float pto_cooldown;
 
@@ -65,7 +66,6 @@ void autonomous() {
 
 void opcontrol() {
   // TODO Automatically deactivate the endgame
-  pto_toggle(false);
   while (true) {
     // Handle chassis control
     chassis.tank();

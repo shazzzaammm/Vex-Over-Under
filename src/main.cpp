@@ -2,7 +2,7 @@
 #include "helpers.hpp"
 
 // Define the chassis (PTO motors are in the middle of the curly braces)
-Drive chassis({-18, 9, -17}, {1, -8, 2}, 10, 4.125, 200, 0.5);
+Drive chassis({-6, 9, -7}, {1, -8, 2}, 10, 4.125, 200, 0.5);
 
 // Define Motors
 pros::Motor& PTO_left = chassis.left_motors[1];
@@ -63,6 +63,7 @@ void autonomous() {
 
 void opcontrol() {
   // TODO Automatically deactivate the endgame
+  pto_toggle(false);
   while (true) {
     // Handle chassis control
     chassis.tank();

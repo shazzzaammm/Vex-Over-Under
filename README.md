@@ -31,8 +31,8 @@ Right Wing Piston  = D,
 ### Controls
 B = Toggle Wings,
 A = Toggle PTO,
-X = Move Catapult Down (for testing),
-Y = Move Catapult Up (for testing),
+X = Shoot Catapult,
+Y = Toggle Auto Shooting Catapult,
 UP = 
 DOWN = 
 LEFT = 

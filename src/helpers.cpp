@@ -30,6 +30,8 @@ bool outtake_toggle_enabled = false;
 
 bool wing_enabled = false;
 
+bool catapult_auto_shoot_enabled = false;
+
 void toggle_endgame(bool toggle) {
   // Only use endgame if PTO is in 4 motor mode
   if (!pto_endgame_enabled)
@@ -49,6 +51,10 @@ bool is_catapult_charging() {
          catapult_rotation_sensor.get_value() < 2080;
 }
 
+void toggle_auto_shoot_catapult(){
+  catapult_auto_shoot_enabled = !catapult_auto_shoot_enabled;
+}
+
 void catapult_auton_task(void* paramater) {
   // Used to keep the catapult charged during the auton
   while (true) {
@@ -62,7 +68,11 @@ void catapult_auton_task(void* paramater) {
 }
 
 void catapult_control() {
-  if (master.get_digital(DIGITAL_X)) {
+  if(master.get_digital_new_press(DIGITAL_Y)){
+    toggle_auto_shoot_catapult();
+  }
+
+  if (master.get_digital(DIGITAL_X) || catapult_auto_shoot_enabled) {
     catapult.move_voltage(CATAPULT_SHOOTING_VOLTAGE);
     return;
   }

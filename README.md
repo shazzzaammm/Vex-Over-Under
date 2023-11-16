@@ -14,10 +14,10 @@ We have a lot of autons planned for this year. We are only likely to use four in
 We use a tank drive with 6 motors, 2 of which are PTO motors. We also have a catapult, an intake, wings, and an end game. The catapult and intake receive 1 motor each, and the end game uses the 2 PTO motors. The PTO should only be activated during the AWP auton and at the end of the game. The wings are controlled by pistons, allowing for single button activation/deactivation.
 
 ### Ports
-Left PTO = 9,
-Left Back = -18,
-Left Front = -17,
-Right PTO = -8,
+Left PTO = 8,
+Left Back = -6,
+Left Front = -7,
+Right PTO = -9,
 Right Back = 1,
 Right Front = 2,
 Intake = -20,

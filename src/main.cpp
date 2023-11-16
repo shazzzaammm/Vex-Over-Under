@@ -16,9 +16,7 @@ pros::ADIDigitalOut wing_piston_left('C');
 pros::ADIDigitalOut wing_piston_right('D');
 
 // Define sensors (excluding IMU)
-pros::Rotation catapult_rotation_sensor('B');
-// Retrieve necessary constants
-extern float pto_cooldown;
+pros::ADIAnalogIn catapult_rotation_sensor('B');
 
 void initialize() {
 
@@ -65,7 +63,6 @@ void autonomous() {
 
 void opcontrol() {
   // TODO Automatically deactivate the endgame
-  pto_toggle(false);
   while (true) {
     // Handle chassis control
     chassis.tank();
@@ -85,9 +82,6 @@ void opcontrol() {
     // Print to the controller screen
     // ? Why doesnt this work
     print_stats_controller();
-
-    // Decrease the timers
-    pto_cooldown -= ez::util::DELAY_TIME;
 
     // Keep the time between cycles constant
     pros::delay(ez::util::DELAY_TIME);

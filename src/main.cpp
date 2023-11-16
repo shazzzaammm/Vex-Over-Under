@@ -18,9 +18,6 @@ pros::ADIDigitalOut wing_piston_right('D');
 // Define sensors (excluding IMU)
 pros::ADIAnalogIn catapult_rotation_sensor('B');
 
-// Retrieve necessary constants
-extern float pto_cooldown;
-
 void initialize() {
 
   // Stop the user from doing anything while legacy ports configure.
@@ -85,9 +82,6 @@ void opcontrol() {
     // Print to the controller screen
     // ? Why doesnt this work
     print_stats_controller();
-
-    // Decrease the timers
-    pto_cooldown -= ez::util::DELAY_TIME;
 
     // Keep the time between cycles constant
     pros::delay(ez::util::DELAY_TIME);

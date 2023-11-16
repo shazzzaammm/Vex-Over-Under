@@ -16,7 +16,7 @@ extern pros::Motor catapult;
 const int INTAKE_SPEED = 127;
 const int INTAKE_VOLTAGE = 9000;
 
-const int CATAPULT_CHARGING_DEGREES_MIN = 2370;  
+const int CATAPULT_CHARGING_DEGREES_MIN = 2370;
 const int CATAPULT_CHARGING_DEGREES_MAX = 4500;
 
 const int CATAPULT_CHARGING_VOLTAGE = 11000;
@@ -24,7 +24,6 @@ const int CATAPULT_SHOOTING_VOLTAGE = 12000;
 
 // Define useful variables
 bool pto_endgame_enabled = false;
-float pto_cooldown = 0;
 
 bool intake_toggle_enabled = false;
 bool outtake_toggle_enabled = false;
@@ -46,7 +45,7 @@ void toggle_endgame(bool toggle) {
 
 bool is_catapult_charging() {
   return (catapult_rotation_sensor.get_value() >= CATAPULT_CHARGING_DEGREES_MIN &&
-         catapult_rotation_sensor.get_value() <= CATAPULT_CHARGING_DEGREES_MAX) ||
+          catapult_rotation_sensor.get_value() <= CATAPULT_CHARGING_DEGREES_MAX) ||
          catapult_rotation_sensor.get_value() < 2080;
 }
 
@@ -54,9 +53,9 @@ void catapult_auton_task(void* paramater) {
   // Used to keep the catapult charged during the auton
   while (true) {
     if (is_catapult_charging()) {
-      catapult.brake();
-    } else {
       catapult.move_voltage(CATAPULT_CHARGING_VOLTAGE);
+    } else {
+      catapult.brake();
     }
     pros::delay(20);
   }
@@ -80,13 +79,6 @@ void catapult_control() {
 }
 
 void pto_toggle(bool toggle) {
-  // This prevents extreme air loss using a cooldown
-  if (pto_cooldown > 0) {
-    return;
-  }
-  // Set the PTO cooldown
-  pto_cooldown = ez::util::DELAY_TIME * 50;
-
   // Toggle PTO motors + bool
   pto_endgame_enabled = toggle;
   chassis.pto_toggle({PTO_left, PTO_right}, toggle);
@@ -107,7 +99,7 @@ void set_pto_volts(int volts) {
 
 void pto_control() {
   // Handle PTO activation/deactivation in user control
-  if (master.get_digital(DIGITAL_A))
+  if (master.get_digital_new_press(DIGITAL_A))
     pto_toggle(!pto_endgame_enabled);
 }
 

@@ -29,6 +29,8 @@ Left Wing Piston  = C,
 Right Wing Piston  = D,
 
 ### Controls
+
+#### A_Controls
 B = Toggle Wings,
 A = Toggle PTO,
 X = Shoot Catapult,
@@ -41,3 +43,17 @@ R1 = Toggle Intake,
 L1 = Toggle Outtake,
 R2 = Hold Intake,
 L2 = Hold Outtake,
+
+#### G_Controls
+B = Toggle Wings,
+A = Toggle PTO,
+Y = Shoot Catapult,
+X = Toggle Auto Shooting Catapult,
+UP = 
+DOWN = 
+LEFT = 
+RIGHT = 
+R1 = Hold Intake,
+R2 = Hold Outtake,
+L1 = Toggle Intake,
+L2 = Toggle Outtake,

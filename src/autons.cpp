@@ -22,20 +22,14 @@ void exit_condition_defaults() {
 }
 
 void test_auton() {
-  // Test the task functionality
-  pros::Task cata_charge_task(catapult_auton_task, NULL, "Cata Charge Task");
-
-  // Wait for a while
-  pros::delay(4000);
-
-  // Stop charging the cata
-  cata_charge_task.remove();
-
-  // Test the intake (mostly to show that the auton can keep running)
-  spin_intake_for(420);
+  return;
 }
 
 void same_zone_steal() {
+  return;
+}
+
+void opposite_zone_elim(){
   return;
 }
 
@@ -86,8 +80,77 @@ void same_zone_awp() {
 }
 
 void opposite_zone_awp() {
-  return;
-}
-void opposite_zone_elim() {
-  return;
+  pros::Task cata_charge_task(catapult_auton_task, NULL, "Cata Charge Task");
+  // Drive forward
+  chassis.set_drive_pid(69, DRIVE_SPEED, true);
+  chassis.wait_drive();
+
+  // Face enemy goal
+  chassis.set_turn_pid(-90, TURN_SPEED);
+  chassis.wait_drive();
+
+  // Ram into goal
+  chassis.set_drive_pid(12, DRIVE_SPEED);
+  chassis.wait_drive();
+
+  // Outtake
+  spin_intake_for(360);
+  pros::delay(500);
+
+  // Back up
+  chassis.set_drive_pid(-10.5, DRIVE_SPEED);
+  chassis.wait_drive();
+
+  // Ram into goal again
+  chassis.set_drive_pid(11.5, DRIVE_SPEED);
+  chassis.wait_drive();
+
+  // Outtake again
+  spin_intake_for(360);
+  pros::delay(500);
+
+  // Stop charging the catapult (prevent overheating)
+  cata_charge_task.remove();
+
+  // Back away from goal
+  chassis.set_drive_pid(-10.5, DRIVE_SPEED);
+  chassis.wait_drive();
+
+  // Turn towards triballs
+  chassis.set_turn_pid(90, TURN_SPEED);
+  chassis.wait_drive();
+
+  // Activate wings
+  wing_toggle(true);
+  spin_intake_for(-3000);
+
+  // Drive forward
+  chassis.set_drive_pid(20, DRIVE_SPEED);
+  chassis.wait_drive();
+
+  // Swing to steal the triballs
+  chassis.set_swing_pid(ez::LEFT_SWING, 180, SWING_SPEED);
+  chassis.wait_drive();
+
+  // Drive forward
+  chassis.set_drive_pid(20, DRIVE_SPEED);
+  chassis.wait_drive();
+
+  // Turn left
+  chassis.set_turn_pid(-90, TURN_SPEED);
+  chassis.wait_drive();
+
+  // Route towards the endgame
+  chassis.set_drive_pid(40, DRIVE_SPEED);
+  chassis.wait_until(20);
+
+  // Turn off pto when convienient
+  pto_toggle(true);
+  chassis.wait_drive();
+
+  chassis.set_turn_pid(0, TURN_SPEED);
+  chassis.wait_drive();
+
+  // Turn on endgame
+  toggle_endgame(true);
 }

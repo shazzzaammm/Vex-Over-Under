@@ -201,3 +201,7 @@ void opposite_zone_awp() {
   // Turn on endgame
   toggle_endgame(true);
 }
+
+void opposite_zone_elim(){
+  return;
+}

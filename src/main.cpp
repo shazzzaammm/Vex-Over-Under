@@ -2,7 +2,7 @@
 #include "helpers.hpp"
 
 // Define the chassis (PTO motors are in the middle of the curly braces)
-Drive chassis({-18, 9, -17}, {1, -8, 2}, 10, 4.125, 200, 0.5);
+Drive chassis({-6, 9, -7}, {1, -8, 2}, 10, 4.125, 200, 0.5);
 
 // Define Motors
 pros::Motor& PTO_left = chassis.left_motors[1];
@@ -16,9 +16,7 @@ pros::ADIDigitalOut wing_piston_left('C');
 pros::ADIDigitalOut wing_piston_right('D');
 
 // Define sensors (excluding IMU)
-pros::Rotation catapult_rotation_sensor('B');
-// Retrieve necessary constants
-extern float pto_cooldown;
+pros::ADIAnalogIn catapult_rotation_sensor('B');
 
 void initialize() {
 
@@ -85,9 +83,6 @@ void opcontrol() {
     // Print to the controller screen
     // ? Why doesnt this work
     print_stats_controller();
-
-    // Decrease the timers
-    pto_cooldown -= ez::util::DELAY_TIME;
 
     // Keep the time between cycles constant
     pros::delay(ez::util::DELAY_TIME);

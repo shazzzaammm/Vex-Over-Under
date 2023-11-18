@@ -1,9 +1,6 @@
 #include "helpers.hpp"
 #include "main.h"
 
-extern pros::Motor& PTO_left;
-extern pros::Motor& PTO_right;
-
 const int DRIVE_SPEED = 115;
 const int TURN_SPEED = 90;
 const int SWING_SPEED = 90;

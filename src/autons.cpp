@@ -44,7 +44,7 @@ void same_zone_awp() {
   chassis.set_drive_pid(12, DRIVE_SPEED);
   chassis.wait_drive();
 
-  chassis.set_swing_pid(ez::LEFT_SWING, 20, SWING_SPEED);
+  chassis.set_swing_pid(ez::RIGHT_SWING, -20, SWING_SPEED);
   chassis.wait_drive();
 
   wing_toggle(false);
@@ -52,36 +52,37 @@ void same_zone_awp() {
   chassis.set_drive_pid(25, DRIVE_SPEED);
   chassis.wait_drive();
 
-  chassis.set_turn_pid(46, TURN_SPEED);
+  chassis.set_turn_pid(-46, TURN_SPEED);
   chassis.wait_drive();
 
-  chassis.set_drive_pid(13.5, DRIVE_SPEED);
+  set_intake_volts(8000);
+
+  chassis.set_drive_pid(11.5, DRIVE_SPEED);
   chassis.wait_drive();
 
   chassis.set_drive_pid(-15, DRIVE_SPEED);
   chassis.wait_drive();
+
+  set_intake_volts(0);
 
   chassis.set_drive_pid(20, DRIVE_SPEED);
   chassis.wait_drive();
 
-  chassis.set_drive_pid(-15, DRIVE_SPEED);
+  chassis.set_drive_pid(-17, DRIVE_SPEED);
   chassis.wait_drive();
 
-  chassis.set_turn_pid(120, TURN_SPEED);
+  chassis.set_turn_pid(-123, TURN_SPEED);
   chassis.wait_drive();
 
   chassis.set_drive_pid(36, DRIVE_SPEED);
   chassis.wait_drive();
 
-  chassis.set_turn_pid(80, TURN_SPEED);
-  chassis.wait_drive();
+  set_intake_volts(12000);
 
   chassis.set_drive_pid(40, DRIVE_SPEED);
   chassis.wait_drive();
 
-  set_intake_volts(-8000);
-  chassis.set_drive_pid(20, DRIVE_SPEED / 2);
-  chassis.wait_drive();
+  // wing_toggle(true);
 }
 
 void opposite_zone_awp() {

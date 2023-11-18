@@ -1,5 +1,5 @@
 #include "main.h"
-
+#include "controls.hpp"
 #pragma region definitions
 // Get motors
 extern pros::Motor& PTO_left;
@@ -32,6 +32,23 @@ bool outtake_toggle_enabled = false;
 bool wing_toggle_enabled = false;
 
 bool catapult_auto_shoot_enabled = false;
+
+// Define the control scheme
+const ControlScheme a_controls(
+  DIGITAL_R2,
+  DIGITAL_L2,
+  DIGITAL_R1,
+  DIGITAL_L1,
+  DIGITAL_B,
+  DIGITAL_A,
+  DIGITAL_Y,
+  DIGITAL_X
+);
+const ControlScheme g_controls(
+  
+);
+ControlScheme selected_controls = a_controls;
+
 #pragma endregion definitions
 
 #pragma region controller
@@ -75,11 +92,11 @@ void catapult_auton_task(void* paramater) {
 }
 
 void catapult_control() {
-  if(master.get_digital_new_press(DIGITAL_Y)){
+  if(master.get_digital_new_press(selected_controls.toggleCatapultButton)){
     toggle_auto_shoot_catapult();
   }
 
-  if (master.get_digital(DIGITAL_X) || catapult_auto_shoot_enabled) {
+  if (master.get_digital(selected_controls.shootCatapultButton) || catapult_auto_shoot_enabled) {
     catapult.move_voltage(CATAPULT_SHOOTING_VOLTAGE);
     rumble_controller();
     return;
@@ -119,7 +136,7 @@ void set_pto_volts(int volts) {
 
 void pto_control() {
   // Handle PTO activation/deactivation in user control
-  if (master.get_digital_new_press(DIGITAL_A))
+  if (master.get_digital_new_press(selected_controls.togglePTOButton))
     pto_toggle(!pto_endgame_enabled);
 }
 
@@ -136,12 +153,12 @@ void set_intake_volts(int volts) {
 
 void intake_control() {
   // Toggle the intake (inward direction)
-  if (master.get_digital_new_press(DIGITAL_R1)) {
+  if (master.get_digital_new_press(selected_controls.toggleIntakeButton)) {
     intake_toggle_enabled = !intake_toggle_enabled;
     outtake_toggle_enabled = false;
   }
   // Toggle the intake (outward direction)
-  if (master.get_digital_new_press(DIGITAL_L1)) {
+  if (master.get_digital_new_press(selected_controls.toggleOuttakeButton)) {
     outtake_toggle_enabled = !outtake_toggle_enabled;
     intake_toggle_enabled = false;
   }
@@ -158,9 +175,9 @@ void intake_control() {
   }
 
   // Hold buttons to control the intake (while not toggled)
-  if (master.get_digital(DIGITAL_L2)) {
+  if (master.get_digital(selected_controls.holdOuttakeButton)) {
     set_intake_volts(INTAKE_VOLTAGE);
-  } else if (master.get_digital(DIGITAL_R2)) {
+  } else if (master.get_digital(selected_controls.holdIntakeButton)) {
     set_intake_volts(-INTAKE_VOLTAGE);
   } else {
     set_intake_volts(0);
@@ -177,7 +194,7 @@ void wing_toggle(bool toggle) {
 
 void wing_control() {
   // Handle enabling/disabling the wings in user control
-  if (master.get_digital_new_press(DIGITAL_B))
+  if (master.get_digital_new_press(selected_controls.toggleWingsButton))
     wing_toggle(!wing_toggle_enabled);
 }
 #pragma endregion wings

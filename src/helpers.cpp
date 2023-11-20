@@ -1,5 +1,4 @@
 #include "main.h"
-#include "controls.hpp"
 #pragma region definitions
 // Get motors
 extern pros::Motor& PTO_left;

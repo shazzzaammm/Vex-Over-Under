@@ -45,7 +45,7 @@
 #include "autons.hpp"
 #include "helpers.hpp"
 #include "controls.hpp"
-
+#include "custom_auton_selector.hpp"
 
 // More includes here...
 //

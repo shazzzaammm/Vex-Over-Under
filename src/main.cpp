@@ -1,4 +1,5 @@
 #include "main.h"
+#include "helpers.hpp"
 
 // Define the chassis (PTO motors are in the middle of the curly braces)
 Drive chassis({-6, 9, -7}, {1, -8, 2}, 10, 4.125, 200, 0.5);

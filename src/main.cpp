@@ -1,11 +1,11 @@
 #include "main.h"
 
-// Define the chassis (PTO motors are in the middle of the curly braces)
-Drive chassis({-6, 9, -7}, {1, -8, 2}, 10, 4.125, 200, 0.5);
+// Define the chassis (PTO motors are last in the curly braces)
+Drive chassis({-6, 9, -7, 200}, {1, -8, 2, 300}, 10, 4.125, 200, 0.5);
 
 // Define Motors
-pros::Motor& PTO_left = chassis.left_motors[1];
-pros::Motor& PTO_right = chassis.right_motors[1];
+pros::Motor& PTO_intake = chassis.left_motors[3];
+pros::Motor& PTO_catapult = chassis.right_motors[3];
 pros::Motor intake(-20, false);
 pros::Motor catapult(-5, pros::E_MOTOR_GEAR_100, true);
 

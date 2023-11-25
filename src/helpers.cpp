@@ -1,16 +1,13 @@
 #include "main.h"
 #pragma region definitions
 // Get motors
-extern pros::Motor& PTO_left;
-extern pros::Motor& PTO_right;
+extern pros::Motor& PTO_intake;
+extern pros::Motor& PTO_catapult;
 
 extern pros::ADIDigitalOut PTO_piston;
 extern pros::ADIDigitalOut wing_piston_left;
 extern pros::ADIDigitalOut wing_piston_right;
 extern pros::ADIAnalogIn catapult_rotation_sensor;
-
-extern pros::Motor intake;
-extern pros::Motor catapult;
 
 // Define constants
 const int INTAKE_SPEED = 127;
@@ -23,7 +20,7 @@ const int CATAPULT_CHARGING_VOLTAGE = 12000;
 const int CATAPULT_SHOOTING_VOLTAGE = 12000;
 
 // Define useful variables
-bool pto_endgame_enabled = false;
+bool pto_6_motor_enabled = false;
 
 bool intake_toggle_enabled = false;
 bool outtake_toggle_enabled = false;
@@ -68,7 +65,7 @@ void print_stats_controller() {
   master.clear();
 
   // Print PTO mode
-  master.print(0, 0, "PTO mode: %d", pto_endgame_enabled ? 4 : 6);
+  master.print(0, 0, "PTO mode: %d", pto_6_motor_enabled ? 4 : 6);
 
   // Print the heading (0-360) of the robot
   master.print(1, 0, "Heading: %d", chassis.imu.get_heading());
@@ -87,36 +84,39 @@ void toggle_auto_shoot_catapult(){
 }
 
 void catapult_auton_task(void* paramater) {
+  //! possibly deprecated
   // Used to keep the catapult charged during the auton
   while (true) {
     if (is_catapult_charging()) {
-      catapult.move_voltage(CATAPULT_CHARGING_VOLTAGE);
+      PTO_catapult.move_voltage(CATAPULT_CHARGING_VOLTAGE);
     } else {
-      catapult.brake();
+      PTO_catapult.brake();
     }
     pros::delay(20);
   }
 }
 
 void catapult_control() {
+  if(!pto_6_motor_enabled) return;
+  
   if(master.get_digital_new_press(selected_controls.toggleCatapultButton)){
     toggle_auto_shoot_catapult();
   }
 
   if (master.get_digital(selected_controls.shootCatapultButton) || catapult_auto_shoot_enabled) {
-    catapult.move_voltage(CATAPULT_SHOOTING_VOLTAGE);
+    PTO_catapult.move_voltage(CATAPULT_SHOOTING_VOLTAGE);
     rumble_controller();
     return;
   }
 
   // Charge if not ready and not shooting
   if (is_catapult_charging()) {
-    catapult.move_voltage(CATAPULT_CHARGING_VOLTAGE);
+    PTO_catapult.move_voltage(CATAPULT_CHARGING_VOLTAGE);
   }
 
   // Turn off motor once charged
   else {
-    catapult.brake();
+    PTO_catapult.brake();
   }
 }
 #pragma endregion catapult
@@ -124,41 +124,34 @@ void catapult_control() {
 #pragma region pto
 void pto_toggle(bool toggle) {
   // Toggle PTO motors + bool
-  pto_endgame_enabled = toggle;
-  chassis.pto_toggle({PTO_left, PTO_right}, toggle);
+  pto_6_motor_enabled = toggle;
+  chassis.pto_toggle({PTO_intake, PTO_catapult}, toggle);
 
   // Actuate the piston
   PTO_piston.set_value(!toggle);
 }
 
-void set_pto_volts(int volts) {
-  // Only activates if engame is enabled
-  if (!pto_endgame_enabled)
-    return;
-
-  // Sets endgame voltage to the input value
-  PTO_left = volts;
-  PTO_right = volts;
-}
-
 void pto_control() {
   // Handle PTO activation/deactivation in user control
   if (master.get_digital_new_press(selected_controls.togglePTOButton))
-    pto_toggle(!pto_endgame_enabled);
+    pto_toggle(!pto_6_motor_enabled);
 }
 
 #pragma endregion pto
 
 #pragma region intake
 void spin_intake_for(float degrees) {
-  intake.move_relative(degrees, INTAKE_SPEED);
+  if(!pto_6_motor_enabled) return;
+  PTO_intake.move_relative(degrees, INTAKE_SPEED);
 }
 
 void set_intake_volts(int volts) {
-  intake.move_voltage(volts);
+  if(!pto_6_motor_enabled) return;
+  PTO_intake.move_voltage(volts);
 }
 
 void intake_control() {
+  if(!pto_6_motor_enabled) return;
   // Toggle the intake (inward direction)
   if (master.get_digital_new_press(selected_controls.toggleIntakeButton)) {
     intake_toggle_enabled = !intake_toggle_enabled;
@@ -207,16 +200,5 @@ void wing_control() {
 #pragma endregion wings
 
 #pragma region endgame
-void toggle_endgame(bool toggle) {
-  // Only use endgame if PTO is in 4 motor mode
-  if (!pto_endgame_enabled)
-    return;
-
-  // Set the endgame motors to the correct position
-  if (toggle) {
-    // TODO turn on the endgame
-  } else {
-    // TODO turn off the endgame
-  }
-}
+// how is endgame gonna work im so lost
 #pragma endregion endgame

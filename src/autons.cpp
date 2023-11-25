@@ -161,7 +161,6 @@ void same_zone_steal() {
   chassis.wait_drive();
 
   // Toggle endgame once the robot reaches the bar
-  toggle_endgame(true);
 }
 
 void same_zone_awp() {
@@ -281,9 +280,6 @@ void opposite_zone_awp() {
 
   chassis.set_turn_pid(0, TURN_SPEED);
   chassis.wait_drive();
-
-  // Turn on endgame
-  toggle_endgame(true);
 }
 
 void opposite_zone_elim() {

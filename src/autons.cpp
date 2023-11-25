@@ -19,13 +19,98 @@ void exit_condition_defaults() {
   chassis.set_exit_condition(chassis.swing_exit, 100, 3, 500, 7, 500, 500);
   chassis.set_exit_condition(chassis.drive_exit, 80, 50, 300, 150, 500, 500);
 }
+void spline_exit_condition() {
+  chassis.set_exit_condition(chassis.turn_exit, 20, 3, 5, 7, 500, 500);
+  chassis.set_exit_condition(chassis.swing_exit, 20, 3, 20, 7, 500, 500);
+  chassis.set_exit_condition(chassis.drive_exit, 20, 50, 20, 150, 500, 500);
+}
 
 void test_auton() {
-  return;
+  // this is to test the auton tool
+  spline_exit_condition();
+  chassis.set_turn_pid(-83, TURN_SPEED);
+  chassis.wait_drive();
+  chassis.set_drive_pid(6, DRIVE_SPEED);
+  chassis.wait_drive();
+
+  chassis.set_turn_pid(-61, TURN_SPEED);
+  chassis.wait_drive();
+  chassis.set_drive_pid(5, DRIVE_SPEED);
+  chassis.wait_drive();
+
+  chassis.set_turn_pid(-39, TURN_SPEED);
+  chassis.wait_drive();
+  chassis.set_drive_pid(5, DRIVE_SPEED);
+  chassis.wait_drive();
+
+  chassis.set_turn_pid(-22, TURN_SPEED);
+  chassis.wait_drive();
+  chassis.set_drive_pid(6, DRIVE_SPEED);
+  chassis.wait_drive();
+
+  chassis.set_turn_pid(-12, TURN_SPEED);
+  chassis.wait_drive();
+  chassis.set_drive_pid(7, DRIVE_SPEED);
+  chassis.wait_drive();
+
+  chassis.set_turn_pid(-5, TURN_SPEED);
+  chassis.wait_drive();
+  chassis.set_drive_pid(8, DRIVE_SPEED);
+  chassis.wait_drive();
+
+  chassis.set_turn_pid(-1, TURN_SPEED);
+  chassis.wait_drive();
+  chassis.set_drive_pid(8, DRIVE_SPEED);
+  chassis.wait_drive();
+
+  chassis.set_turn_pid(1, TURN_SPEED);
+  chassis.wait_drive();
+  chassis.set_drive_pid(8, DRIVE_SPEED);
+  chassis.wait_drive();
+
+  chassis.set_turn_pid(2, TURN_SPEED);
+  chassis.wait_drive();
+  chassis.set_drive_pid(8, DRIVE_SPEED);
+  chassis.wait_drive();
+
+  chassis.set_turn_pid(2, TURN_SPEED);
+  chassis.wait_drive();
+  chassis.set_drive_pid(8, DRIVE_SPEED);
+  chassis.wait_drive();
+
+  chassis.set_turn_pid(0, TURN_SPEED);
+  chassis.wait_drive();
+  chassis.set_drive_pid(8, DRIVE_SPEED);
+  chassis.wait_drive();
+
+  chassis.set_turn_pid(-4, TURN_SPEED);
+  chassis.wait_drive();
+  chassis.set_drive_pid(7, DRIVE_SPEED);
+  chassis.wait_drive();
+
+  chassis.set_turn_pid(-11, TURN_SPEED);
+  chassis.wait_drive();
+  chassis.set_drive_pid(6, DRIVE_SPEED);
+  chassis.wait_drive();
+
+  chassis.set_turn_pid(-24, TURN_SPEED);
+  chassis.wait_drive();
+  chassis.set_drive_pid(5, DRIVE_SPEED);
+  chassis.wait_drive();
+
+  chassis.set_turn_pid(-46, TURN_SPEED);
+  chassis.wait_drive();
+  chassis.set_drive_pid(4, DRIVE_SPEED);
+  chassis.wait_drive();
+
+  chassis.set_turn_pid(-77, TURN_SPEED);
+  chassis.wait_drive();
+  chassis.set_drive_pid(4, DRIVE_SPEED);
+  chassis.wait_drive();
 }
 
 void same_zone_steal() {
-    // Drive towards the center
+  // Drive towards the center
   chassis.set_drive_pid(41, DRIVE_SPEED);
   chassis.wait_drive();
 
@@ -201,6 +286,6 @@ void opposite_zone_awp() {
   toggle_endgame(true);
 }
 
-void opposite_zone_elim(){
+void opposite_zone_elim() {
   return;
 }

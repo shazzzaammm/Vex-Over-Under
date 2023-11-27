@@ -7,6 +7,7 @@ void intake_control();
 
 void pto_toggle(bool toggle);
 void pto_control();
+void pto_timer();
 
 void wing_toggle(bool toggle);
 void wing_control();

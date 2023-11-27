@@ -20,6 +20,7 @@ const int CATAPULT_CHARGING_VOLTAGE = 12000;
 const int CATAPULT_SHOOTING_VOLTAGE = 12000;
 
 // Define useful variables
+int pto_cooldown = 0;
 bool pto_6_motor_enabled = false;
 
 bool intake_toggle_enabled = false;
@@ -105,7 +106,7 @@ void catapult_control() {
 
   if (master.get_digital(selected_controls.shootCatapultButton) || catapult_auto_shoot_enabled) {
     PTO_catapult.move_voltage(CATAPULT_SHOOTING_VOLTAGE);
-    rumble_controller();
+    pto_cooldown = 0;
     return;
   }
 
@@ -129,12 +130,27 @@ void pto_toggle(bool toggle) {
 
   // Actuate the piston
   PTO_piston.set_value(!toggle);
+
+  // Reset the timer
+  pto_cooldown = 0;
 }
 
 void pto_control() {
   // Handle PTO activation/deactivation in user control
   if (master.get_digital_new_press(selected_controls.togglePTOButton))
     pto_toggle(!pto_6_motor_enabled);
+  
+
+  // Change to 8 motor if driver forgot
+  if(pto_cooldown > 8000 && pto_6_motor_enabled){
+    pto_toggle(false);
+  }
+}
+
+void pto_timer(){
+  if (pto_6_motor_enabled){
+    pto_cooldown += ez::util::DELAY_TIME;
+  }
 }
 
 #pragma endregion pto
@@ -148,6 +164,7 @@ void spin_intake_for(float degrees) {
 void set_intake_volts(int volts) {
   if(!pto_6_motor_enabled) return;
   PTO_intake.move_voltage(volts);
+  pto_cooldown = 0;
 }
 
 void intake_control() {

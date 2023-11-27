@@ -83,6 +83,9 @@ void opcontrol() {
     // ? Why doesnt this work
     print_stats_controller();
 
+    // Handle the PTO timer
+    pto_timer();
+
     // Keep the time between cycles constant
     pros::delay(ez::util::DELAY_TIME);
   }

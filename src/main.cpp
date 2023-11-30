@@ -2,13 +2,11 @@
 
 // Define the chassis (PTO motors are last in the curly braces)
 // Drive chassis({1, 4, 3, 9}, {5, 2, 6, 10}, 10, 4.125, 200, 0.5);
-Drive chassis({1, -2, -4, 10}, {3, 5, -6, -9}, 0, 4.125, 200, 0.5);
+Drive chassis({1, -2, -4, 10}, {3, 5, -6, -9}, 21, 4.125, 600, 0.5);
 
 // Define Motors
 pros::Motor& PTO_intake = chassis.right_motors[3];
 pros::Motor& PTO_catapult = chassis.left_motors[3];
-// pros::Motor intake(-20, false);
-// pros::Motor catapult(-5, pros::E_MOTOR_GEAR_100, true);
 
 // Define pneumatics
 pros::ADIDigitalOut PTO_piston('H');
@@ -81,6 +79,8 @@ void opcontrol() {
 
     // Handle the PTO timer
     pto_timer();
+
+    // ? why doesnt this work in a different file????
     if(master.get_digital_new_press(selected_controls.togglePTOButton))
     PTO_catapult.set_reversed(!PTO_catapult.is_reversed());
     // Keep the time between cycles constant

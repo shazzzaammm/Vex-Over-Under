@@ -210,7 +210,6 @@ void same_zone_awp() {
 }
 
 void opposite_zone_awp() {
-  pros::Task cata_charge_task(catapult_auton_task, NULL, "Cata Charge Task");
   // Drive forward
   chassis.set_drive_pid(69, DRIVE_SPEED, true);
   chassis.wait_drive();
@@ -238,9 +237,6 @@ void opposite_zone_awp() {
   // Outtake again
   spin_intake_for(360);
   pros::delay(500);
-
-  // Stop charging the catapult (prevent overheating)
-  cata_charge_task.remove();
 
   // Back away from goal
   chassis.set_drive_pid(-10.5, DRIVE_SPEED);

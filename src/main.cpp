@@ -1,22 +1,21 @@
 #include "main.h"
 
 // Define the chassis (PTO motors are last in the curly braces)
-Drive chassis({-6, 9, -7, 200}, {1, -8, 2, 300}, 10, 4.125, 200, 0.5);
+// Drive chassis({1, 4, 3, 9}, {5, 2, 6, 10}, 10, 4.125, 200, 0.5);
+Drive chassis({1, -2, -4, 10}, {3, 5, -6, -9}, 0, 4.125, 200, 0.5);
 
 // Define Motors
-pros::Motor& PTO_intake = chassis.left_motors[3];
-pros::Motor& PTO_catapult = chassis.right_motors[3];
-pros::Motor intake(-20, false);
-pros::Motor catapult(-5, pros::E_MOTOR_GEAR_100, true);
+pros::Motor& PTO_intake = chassis.right_motors[3];
+pros::Motor& PTO_catapult = chassis.left_motors[3];
+// pros::Motor intake(-20, false);
+// pros::Motor catapult(-5, pros::E_MOTOR_GEAR_100, true);
 
 // Define pneumatics
-pros::ADIDigitalOut PTO_piston('A');
-pros::ADIDigitalOut wing_piston_left('C');
-pros::ADIDigitalOut wing_piston_right('D');
+pros::ADIDigitalOut PTO_piston('H');
+pros::ADIDigitalOut wing_piston_left('A');
+pros::ADIDigitalOut wing_piston_right('B');
 
-// Define sensors (excluding IMU)
-pros::ADIAnalogIn catapult_rotation_sensor('B');
-
+extern ControlScheme selected_controls;
 void initialize() {
 
   // Stop the user from doing anything while legacy ports configure.
@@ -39,9 +38,6 @@ void initialize() {
             opposite_zone_elim),
       Auton("Same Zone Steal\n\nstart on the right side, steal the middle triballs, score preload ", same_zone_steal),
   });
-
-  // Set the motor brake modes
-  catapult.set_brake_mode(pros::E_MOTOR_BRAKE_COAST);
 
   // Initialize
   chassis.initialize();
@@ -85,7 +81,8 @@ void opcontrol() {
 
     // Handle the PTO timer
     pto_timer();
-
+    if(master.get_digital_new_press(selected_controls.togglePTOButton))
+    PTO_catapult.set_reversed(!PTO_catapult.is_reversed());
     // Keep the time between cycles constant
     pros::delay(ez::util::DELAY_TIME);
   }

@@ -7,14 +7,10 @@ extern pros::Motor& PTO_catapult;
 extern pros::ADIDigitalOut PTO_piston;
 extern pros::ADIDigitalOut wing_piston_left;
 extern pros::ADIDigitalOut wing_piston_right;
-extern pros::ADIAnalogIn catapult_rotation_sensor;
 
 // Define constants
 const int INTAKE_SPEED = 127;
-const int INTAKE_VOLTAGE = 9000;
-
-const int CATAPULT_CHARGING_DEGREES_MIN = 2500;
-const int CATAPULT_CHARGING_DEGREES_MAX = 4500;
+const int INTAKE_VOLTAGE = 12000;
 
 const int CATAPULT_CHARGING_VOLTAGE = 12000;
 const int CATAPULT_SHOOTING_VOLTAGE = 12000;
@@ -74,27 +70,8 @@ void print_stats_controller() {
 #pragma endregion controller
 
 #pragma region catapult
-bool is_catapult_charging() {
-  return (catapult_rotation_sensor.get_value() >= CATAPULT_CHARGING_DEGREES_MIN &&
-        catapult_rotation_sensor.get_value() <= CATAPULT_CHARGING_DEGREES_MAX) ||
-        catapult_rotation_sensor.get_value() < 2080; // ? whyyyy does it need this part
-}
-
 void toggle_auto_shoot_catapult(){
   catapult_auto_shoot_enabled = !catapult_auto_shoot_enabled;
-}
-
-void catapult_auton_task(void* paramater) {
-  //! possibly deprecated
-  // Used to keep the catapult charged during the auton
-  while (true) {
-    if (is_catapult_charging()) {
-      PTO_catapult.move_voltage(CATAPULT_CHARGING_VOLTAGE);
-    } else {
-      PTO_catapult.brake();
-    }
-    pros::delay(20);
-  }
 }
 
 void catapult_control() {
@@ -108,11 +85,6 @@ void catapult_control() {
     PTO_catapult.move_voltage(CATAPULT_SHOOTING_VOLTAGE);
     pto_cooldown = 0;
     return;
-  }
-
-  // Charge if not ready and not shooting
-  if (is_catapult_charging()) {
-    PTO_catapult.move_voltage(CATAPULT_CHARGING_VOLTAGE);
   }
 
   // Turn off motor once charged
@@ -131,25 +103,27 @@ void pto_toggle(bool toggle) {
   // Actuate the piston
   PTO_piston.set_value(!toggle);
 
+  // 
+
   // Reset the timer
   pto_cooldown = 0;
 }
 
 void pto_control() {
   // Handle PTO activation/deactivation in user control
-  if (master.get_digital_new_press(selected_controls.togglePTOButton))
+  if (master.get_digital_new_press(selected_controls.togglePTOButton)){
     pto_toggle(!pto_6_motor_enabled);
-  
-
-  // Change to 8 motor if driver forgot
-  if(pto_cooldown > 8000 && pto_6_motor_enabled){
-    pto_toggle(false);
   }
 }
 
 void pto_timer(){
   if (pto_6_motor_enabled){
     pto_cooldown += ez::util::DELAY_TIME;
+  }
+
+  // Change to 8 motor if driver forgot
+  if(pto_cooldown > 2000 && pto_6_motor_enabled){
+    pto_toggle(false);
   }
 }
 

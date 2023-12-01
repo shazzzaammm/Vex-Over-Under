@@ -1,4 +1,6 @@
 #include "main.h"
+#include "variables.hpp"
+
 #pragma region definitions
 // Get motors
 extern pros::Motor& PTO_intake;
@@ -8,47 +10,26 @@ extern pros::ADIDigitalOut PTO_piston;
 extern pros::ADIDigitalOut wing_piston_left;
 extern pros::ADIDigitalOut wing_piston_right;
 
-// Define constants
-const int INTAKE_SPEED = 127;
-const int INTAKE_VOLTAGE = 12000;
+// Get constants
+extern const int INTAKE_SPEED;
+extern const int INTAKE_VOLTAGE;
 
-const int CATAPULT_CHARGING_VOLTAGE = 12000;
-const int CATAPULT_SHOOTING_VOLTAGE = 12000;
+extern const int CATAPULT_CHARGING_VOLTAGE;
+extern const int CATAPULT_SHOOTING_VOLTAGE;
 
-// Define useful variables
-int pto_cooldown = 0;
-bool pto_6_motor_enabled = false;
+// Get useful variables
+extern int pto_cooldown;
+extern bool pto_6_motor_enabled;
 
-bool intake_toggle_enabled = false;
-bool outtake_toggle_enabled = false;
+extern bool intake_toggle_enabled;
+extern bool outtake_toggle_enabled;
 
-bool wing_toggle_enabled = false;
+extern bool wing_toggle_enabled;
 
-bool catapult_auto_shoot_enabled = false;
+extern bool catapult_auto_shoot_enabled;
 
-// Define the control scheme
-const ControlScheme a_controls(
-  DIGITAL_R2,
-  DIGITAL_L2,
-  DIGITAL_R1,
-  DIGITAL_L1,
-  DIGITAL_B,
-  DIGITAL_A,
-  DIGITAL_Y,
-  DIGITAL_X
-);
-const ControlScheme g_controls(
-  DIGITAL_R1,
-  DIGITAL_R2,
-  DIGITAL_L1,
-  DIGITAL_L2,
-  DIGITAL_A,
-  DIGITAL_B,
-  DIGITAL_X,
-  DIGITAL_Y
-);
-
-ControlScheme selected_controls = g_controls;
+// Get the control scheme
+extern ControlScheme selected_controls;
 
 #pragma endregion definitions
 

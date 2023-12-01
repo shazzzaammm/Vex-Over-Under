@@ -48,7 +48,7 @@ const ControlScheme g_controls(
   DIGITAL_Y
 );
 
-ControlScheme selected_controls = a_controls;
+ControlScheme selected_controls = g_controls;
 
 #pragma endregion definitions
 
@@ -117,14 +117,7 @@ void pto_control() {
 }
 
 void pto_timer(){
-  if (pto_6_motor_enabled){
-    pto_cooldown += ez::util::DELAY_TIME;
-  }
 
-  // Change to 8 motor if driver forgot
-  if(pto_cooldown > 2000 && pto_6_motor_enabled){
-    pto_toggle(false);
-  }
 }
 
 #pragma endregion pto

@@ -164,14 +164,13 @@ void same_zone_steal() {
 }
 
 void same_zone_awp() {
-  wing_toggle(true);
+  wing_toggle(false);
+
   chassis.set_drive_pid(12, DRIVE_SPEED);
   chassis.wait_drive();
 
   chassis.set_swing_pid(ez::RIGHT_SWING, -20, SWING_SPEED);
   chassis.wait_drive();
-
-  wing_toggle(false);
 
   chassis.set_drive_pid(25, DRIVE_SPEED);
   chassis.wait_drive();
@@ -179,6 +178,7 @@ void same_zone_awp() {
   chassis.set_turn_pid(-46, TURN_SPEED);
   chassis.wait_drive();
 
+  pto_toggle(true);
   set_intake_volts(8000);
 
   chassis.set_drive_pid(11.5, DRIVE_SPEED);
@@ -187,6 +187,7 @@ void same_zone_awp() {
   chassis.set_drive_pid(-15, DRIVE_SPEED);
   chassis.wait_drive();
 
+  pto_toggle(false);
   set_intake_volts(0);
 
   chassis.set_drive_pid(20, DRIVE_SPEED);
@@ -201,6 +202,7 @@ void same_zone_awp() {
   chassis.set_drive_pid(36, DRIVE_SPEED);
   chassis.wait_drive();
 
+  pto_toggle(true);
   set_intake_volts(12000);
 
   chassis.set_drive_pid(40, DRIVE_SPEED);

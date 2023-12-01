@@ -1,7 +1,6 @@
 #include "main.h"
 
 // Define the chassis (PTO motors are last in the curly braces)
-// Drive chassis({1, 4, 3, 9}, {5, 2, 6, 10}, 10, 4.125, 200, 0.5);
 Drive chassis({1, -2, -4, 10}, {3, 5, -6, -9}, 21, 4.125, 600, 0.5);
 
 // Define Motors
@@ -14,6 +13,8 @@ pros::ADIDigitalOut wing_piston_left('A');
 pros::ADIDigitalOut wing_piston_right('B');
 
 extern ControlScheme selected_controls;
+extern int pto_cooldown;
+extern bool pto_6_motor_enabled;
 void initialize() {
 
   // Stop the user from doing anything while legacy ports configure.
@@ -32,8 +33,7 @@ void initialize() {
       Auton("Test Auton\n\nchat is this real", test_auton),
       Auton("Opposite Zone AutonWinPoint\n\nstart on the left side, score 4 triballs?, end touching the elevation bar",
             opposite_zone_awp),
-      Auton("Opposite Zone Eliminations\n\nstart on the left side, the rest is TBD",
-            opposite_zone_elim),
+      Auton("Opposite Zone Eliminations\n\nstart on the left side, the rest is TBD", opposite_zone_elim),
       Auton("Same Zone Steal\n\nstart on the right side, steal the middle triballs, score preload ", same_zone_steal),
   });
 
@@ -78,11 +78,18 @@ void opcontrol() {
     print_stats_controller();
 
     // Handle the PTO timer
-    pto_timer();
+    if (pto_6_motor_enabled) {
+      pto_cooldown += ez::util::DELAY_TIME;
+    }
+
+    // Change to 8 motor if driver forgot
+    if (pto_cooldown > 2000 && pto_6_motor_enabled) {
+      pto_toggle(false);
+    }
 
     // ? why doesnt this work in a different file????
-    if(master.get_digital_new_press(selected_controls.togglePTOButton))
-    PTO_catapult.set_reversed(!PTO_catapult.is_reversed());
+    if (master.get_digital_new_press(selected_controls.togglePTOButton))
+      PTO_catapult.set_reversed(!PTO_catapult.is_reversed());
     // Keep the time between cycles constant
     pros::delay(ez::util::DELAY_TIME);
   }

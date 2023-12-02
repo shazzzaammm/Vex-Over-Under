@@ -31,9 +31,9 @@ void initialize() {
 
   // Define autons for the selector
   ez::as::auton_selector.add_autons({
+      Auton("Test Auton\n\nchat is this real", test_auton),
       Auton("Same Zone AWP\n\nstart on the right side, score 4 triballs, end touching the elevation bar",
             same_zone_awp),
-      Auton("Test Auton\n\nchat is this real", test_auton),
       Auton("Opposite Zone AutonWinPoint\n\nstart on the left side, score 4 triballs?, end touching the elevation bar",
             opposite_zone_awp),
       Auton("Opposite Zone Eliminations\n\nstart on the left side, the rest is TBD", opposite_zone_elim),
@@ -82,13 +82,14 @@ void opcontrol() {
     print_stats_controller();
 
     // Debug
-    print_to_screen(master.get_digital(selected_controls.shootCatapultButton) ? "on" : "off", 0);
+    print_to_screen(pto_6_motor_enabled ? "6 motor" : "8 motor", 0);
 
     // Handle reversing the catapult
     PTO_catapult.set_reversed(pto_6_motor_enabled);
 
     // Handle PTO timer
     pto_cooldown += ez::util::DELAY_TIME;
+    
     // Keep the time between cycles constant
     pros::delay(ez::util::DELAY_TIME);
   }

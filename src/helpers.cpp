@@ -74,7 +74,7 @@ void print_stats_controller() {
   // Clear the controller screen
   // master.clear();
   
-  master.set_text(2, 0, pto_6_motor_enabled ? "6 motor!!!!" : "8 motor!!!!");
+  master.set_text(0, 0, pto_6_motor_enabled ? "6 motor!!!!" : "8 motor!!!!");
 }
 #pragma endregion controller
 
@@ -85,19 +85,17 @@ void toggle_auto_shoot_catapult() {
 
 bool catapult_filled() {
   // Returns if the cata has triball in it and is in auto shoot mode
-  return cata_distance_sensor.get() <= TRIBALL_SHOOT_DISTANCE && toggle_auto_shoot_catapult;
+  return cata_distance_sensor.get() <= TRIBALL_SHOOT_DISTANCE && catapult_auto_shoot_enabled;
 }
 
 void catapult_control() {
-  if(!pto_6_motor_enabled){
-    return;
-  }
   if (master.get_digital_new_press(selected_controls.toggleCatapultButton)) {
     toggle_auto_shoot_catapult();
   }
 
-  if (master.get_digital(selected_controls.shootCatapultButton) || toggle_auto_shoot_catapult) {
+  if (master.get_digital(selected_controls.shootCatapultButton) || catapult_auto_shoot_enabled) {
     PTO_catapult.move_voltage(CATAPULT_SHOOTING_VOLTAGE);
+    pto_toggle(true);
   }
 
   else if (pto_6_motor_enabled) {

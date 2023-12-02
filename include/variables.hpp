@@ -41,4 +41,15 @@ const ControlScheme g_controls(
   DIGITAL_Y
 );
 
-ControlScheme selected_controls = g_controls;
+const ControlScheme k_controls(
+  DIGITAL_L2,
+  DIGITAL_L1,
+  DIGITAL_R2,
+  DIGITAL_R1,
+  DIGITAL_B,
+  DIGITAL_A,
+  DIGITAL_Y,
+  DIGITAL_X
+);
+
+ControlScheme selected_controls = k_controls;

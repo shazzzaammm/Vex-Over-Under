@@ -10,12 +10,17 @@ extern pros::ADIDigitalOut PTO_piston;
 extern pros::ADIDigitalOut wing_piston_left;
 extern pros::ADIDigitalOut wing_piston_right;
 
+// Get sensors
+extern pros::Distance cata_distance_sensor;
+
 // Get constants
 extern const int INTAKE_SPEED;
 extern const int INTAKE_VOLTAGE;
 
 extern const int CATAPULT_CHARGING_VOLTAGE;
 extern const int CATAPULT_SHOOTING_VOLTAGE;
+
+extern const int TRIBALL_SHOOT_DISTANCE;
 
 // Get useful variables
 extern int pto_cooldown;
@@ -51,24 +56,29 @@ void print_stats_controller() {
 #pragma endregion controller
 
 #pragma region catapult
-void toggle_auto_shoot_catapult(){
+void toggle_auto_shoot_catapult() {
   catapult_auto_shoot_enabled = !catapult_auto_shoot_enabled;
 }
 
+bool catapult_filled() {
+  // Returns if the cata has triball in it and is in auto shoot mode
+  return cata_distance_sensor.get() <= TRIBALL_SHOOT_DISTANCE && toggle_auto_shoot_catapult;
+}
+
 void catapult_control() {
-  if(!pto_6_motor_enabled) return;
-  
-  if(master.get_digital_new_press(selected_controls.toggleCatapultButton)){
+  if (!pto_6_motor_enabled)
+    return;
+
+  if (master.get_digital_new_press(selected_controls.toggleCatapultButton)) {
     toggle_auto_shoot_catapult();
   }
 
-  if (master.get_digital(selected_controls.shootCatapultButton) || catapult_auto_shoot_enabled) {
+  if (master.get_digital(selected_controls.shootCatapultButton) || catapult_filled()) {
     PTO_catapult.move_voltage(CATAPULT_SHOOTING_VOLTAGE);
     pto_cooldown = 0;
     return;
   }
 
-  // Turn off motor once charged
   else {
     PTO_catapult.brake();
   }
@@ -84,7 +94,7 @@ void pto_toggle(bool toggle) {
   // Actuate the piston
   PTO_piston.set_value(!toggle);
 
-  // 
+  //
 
   // Reset the timer
   pto_cooldown = 0;
@@ -92,31 +102,32 @@ void pto_toggle(bool toggle) {
 
 void pto_control() {
   // Handle PTO activation/deactivation in user control
-  if (master.get_digital_new_press(selected_controls.togglePTOButton)){
+  if (master.get_digital_new_press(selected_controls.togglePTOButton)) {
     pto_toggle(!pto_6_motor_enabled);
   }
 }
 
-void pto_timer(){
-
-}
+void pto_timer() {}
 
 #pragma endregion pto
 
 #pragma region intake
 void spin_intake_for(float degrees) {
-  if(!pto_6_motor_enabled) return;
+  if (!pto_6_motor_enabled)
+    return;
   PTO_intake.move_relative(degrees, INTAKE_SPEED);
 }
 
 void set_intake_volts(int volts) {
-  if(!pto_6_motor_enabled) return;
+  if (!pto_6_motor_enabled)
+    return;
   PTO_intake.move_voltage(volts);
   pto_cooldown = 0;
 }
 
 void intake_control() {
-  if(!pto_6_motor_enabled) return;
+  if (!pto_6_motor_enabled)
+    return;
   // Toggle the intake (inward direction)
   if (master.get_digital_new_press(selected_controls.toggleIntakeButton)) {
     intake_toggle_enabled = !intake_toggle_enabled;

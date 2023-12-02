@@ -80,19 +80,21 @@ void opcontrol() {
     // ? Why doesnt this work
     print_stats_controller();
 
-    // Handle the PTO timer
-    if (pto_6_motor_enabled) {
-      pto_cooldown += ez::util::DELAY_TIME;
-    }
-
     // Change to 8 motor if driver forgot
-    if (pto_cooldown > 2000 && pto_6_motor_enabled) {
+    if (pto_cooldown > 5000) {
       pto_toggle(false);
     }
 
-    // ? why doesnt this work in a different file????
-    if (master.get_digital_new_press(selected_controls.togglePTOButton))
-      PTO_catapult.set_reversed(!PTO_catapult.is_reversed());
+    // Debug 
+    print_to_screen(pto_6_motor_enabled ? "6" : "8", 0);
+    print_to_screen(PTO_catapult.is_reversed() ? "reversed" : "not reversed", 1);
+
+    // Handle reversing the catapult
+    PTO_catapult.set_reversed(pto_6_motor_enabled);
+
+    // Handle PTO timer
+    pto_cooldown += ez::util::DELAY_TIME;
+    
     // Keep the time between cycles constant
     pros::delay(ez::util::DELAY_TIME);
   }

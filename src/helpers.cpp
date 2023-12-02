@@ -94,8 +94,6 @@ void pto_toggle(bool toggle) {
   // Actuate the piston
   PTO_piston.set_value(!toggle);
 
-  //
-
   // Reset the timer
   pto_cooldown = 0;
 }
@@ -122,7 +120,9 @@ void set_intake_volts(int volts) {
   if (!pto_6_motor_enabled)
     return;
   PTO_intake.move_voltage(volts);
-  pto_cooldown = 0;
+  if (volts > 0) {
+    pto_cooldown = 0;
+  }
 }
 
 void intake_control() {

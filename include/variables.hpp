@@ -8,6 +8,8 @@ const int INTAKE_VOLTAGE = 12000;
 const int CATAPULT_CHARGING_VOLTAGE = 12000;
 const int CATAPULT_SHOOTING_VOLTAGE = 12000;
 
+const float TRIBALL_LOADED_BRIGHTNESS = .2;
+
 int pto_cooldown = 0;
 bool pto_6_motor_enabled = false;
 

@@ -10,12 +10,17 @@ extern pros::ADIDigitalOut PTO_piston;
 extern pros::ADIDigitalOut wing_piston_left;
 extern pros::ADIDigitalOut wing_piston_right;
 
+// Get sensors
+extern pros::Optical cata_optic_sensor;
+
 // Get constants
 extern const int INTAKE_SPEED;
 extern const int INTAKE_VOLTAGE;
 
 extern const int CATAPULT_CHARGING_VOLTAGE;
 extern const int CATAPULT_SHOOTING_VOLTAGE;
+
+extern const float TRIBALL_LOADED_BRIGHTNESS;
 
 // Get useful variables
 extern int pto_cooldown;
@@ -55,6 +60,10 @@ void toggle_auto_shoot_catapult(){
   catapult_auto_shoot_enabled = !catapult_auto_shoot_enabled;
 }
 
+bool isSlapperFull(){
+  return cata_optic_sensor.get_brightness() < TRIBALL_LOADED_BRIGHTNESS;
+}
+
 void catapult_control() {
   if(!pto_6_motor_enabled) return;
   
@@ -62,7 +71,7 @@ void catapult_control() {
     toggle_auto_shoot_catapult();
   }
 
-  if (master.get_digital(selected_controls.shootCatapultButton) || catapult_auto_shoot_enabled) {
+  if (master.get_digital(selected_controls.shootCatapultButton) || (catapult_auto_shoot_enabled && isSlapperFull())) {
     PTO_catapult.move_voltage(CATAPULT_SHOOTING_VOLTAGE);
     pto_cooldown = 0;
     return;

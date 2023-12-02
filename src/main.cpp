@@ -12,6 +12,9 @@ pros::ADIDigitalOut PTO_piston('H');
 pros::ADIDigitalOut wing_piston_left('A');
 pros::ADIDigitalOut wing_piston_right('B');
 
+// Define sensors
+pros::Optical cata_optic_sensor(80);
+
 extern ControlScheme selected_controls;
 extern int pto_cooldown;
 extern bool pto_6_motor_enabled;

@@ -38,20 +38,61 @@ extern ControlScheme selected_controls;
 
 #pragma endregion definitions
 
+#pragma region chassis
+void tank_drive(){
+    if (!chassisIsReversed) {
+      chassis.set_tank(master.get_analog(ANALOG_LEFT_Y), master.get_analog(ANALOG_RIGHT_Y));
+    } else {
+      chassis.set_tank(-master.get_analog(ANALOG_RIGHT_Y), -master.get_analog(ANALOG_LEFT_Y));
+    }
+}
+
+void reverse_chassis(){
+      chassisIsReversed = !chassisIsReversed;
+}
+
+void chassis_control(){
+  tank_drive();
+  if(master.get_digital_new_press(selected_controls.reverseChassisButton)){
+    reverse_chassis();
+  }
+}
+#pragma endregion chassis
+
 #pragma region controller
 void rumble_controller() {
   master.rumble(".");
 }
+std::string getButtonDown(){
+  if (master.get_digital(selected_controls.holdIntakeButton)){
+    return "Intake Hold";
+  }
+  if (master.get_digital(selected_controls.holdOuttakeButton)){
+    return "Outtake Hold";
+  }
+  if (master.get_digital(selected_controls.shootCatapultButton)){
+    return "Catapult Hold";
+  }
+  if (master.get_digital(selected_controls.toggleCatapultButton)){
+    return "Catapult Toggle";
+  }
+  if (master.get_digital(selected_controls.toggleIntakeButton)){
+    return "Intake Toggle";
+  }
+  if (master.get_digital(selected_controls.toggleOuttakeButton)){
+    return "Outtake Toggle";
+  }
+  if (master.get_digital(selected_controls.togglePTOButton)){
+    return "PTO Toggle";
+  }
+  if (master.get_digital(selected_controls.toggleWingsButton)){
+    return "Wings Toggle";
+  }
+  return "None";
+}
 
 void print_stats_controller() {
-  // Clear the controller screen
-  master.clear();
-
-  // Print PTO mode
-  master.print(0, 0, "PTO mode: %d", pto_6_motor_enabled ? 4 : 6);
-
-  // Print the heading (0-360) of the robot
-  master.print(1, 0, "Heading: %d", chassis.imu.get_heading());
+  master.set_text(0, 0, pto_6_motor_enabled ? "6 motor!!!!" : "8 motor!!!!");
 }
 #pragma endregion controller
 
@@ -65,21 +106,16 @@ bool isSlapperFull() {
 }
 
 void catapult_control() {
-  if (!pto_6_motor_enabled)
-    return;
-
   if (master.get_digital_new_press(selected_controls.toggleCatapultButton)) {
     toggle_auto_shoot_catapult();
   }
 
-  if (master.get_digital(selected_controls.shootCatapultButton) || (catapult_auto_shoot_enabled && isSlapperFull())) {
+  if (master.get_digital(selected_controls.shootCatapultButton) || catapult_auto_shoot_enabled) {
     PTO_catapult.move_voltage(CATAPULT_SHOOTING_VOLTAGE);
-    pto_cooldown = 0;
-    return;
+    pto_toggle(true);
   }
 
-  // Turn off motor once charged
-  else {
+  else if (pto_6_motor_enabled) {
     PTO_catapult.brake();
   }
 }
@@ -94,8 +130,6 @@ void pto_toggle(bool toggle) {
   // Actuate the piston
   PTO_piston.set_value(!toggle);
 
-  //
-
   // Reset the timer
   pto_cooldown = 0;
 }
@@ -106,8 +140,6 @@ void pto_control() {
     pto_toggle(!pto_6_motor_enabled);
   }
 }
-
-void pto_timer() {}
 
 #pragma endregion pto
 
@@ -122,7 +154,6 @@ void set_intake_volts(int volts) {
   if (!pto_6_motor_enabled)
     return;
   PTO_intake.move_voltage(volts);
-  pto_cooldown = 0;
 }
 
 void intake_control() {
@@ -139,23 +170,14 @@ void intake_control() {
     intake_toggle_enabled = false;
   }
 
-  // If toggled, intake stays on
-  if (intake_toggle_enabled) {
-    set_intake_volts(-INTAKE_VOLTAGE);
-    return;
-  }
-
-  if (outtake_toggle_enabled) {
-    set_intake_volts(INTAKE_VOLTAGE);
-    return;
-  }
-
   // Hold buttons to control the intake (while not toggled)
-  if (master.get_digital(selected_controls.holdOuttakeButton)) {
+  if (master.get_digital(selected_controls.holdOuttakeButton) || outtake_toggle_enabled) {
     set_intake_volts(INTAKE_VOLTAGE);
-  } else if (master.get_digital(selected_controls.holdIntakeButton)) {
+    pto_toggle(true);
+  } else if (master.get_digital(selected_controls.holdIntakeButton) || intake_toggle_enabled) {
     set_intake_volts(-INTAKE_VOLTAGE);
-  } else {
+    pto_toggle(true);
+  } else if (pto_6_motor_enabled) {
     set_intake_volts(0);
   }
 }

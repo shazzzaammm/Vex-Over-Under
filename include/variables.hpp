@@ -31,10 +31,10 @@ const ControlScheme a_controls(
   DIGITAL_X
 );
 const ControlScheme g_controls(
-  DIGITAL_R1,
-  DIGITAL_R2,
   DIGITAL_L1,
   DIGITAL_L2,
+  DIGITAL_R1,
+  DIGITAL_R2,
   DIGITAL_A,
   DIGITAL_B,
   DIGITAL_X,

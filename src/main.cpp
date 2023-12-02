@@ -18,13 +18,13 @@ pros::Distance cata_distance_sensor('Z');
 extern ControlScheme selected_controls;
 extern int pto_cooldown;
 extern bool pto_6_motor_enabled;
+extern bool catapult_auto_shoot_enabled;
 void initialize() {
 
   // Stop the user from doing anything while legacy ports configure.
   pros::delay(500);
-
+  chassis.toggle_modify_curve_with_controller(false);
   chassis.set_active_brake(0.1);
-  chassis.set_curve_default(0, 0);
 
   default_constants();
   exit_condition_defaults();
@@ -60,6 +60,7 @@ void autonomous() {
 void opcontrol() {
   // TODO Automatically deactivate the endgame
   pto_toggle(false);
+  master.clear();
   while (true) {
     // Handle chassis control
     chassis.tank();
@@ -80,21 +81,14 @@ void opcontrol() {
     // ? Why doesnt this work
     print_stats_controller();
 
-    // Change to 8 motor if driver forgot
-    if (pto_cooldown > 5000) {
-      pto_toggle(false);
-    }
-
-    // Debug 
-    print_to_screen(pto_6_motor_enabled ? "6" : "8", 0);
-    print_to_screen(PTO_catapult.is_reversed() ? "reversed" : "not reversed", 1);
+    // Debug
+    print_to_screen(master.get_digital(selected_controls.shootCatapultButton) ? "on" : "off", 0);
 
     // Handle reversing the catapult
     PTO_catapult.set_reversed(pto_6_motor_enabled);
 
     // Handle PTO timer
     pto_cooldown += ez::util::DELAY_TIME;
-    
     // Keep the time between cycles constant
     pros::delay(ez::util::DELAY_TIME);
   }

@@ -157,8 +157,6 @@ void set_intake_volts(int volts) {
 }
 
 void intake_control() {
-  if (!pto_6_motor_enabled)
-    return;
   // Toggle the intake (inward direction)
   if (master.get_digital_new_press(selected_controls.toggleIntakeButton)) {
     intake_toggle_enabled = !intake_toggle_enabled;
@@ -170,7 +168,7 @@ void intake_control() {
     intake_toggle_enabled = false;
   }
 
-  // Hold buttons to control the intake (while not toggled)
+  // Hold buttons to control the intake
   if (master.get_digital(selected_controls.holdOuttakeButton) || outtake_toggle_enabled) {
     set_intake_volts(INTAKE_VOLTAGE);
     pto_toggle(true);

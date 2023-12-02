@@ -21,8 +21,6 @@ bool pto_6_motor_enabled = false;
 // Wings
 bool wing_toggle_enabled = false;
 
-bool catapult_auto_shoot_enabled = false;
-
 bool chassisIsReversed = false;
 
 const ControlScheme a_controls(

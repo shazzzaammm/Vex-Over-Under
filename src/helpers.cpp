@@ -38,6 +38,27 @@ extern ControlScheme selected_controls;
 
 #pragma endregion definitions
 
+#pragma region chassis
+void tank_drive(){
+    if (!chassisIsReversed) {
+      chassis.set_tank(master.get_analog(ANALOG_LEFT_Y), master.get_analog(ANALOG_RIGHT_Y));
+    } else {
+      chassis.set_tank(-master.get_analog(ANALOG_RIGHT_Y), -master.get_analog(ANALOG_LEFT_Y));
+    }
+}
+
+void reverse_chassis(){
+      chassisIsReversed = !chassisIsReversed;
+}
+
+void chassis_control(){
+  tank_drive();
+  if(master.get_digital_new_press(selected_controls.reverseChassisButton)){
+    reverse_chassis();
+  }
+}
+#pragma endregion chassis
+
 #pragma region controller
 void rumble_controller() {
   master.rumble(".");
@@ -71,9 +92,6 @@ std::string getButtonDown(){
 }
 
 void print_stats_controller() {
-  // Clear the controller screen
-  // master.clear();
-  
   master.set_text(0, 0, pto_6_motor_enabled ? "6 motor!!!!" : "8 motor!!!!");
 }
 #pragma endregion controller

@@ -20,6 +20,8 @@ bool wing_toggle_enabled = false;
 
 bool catapult_auto_shoot_enabled = false;
 
+bool chassisIsReversed = false;
+
 const ControlScheme a_controls(
   DIGITAL_R2,
   DIGITAL_L2,
@@ -28,7 +30,8 @@ const ControlScheme a_controls(
   DIGITAL_B,
   DIGITAL_A,
   DIGITAL_Y,
-  DIGITAL_X
+  DIGITAL_X,
+  DIGITAL_DOWN
 );
 const ControlScheme g_controls(
   DIGITAL_L1,
@@ -38,7 +41,8 @@ const ControlScheme g_controls(
   DIGITAL_A,
   DIGITAL_B,
   DIGITAL_X,
-  DIGITAL_Y
+  DIGITAL_Y,
+  DIGITAL_DOWN
 );
 
 const ControlScheme k_controls(
@@ -49,7 +53,8 @@ const ControlScheme k_controls(
   DIGITAL_B,
   DIGITAL_A,
   DIGITAL_Y,
-  DIGITAL_X
+  DIGITAL_X,
+  DIGITAL_DOWN
 );
 
 ControlScheme selected_controls = k_controls;

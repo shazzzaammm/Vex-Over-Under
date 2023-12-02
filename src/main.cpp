@@ -18,7 +18,7 @@ pros::Distance cata_distance_sensor('Z');
 extern ControlScheme selected_controls;
 extern int pto_cooldown;
 extern bool pto_6_motor_enabled;
-extern bool catapult_auto_shoot_enabled;
+extern bool chassisIsReversed;
 void initialize() {
 
   // Stop the user from doing anything while legacy ports configure.
@@ -63,7 +63,7 @@ void opcontrol() {
   master.clear();
   while (true) {
     // Handle chassis control
-    chassis.tank();
+    chassis_control();
 
     // Handle pto control
     pto_control();
@@ -78,7 +78,6 @@ void opcontrol() {
     catapult_control();
 
     // Print to the controller screen
-    // ? Why doesnt this work
     print_stats_controller();
 
     // Debug
@@ -89,7 +88,7 @@ void opcontrol() {
 
     // Handle PTO timer
     pto_cooldown += ez::util::DELAY_TIME;
-    
+
     // Keep the time between cycles constant
     pros::delay(ez::util::DELAY_TIME);
   }

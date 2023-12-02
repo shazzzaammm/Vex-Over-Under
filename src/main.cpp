@@ -7,18 +7,21 @@ Drive chassis({1, -2, -4, 10}, {3, 5, -6, -9}, 21, 4.125, 600, 0.5);
 pros::Motor& PTO_intake = chassis.right_motors[3];
 pros::Motor& PTO_catapult = chassis.left_motors[3];
 
-// Define pneumatics
+// Define Pneumatics
 pros::ADIDigitalOut PTO_piston('H');
 pros::ADIDigitalOut wing_piston_left('A');
 pros::ADIDigitalOut wing_piston_right('B');
 
-// Define sensors
-pros::Distance cata_distance_sensor('Z');
 
+// Define Sensors
+pros::Optical cata_optic_sensor(80);
+
+// Get Variables
 extern ControlScheme selected_controls;
 extern int pto_cooldown;
 extern bool pto_6_motor_enabled;
 extern bool chassisIsReversed;
+
 void initialize() {
 
   // Stop the user from doing anything while legacy ports configure.
@@ -58,7 +61,6 @@ void autonomous() {
 }
 
 void opcontrol() {
-  // TODO Automatically deactivate the endgame
   pto_toggle(false);
   master.clear();
   while (true) {
@@ -88,6 +90,7 @@ void opcontrol() {
 
     // Handle PTO timer
     pto_cooldown += ez::util::DELAY_TIME;
+
 
     // Keep the time between cycles constant
     pros::delay(ez::util::DELAY_TIME);

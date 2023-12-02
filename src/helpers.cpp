@@ -11,7 +11,7 @@ extern pros::ADIDigitalOut wing_piston_left;
 extern pros::ADIDigitalOut wing_piston_right;
 
 // Get sensors
-extern pros::Distance cata_distance_sensor;
+extern pros::Optical cata_optic_sensor;
 
 // Get constants
 extern const int INTAKE_SPEED;
@@ -20,7 +20,7 @@ extern const int INTAKE_VOLTAGE;
 extern const int CATAPULT_CHARGING_VOLTAGE;
 extern const int CATAPULT_SHOOTING_VOLTAGE;
 
-extern const int TRIBALL_SHOOT_DISTANCE;
+extern const float TRIBALL_LOADED_BRIGHTNESS;
 
 // Get useful variables
 extern int pto_cooldown;
@@ -101,9 +101,8 @@ void toggle_auto_shoot_catapult() {
   catapult_auto_shoot_enabled = !catapult_auto_shoot_enabled;
 }
 
-bool catapult_filled() {
-  // Returns if the cata has triball in it and is in auto shoot mode
-  return cata_distance_sensor.get() <= TRIBALL_SHOOT_DISTANCE && catapult_auto_shoot_enabled;
+bool isSlapperFull() {
+  return cata_optic_sensor.get_brightness() < TRIBALL_LOADED_BRIGHTNESS;
 }
 
 void catapult_control() {
@@ -142,8 +141,6 @@ void pto_control() {
   }
 }
 
-void pto_timer() {}
-
 #pragma endregion pto
 
 #pragma region intake
@@ -154,10 +151,14 @@ void spin_intake_for(float degrees) {
 }
 
 void set_intake_volts(int volts) {
+  if (!pto_6_motor_enabled)
+    return;
   PTO_intake.move_voltage(volts);
 }
 
 void intake_control() {
+  if (!pto_6_motor_enabled)
+    return;
   // Toggle the intake (inward direction)
   if (master.get_digital_new_press(selected_controls.toggleIntakeButton)) {
     intake_toggle_enabled = !intake_toggle_enabled;

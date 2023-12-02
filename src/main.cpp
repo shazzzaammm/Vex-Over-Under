@@ -7,14 +7,15 @@ Drive chassis({1, -2, -4, 10}, {3, 5, -6, -9}, 21, 4.125, 600, 0.5);
 pros::Motor& PTO_intake = chassis.right_motors[3];
 pros::Motor& PTO_catapult = chassis.left_motors[3];
 
-// Define pneumatics
+// Define Pneumatics
 pros::ADIDigitalOut PTO_piston('H');
 pros::ADIDigitalOut wing_piston_left('A');
 pros::ADIDigitalOut wing_piston_right('B');
 
-// Define sensors
+// Define Sensors
 pros::Optical cata_optic_sensor(80);
 
+// Get Variables
 extern ControlScheme selected_controls;
 extern int pto_cooldown;
 extern bool pto_6_motor_enabled;
@@ -58,7 +59,6 @@ void autonomous() {
 }
 
 void opcontrol() {
-  // TODO Automatically deactivate the endgame
   pto_toggle(false);
   while (true) {
     // Handle chassis control
@@ -80,19 +80,22 @@ void opcontrol() {
     // ? Why doesnt this work
     print_stats_controller();
 
+    // ? Does this work????
     // Handle the PTO timer
     if (pto_6_motor_enabled) {
       pto_cooldown += ez::util::DELAY_TIME;
     }
 
+    // ? Does this work??????
     // Change to 8 motor if driver forgot
     if (pto_cooldown > 2000 && pto_6_motor_enabled) {
       pto_toggle(false);
     }
 
-    // ? why doesnt this work in a different file????
+    // ? Why doesnt this work in a different file????
     if (master.get_digital_new_press(selected_controls.togglePTOButton))
       PTO_catapult.set_reversed(!PTO_catapult.is_reversed());
+
     // Keep the time between cycles constant
     pros::delay(ez::util::DELAY_TIME);
   }

@@ -56,18 +56,19 @@ void print_stats_controller() {
 #pragma endregion controller
 
 #pragma region catapult
-void toggle_auto_shoot_catapult(){
+void toggle_auto_shoot_catapult() {
   catapult_auto_shoot_enabled = !catapult_auto_shoot_enabled;
 }
 
-bool isSlapperFull(){
+bool isSlapperFull() {
   return cata_optic_sensor.get_brightness() < TRIBALL_LOADED_BRIGHTNESS;
 }
 
 void catapult_control() {
-  if(!pto_6_motor_enabled) return;
-  
-  if(master.get_digital_new_press(selected_controls.toggleCatapultButton)){
+  if (!pto_6_motor_enabled)
+    return;
+
+  if (master.get_digital_new_press(selected_controls.toggleCatapultButton)) {
     toggle_auto_shoot_catapult();
   }
 
@@ -93,7 +94,7 @@ void pto_toggle(bool toggle) {
   // Actuate the piston
   PTO_piston.set_value(!toggle);
 
-  // 
+  //
 
   // Reset the timer
   pto_cooldown = 0;
@@ -101,31 +102,32 @@ void pto_toggle(bool toggle) {
 
 void pto_control() {
   // Handle PTO activation/deactivation in user control
-  if (master.get_digital_new_press(selected_controls.togglePTOButton)){
+  if (master.get_digital_new_press(selected_controls.togglePTOButton)) {
     pto_toggle(!pto_6_motor_enabled);
   }
 }
 
-void pto_timer(){
-
-}
+void pto_timer() {}
 
 #pragma endregion pto
 
 #pragma region intake
 void spin_intake_for(float degrees) {
-  if(!pto_6_motor_enabled) return;
+  if (!pto_6_motor_enabled)
+    return;
   PTO_intake.move_relative(degrees, INTAKE_SPEED);
 }
 
 void set_intake_volts(int volts) {
-  if(!pto_6_motor_enabled) return;
+  if (!pto_6_motor_enabled)
+    return;
   PTO_intake.move_voltage(volts);
   pto_cooldown = 0;
 }
 
 void intake_control() {
-  if(!pto_6_motor_enabled) return;
+  if (!pto_6_motor_enabled)
+    return;
   // Toggle the intake (inward direction)
   if (master.get_digital_new_press(selected_controls.toggleIntakeButton)) {
     intake_toggle_enabled = !intake_toggle_enabled;

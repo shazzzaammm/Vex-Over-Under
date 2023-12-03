@@ -20,93 +20,94 @@ void exit_condition_defaults() {
   chassis.set_exit_condition(chassis.drive_exit, 80, 50, 300, 150, 500, 500);
 }
 void spline_exit_condition() {
-  chassis.set_exit_condition(chassis.turn_exit, 20, 3, 5, 7, 500, 500);
-  chassis.set_exit_condition(chassis.swing_exit, 20, 3, 20, 7, 500, 500);
-  chassis.set_exit_condition(chassis.drive_exit, 20, 50, 20, 150, 500, 500);
+  // chassis.set_exit_condition(chassis.drive_exit, 8, 8, 30, 150, 500, 500);
+  chassis.set_exit_condition(chassis.drive_exit, 80, 50, 300, 150, 500, 500);
+  chassis.set_exit_condition(chassis.turn_exit, 10, 3, 1, 25, 500, 500);
 }
 
 void test_auton() {
   // this is to test the auton tool
   spline_exit_condition();
-  chassis.set_turn_pid(-83, TURN_SPEED);
+
+  chassis.set_turn_pid(74, TURN_SPEED);
   chassis.wait_drive();
   chassis.set_drive_pid(6, DRIVE_SPEED);
-  chassis.wait_drive();
+  chassis.wait_until(0);
 
-  chassis.set_turn_pid(-61, TURN_SPEED);
-  chassis.wait_drive();
-  chassis.set_drive_pid(5, DRIVE_SPEED);
-  chassis.wait_drive();
-
-  chassis.set_turn_pid(-39, TURN_SPEED);
-  chassis.wait_drive();
-  chassis.set_drive_pid(5, DRIVE_SPEED);
-  chassis.wait_drive();
-
-  chassis.set_turn_pid(-22, TURN_SPEED);
-  chassis.wait_drive();
-  chassis.set_drive_pid(6, DRIVE_SPEED);
-  chassis.wait_drive();
-
-  chassis.set_turn_pid(-12, TURN_SPEED);
+  chassis.set_turn_pid(50, TURN_SPEED);
   chassis.wait_drive();
   chassis.set_drive_pid(7, DRIVE_SPEED);
-  chassis.wait_drive();
+  chassis.wait_until(0);
 
-  chassis.set_turn_pid(-5, TURN_SPEED);
+  chassis.set_turn_pid(33, TURN_SPEED);
   chassis.wait_drive();
   chassis.set_drive_pid(8, DRIVE_SPEED);
+  chassis.wait_until(0);
+
+  chassis.set_turn_pid(22, TURN_SPEED);
+  chassis.wait_until(13.2);
+  chassis.set_drive_pid(9, DRIVE_SPEED);
+  chassis.wait_until(0);
+
+  chassis.set_turn_pid(14, TURN_SPEED);
+  chassis.wait_until(8.4);
+  chassis.set_drive_pid(10, DRIVE_SPEED);
+  chassis.wait_until(0);
+
+  chassis.set_turn_pid(9, TURN_SPEED);
+  chassis.wait_until(5.3999999999999995);
+  chassis.set_drive_pid(11, DRIVE_SPEED);
   chassis.wait_drive();
 
-  chassis.set_turn_pid(-1, TURN_SPEED);
-  chassis.wait_drive();
-  chassis.set_drive_pid(8, DRIVE_SPEED);
+  chassis.set_turn_pid(4, TURN_SPEED);
+  chassis.wait_until(2.4);
+  chassis.set_drive_pid(12, DRIVE_SPEED);
   chassis.wait_drive();
 
   chassis.set_turn_pid(1, TURN_SPEED);
-  chassis.wait_drive();
-  chassis.set_drive_pid(8, DRIVE_SPEED);
-  chassis.wait_drive();
-
-  chassis.set_turn_pid(2, TURN_SPEED);
-  chassis.wait_drive();
-  chassis.set_drive_pid(8, DRIVE_SPEED);
+  chassis.wait_until(0.6);
+  chassis.set_drive_pid(12, DRIVE_SPEED);
   chassis.wait_drive();
 
-  chassis.set_turn_pid(2, TURN_SPEED);
-  chassis.wait_drive();
-  chassis.set_drive_pid(8, DRIVE_SPEED);
-  chassis.wait_drive();
-
-  chassis.set_turn_pid(0, TURN_SPEED);
-  chassis.wait_drive();
-  chassis.set_drive_pid(8, DRIVE_SPEED);
+  chassis.set_turn_pid(-3, TURN_SPEED);
+  chassis.wait_until(-1.7999999999999998);
+  chassis.set_drive_pid(12, DRIVE_SPEED);
   chassis.wait_drive();
 
-  chassis.set_turn_pid(-4, TURN_SPEED);
+  chassis.set_turn_pid(-6, TURN_SPEED);
+  chassis.wait_until(-3.5999999999999996);
+  chassis.set_drive_pid(12, DRIVE_SPEED);
   chassis.wait_drive();
+
+  chassis.set_turn_pid(-10, TURN_SPEED);
+  chassis.wait_until(-6);
+  chassis.set_drive_pid(11, DRIVE_SPEED);
+  chassis.wait_drive();
+
+  chassis.set_turn_pid(-15, TURN_SPEED);
+  chassis.wait_until(-9);
+  chassis.set_drive_pid(10, DRIVE_SPEED);
+  chassis.wait_until(0);
+
+  chassis.set_turn_pid(-22, TURN_SPEED);
+  chassis.wait_until(-13.2);
+  chassis.set_drive_pid(9, DRIVE_SPEED);
+  chassis.wait_until(0);
+
+  chassis.set_turn_pid(-31, TURN_SPEED);
+  chassis.wait_until(-18.599999999999998);
   chassis.set_drive_pid(7, DRIVE_SPEED);
-  chassis.wait_drive();
+  chassis.wait_until(0);
 
-  chassis.set_turn_pid(-11, TURN_SPEED);
+  chassis.set_turn_pid(-48, TURN_SPEED);
   chassis.wait_drive();
   chassis.set_drive_pid(6, DRIVE_SPEED);
-  chassis.wait_drive();
+  chassis.wait_until(0);
 
-  chassis.set_turn_pid(-24, TURN_SPEED);
+  chassis.set_turn_pid(-75, TURN_SPEED);
   chassis.wait_drive();
   chassis.set_drive_pid(5, DRIVE_SPEED);
-  chassis.wait_drive();
-
-  chassis.set_turn_pid(-46, TURN_SPEED);
-  chassis.wait_drive();
-  chassis.set_drive_pid(4, DRIVE_SPEED);
-  chassis.wait_drive();
-
-  chassis.set_turn_pid(-77, TURN_SPEED);
-  chassis.wait_drive();
-  chassis.set_drive_pid(4, DRIVE_SPEED);
-  chassis.wait_drive();
+  chassis.wait_until(0);
 }
 
 void same_zone_steal() {

@@ -1,7 +1,7 @@
 #include "main.h"
 
 // Define the chassis (PTO motors are last in the curly braces)
-Drive chassis({1, -2, -4, 10}, {3, 5, -6, -9}, 21, 4.125, 600, 0.5);
+Drive chassis({1, -2, -4, 10}, {3, 5, -6, -9}, 20, 4.125, 600, 0.5);
 
 // Define Motors
 pros::Motor& PTO_intake = chassis.right_motors[3];
@@ -17,9 +17,7 @@ pros::ADIDigitalOut wing_piston_right('B');
 pros::Optical cata_optic_sensor(80);
 
 // Get Variables
-extern ControlScheme selected_controls;
 extern bool pto_6_motor_enabled;
-extern bool chassisIsReversed;
 
 void initialize() {
 

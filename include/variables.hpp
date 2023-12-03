@@ -15,7 +15,6 @@ const float TRIBALL_LOADED_BRIGHTNESS = .2;
 bool catapult_auto_shoot_enabled = false;
 
 // PTO
-int pto_cooldown = 0;
 bool pto_6_motor_enabled = false;
 
 // Wings

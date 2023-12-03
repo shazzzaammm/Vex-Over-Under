@@ -23,7 +23,6 @@ extern const int CATAPULT_SHOOTING_VOLTAGE;
 extern const float TRIBALL_LOADED_BRIGHTNESS;
 
 // Get useful variables
-extern int pto_cooldown;
 extern bool pto_6_motor_enabled;
 
 extern bool intake_toggle_enabled;
@@ -129,9 +128,6 @@ void pto_toggle(bool toggle) {
 
   // Actuate the piston
   PTO_piston.set_value(!toggle);
-
-  // Reset the timer
-  pto_cooldown = 0;
 }
 
 void pto_control() {

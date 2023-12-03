@@ -18,7 +18,6 @@ pros::Optical cata_optic_sensor(80);
 
 // Get Variables
 extern ControlScheme selected_controls;
-extern int pto_cooldown;
 extern bool pto_6_motor_enabled;
 extern bool chassisIsReversed;
 
@@ -87,10 +86,6 @@ void opcontrol() {
 
     // Handle reversing the catapult
     PTO_catapult.set_reversed(pto_6_motor_enabled);
-
-    // Handle PTO timer
-    pto_cooldown += ez::util::DELAY_TIME;
-
 
     // Keep the time between cycles constant
     pros::delay(ez::util::DELAY_TIME);

@@ -14,10 +14,12 @@ pros::ADIDigitalOut wing_piston_right('B');
 
 
 // Define Sensors
-pros::Optical cata_optic_sensor(80);
+pros::Optical cata_optic_sensor(420);
+pros::Rotation cata_rotation_sensor(69);
 
 // Get Variables
 extern bool pto_6_motor_enabled;
+extern bool catapult_auto_shoot_enabled;
 
 void initialize() {
 
@@ -81,7 +83,11 @@ void opcontrol() {
 
     // Debug
     print_to_screen(pto_6_motor_enabled ? "6 motor" : "8 motor", 0);
-
+    print_to_screen(std::to_string(cata_optic_sensor.get_brightness()), 1);
+    print_to_screen(isSlapperFull() ? "triball" : "no triball", 2);
+    print_to_screen(catapult_auto_shoot_enabled ? "auto" : "not auto", 3);
+    print_to_screen(isCataCharged() ? "charged" : "not charged", 4);
+    
     // Keep the time between cycles constant
     pros::delay(ez::util::DELAY_TIME);
   }

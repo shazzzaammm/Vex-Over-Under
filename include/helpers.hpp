@@ -2,6 +2,8 @@ void rumble_controller();
 void print_stats_controller();
 
 void chassis_control();
+bool isCataCharged();
+bool isSlapperFull();
 
 void set_intake_volts(int volts);
 void spin_intake_for(float degrees);

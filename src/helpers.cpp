@@ -28,7 +28,7 @@ extern bool pto_6_motor_enabled;
 extern bool intake_toggle_enabled;
 extern bool outtake_toggle_enabled;
 
-extern bool wing_toggle_enabled;
+extern bool wings_enabled;
 
 extern bool catapult_auto_shoot_enabled;
 
@@ -38,21 +38,22 @@ extern ControlScheme selected_controls;
 #pragma endregion definitions
 
 #pragma region chassis
-void tank_drive(){
-    if (!chassisIsReversed) {
-      chassis.set_tank(master.get_analog(ANALOG_LEFT_Y), master.get_analog(ANALOG_RIGHT_Y));
-    } else {
-      chassis.set_tank(-master.get_analog(ANALOG_RIGHT_Y), -master.get_analog(ANALOG_LEFT_Y));
-    }
+void tank_drive() {
+  // Move based off the joysticks and the orientation of the robot
+  if (!chassisIsReversed) {
+    chassis.set_tank(master.get_analog(ANALOG_LEFT_Y), master.get_analog(ANALOG_RIGHT_Y));
+  } else {
+    chassis.set_tank(-master.get_analog(ANALOG_RIGHT_Y), -master.get_analog(ANALOG_LEFT_Y));
+  }
 }
 
-void reverse_chassis(){
-      chassisIsReversed = !chassisIsReversed;
+void reverse_chassis() {
+  chassisIsReversed = !chassisIsReversed;
 }
 
-void chassis_control(){
+void chassis_control() {
   tank_drive();
-  if(master.get_digital_new_press(selected_controls.reverseChassisButton)){
+  if (master.get_digital_new_press(selected_controls.reverseChassisButton)) {
     reverse_chassis();
   }
 }
@@ -62,35 +63,38 @@ void chassis_control(){
 void rumble_controller() {
   master.rumble(".");
 }
-std::string getButtonDown(){
-  if (master.get_digital(selected_controls.holdIntakeButton)){
+
+std::string getButtonDown() {
+  // Used for debugging
+  if (master.get_digital(selected_controls.holdIntakeButton)) {
     return "Intake Hold";
   }
-  if (master.get_digital(selected_controls.holdOuttakeButton)){
+  if (master.get_digital(selected_controls.holdOuttakeButton)) {
     return "Outtake Hold";
   }
-  if (master.get_digital(selected_controls.shootCatapultButton)){
+  if (master.get_digital(selected_controls.shootCatapultButton)) {
     return "Catapult Hold";
   }
-  if (master.get_digital(selected_controls.toggleCatapultButton)){
+  if (master.get_digital(selected_controls.toggleCatapultButton)) {
     return "Catapult Toggle";
   }
-  if (master.get_digital(selected_controls.toggleIntakeButton)){
+  if (master.get_digital(selected_controls.toggleIntakeButton)) {
     return "Intake Toggle";
   }
-  if (master.get_digital(selected_controls.toggleOuttakeButton)){
+  if (master.get_digital(selected_controls.toggleOuttakeButton)) {
     return "Outtake Toggle";
   }
-  if (master.get_digital(selected_controls.togglePTOButton)){
+  if (master.get_digital(selected_controls.togglePTOButton)) {
     return "PTO Toggle";
   }
-  if (master.get_digital(selected_controls.toggleWingsButton)){
+  if (master.get_digital(selected_controls.toggleWingsButton)) {
     return "Wings Toggle";
   }
   return "None";
 }
 
 void print_stats_controller() {
+  // Print the motor mode
   master.set_text(0, 0, pto_6_motor_enabled ? "6 motor!!!!" : "8 motor!!!!");
 }
 #pragma endregion controller
@@ -105,15 +109,21 @@ bool isSlapperFull() {
 }
 
 void catapult_control() {
+  // Make sure the catapult is moving the correct direction
+  PTO_catapult.set_reversed(pto_6_motor_enabled);
+
+  // Toggle automatic shooting (for match loading)
   if (master.get_digital_new_press(selected_controls.toggleCatapultButton)) {
     toggle_auto_shoot_catapult();
   }
 
+  // Shoot the catapult (automatically or with the button)
   if (master.get_digital(selected_controls.shootCatapultButton) || catapult_auto_shoot_enabled) {
     PTO_catapult.move_voltage(CATAPULT_SHOOTING_VOLTAGE);
     pto_toggle(true);
   }
 
+  // Stop the catapult unless we are in 8 motor drive
   else if (pto_6_motor_enabled) {
     PTO_catapult.brake();
   }
@@ -141,14 +151,10 @@ void pto_control() {
 
 #pragma region intake
 void spin_intake_for(float degrees) {
-  if (!pto_6_motor_enabled)
-    return;
   PTO_intake.move_relative(degrees, INTAKE_SPEED);
 }
 
 void set_intake_volts(int volts) {
-  if (!pto_6_motor_enabled)
-    return;
   PTO_intake.move_voltage(volts);
 }
 
@@ -181,13 +187,13 @@ void intake_control() {
 void wing_toggle(bool toggle) {
   wing_piston_right.set_value(toggle);
   wing_piston_left.set_value(toggle);
-  wing_toggle_enabled = toggle;
+  wings_enabled = toggle;
 }
 
 void wing_control() {
   // Handle enabling/disabling the wings in user control
   if (master.get_digital_new_press(selected_controls.toggleWingsButton))
-    wing_toggle(!wing_toggle_enabled);
+    wing_toggle(!wings_enabled);
 }
 #pragma endregion wings
 

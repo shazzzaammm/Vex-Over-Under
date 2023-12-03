@@ -18,11 +18,12 @@ bool catapult_auto_shoot_enabled = false;
 bool pto_6_motor_enabled = false;
 
 // Wings
-bool wing_toggle_enabled = false;
+bool wings_enabled = false;
 
+// Chassis
 bool chassisIsReversed = false;
 
-const ControlScheme a_controls(
+const ControlScheme t_controls(
   DIGITAL_R2,
   DIGITAL_L2,
   DIGITAL_R1,

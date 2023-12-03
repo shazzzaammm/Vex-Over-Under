@@ -84,9 +84,6 @@ void opcontrol() {
     // Debug
     print_to_screen(pto_6_motor_enabled ? "6 motor" : "8 motor", 0);
 
-    // Handle reversing the catapult
-    PTO_catapult.set_reversed(pto_6_motor_enabled);
-
     // Keep the time between cycles constant
     pros::delay(ez::util::DELAY_TIME);
   }

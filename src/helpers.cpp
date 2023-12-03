@@ -21,7 +21,7 @@ extern const int CATAPULT_CHARGING_VOLTAGE;
 extern const int CATAPULT_SHOOTING_VOLTAGE;
 
 extern const float TRIBALL_LOADED_BRIGHTNESS;
-extern const bool CATAPULT_CHARGED_DEGREES;
+extern const int CATAPULT_CHARGED_DEGREES;
 
 // Get useful variables
 extern bool pto_6_motor_enabled;
@@ -68,35 +68,59 @@ void rumble_controller() {
 std::string getButtonDown() {
   // Used for debugging
   if (master.get_digital(selected_controls.holdIntakeButton)) {
-    return "Intake Hold";
+    return "Intake Hold    ";
   }
   if (master.get_digital(selected_controls.holdOuttakeButton)) {
-    return "Outtake Hold";
+    return "Outtake Hold   ";
   }
   if (master.get_digital(selected_controls.shootCatapultButton)) {
-    return "Catapult Hold";
+    return "Catapult Hold  ";
   }
   if (master.get_digital(selected_controls.toggleCatapultButton)) {
     return "Catapult Toggle";
   }
   if (master.get_digital(selected_controls.toggleIntakeButton)) {
-    return "Intake Toggle";
+    return "Intake Toggle  ";
   }
   if (master.get_digital(selected_controls.toggleOuttakeButton)) {
-    return "Outtake Toggle";
+    return "Outtake Toggle ";
   }
   if (master.get_digital(selected_controls.togglePTOButton)) {
-    return "PTO Toggle";
+    return "PTO Toggle     ";
   }
   if (master.get_digital(selected_controls.toggleWingsButton)) {
-    return "Wings Toggle";
+    return "Wings Toggle   ";
   }
-  return "None";
+  if (master.get_digital(selected_controls.reverseChassisButton)) {
+    return "Reverse Chassis";
+  }
+  return "No Button Down ";
 }
 
-void print_stats_controller() {
-  // Print the motor mode
-  master.set_text(0, 0, pto_6_motor_enabled ? "6 motor!!!!" : "8 motor!!!!");
+void controller_stats_task(void* parameter) {
+  int printIndex = 0;
+  int loopIndex = 0;
+  while (true) {
+    if (loopIndex % 5 == 0) {
+      print_stat_to_controller(printIndex);
+      printIndex++;
+      printIndex %= 3;
+    }
+    loopIndex++;
+    pros::delay(ez::util::DELAY_TIME);
+  }
+}
+
+void print_stat_to_controller(int type) {
+  if (type == 0) {
+    master.set_text(0, 0, (pto_6_motor_enabled ? "Mode: 6 motor!!!!" : "Mode: 8 motor!!!!"));
+  } else if (type == 1) {
+    master.set_text(1, 0, getButtonDown());
+  } else if (type == 2) {
+    master.set_text(2, 0, "Time: " + std::to_string(pros::millis() / 1000));
+  } else {
+    master.clear();
+  }
 }
 #pragma endregion controller
 
@@ -109,7 +133,7 @@ bool isSlapperFull() {
   return cata_optic_sensor.get_brightness() < TRIBALL_LOADED_BRIGHTNESS;
 }
 
-bool isCataCharged(){
+bool isCataCharged() {
   return cata_rotation_sensor.get_angle() < CATAPULT_CHARGED_DEGREES;
 }
 
@@ -123,7 +147,8 @@ void catapult_control() {
   }
 
   // Shoot the catapult (automatically or with the button)
-  if (master.get_digital(selected_controls.shootCatapultButton) || (catapult_auto_shoot_enabled && isSlapperFull()) || (!isCataCharged() && pto_6_motor_enabled)) {
+  if (master.get_digital(selected_controls.shootCatapultButton) || (catapult_auto_shoot_enabled && isSlapperFull()) ||
+      (!isCataCharged() && pto_6_motor_enabled)) {
     PTO_catapult.move_voltage(CATAPULT_SHOOTING_VOLTAGE);
     pto_toggle(true);
   }

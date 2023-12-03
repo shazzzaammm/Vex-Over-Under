@@ -1,5 +1,6 @@
 void rumble_controller();
-void print_stats_controller();
+void controller_stats_task(void* parameter);
+void print_stat_to_controller(int type);
 
 void chassis_control();
 bool isCataCharged();

@@ -14,7 +14,7 @@ pros::ADIDigitalOut wing_piston_right('B');
 
 
 // Define Sensors
-pros::Optical cata_optic_sensor(420);
+pros::Optical cata_optic_sensor(69);
 pros::Rotation cata_rotation_sensor(69);
 
 // Get Variables
@@ -60,8 +60,11 @@ void autonomous() {
 }
 
 void opcontrol() {
+  // Default to 8 motor drive
   pto_toggle(false);
+  // Handle printing stats to the controller
   master.clear();
+  pros::Task controller_task(controller_stats_task, NULL, "Controller Print Task");
   while (true) {
     // Handle chassis control
     chassis_control();
@@ -77,9 +80,6 @@ void opcontrol() {
 
     // Handle catapult control
     catapult_control();
-
-    // Print to the controller screen
-    print_stats_controller();
 
     // Debug
     print_to_screen(pto_6_motor_enabled ? "6 motor" : "8 motor", 0);

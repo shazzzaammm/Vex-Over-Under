@@ -6,6 +6,7 @@
 extern pros::Motor& PTO_intake;
 extern pros::Motor& PTO_catapult;
 
+// Get pistons
 extern pros::ADIDigitalOut PTO_piston;
 extern pros::ADIDigitalOut wing_piston_left;
 extern pros::ADIDigitalOut wing_piston_right;
@@ -13,6 +14,7 @@ extern pros::ADIDigitalOut wing_piston_right;
 // Get sensors
 extern pros::Optical cata_optic_sensor;
 extern pros::Rotation cata_rotation_sensor;
+
 // Get constants
 extern const int INTAKE_SPEED;
 extern const int INTAKE_VOLTAGE;
@@ -101,7 +103,9 @@ void controller_stats_task(void* parameter) {
   int printIndex = 0;
   int loopIndex = 0;
   while (true) {
+    // Only print every 50ms
     if (loopIndex % 5 == 0) {
+      // Change which thing is printed each interval
       print_stat_to_controller(printIndex);
       printIndex++;
       printIndex %= 3;
@@ -112,6 +116,7 @@ void controller_stats_task(void* parameter) {
 }
 
 void print_stat_to_controller(int type) {
+  // TODO maybe use a switch case instead
   if (type == 0) {
     master.set_text(0, 0, (pto_6_motor_enabled ? "Mode: 6 motor!!!!" : "Mode: 8 motor!!!!"));
   } else if (type == 1) {
@@ -131,12 +136,12 @@ void toggle_auto_shoot_catapult() {
 
 bool isSlapperFull() {
   // return cata_optic_sensor.get_brightness() < TRIBALL_LOADED_BRIGHTNESS;
-  return true; // ! SWITCH BACK ONCE WE PLUG IN THE OPTIC SENSOR
+  return true;  // ! SWITCH BACK ONCE WE PLUG IN THE OPTIC SENSOR
 }
 
 bool isCataCharged() {
   // return cata_rotation_sensor.get_angle() < CATAPULT_CHARGED_DEGREES;
-  return true; // ! SWITCH BACK ONCE WE PLUG IN THE ROTATION SENSOR
+  return true;  // ! SWITCH BACK ONCE WE PLUG IN THE ROTATION SENSOR
 }
 
 void catapult_control() {
@@ -148,7 +153,7 @@ void catapult_control() {
     toggle_auto_shoot_catapult();
   }
 
-  // Shoot the catapult (automatically or with the button)
+  // Shoot the catapult automatically, shoot the catapult manually, or charge the catapult automatically
   if (master.get_digital(selected_controls.shootCatapultButton) || (catapult_auto_shoot_enabled && isSlapperFull()) ||
       (!isCataCharged() && pto_6_motor_enabled)) {
     PTO_catapult.move_voltage(CATAPULT_SHOOTING_VOLTAGE);
@@ -164,7 +169,7 @@ void catapult_control() {
 
 #pragma region pto
 void pto_toggle(bool toggle) {
-  // Toggle PTO motors + bool
+  // Toggle PTO motors
   pto_6_motor_enabled = toggle;
   chassis.pto_toggle({PTO_intake, PTO_catapult}, toggle);
 

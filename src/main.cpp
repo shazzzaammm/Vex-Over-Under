@@ -46,7 +46,7 @@ void initialize() {
   chassis.initialize();
   ez::as::initialize();
 
-  // Set PTO to 6 motor drive configuration
+  // Set PTO to 8 motor drive configuration
   pto_toggle(false);
 }
 

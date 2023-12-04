@@ -12,12 +12,11 @@ pros::ADIDigitalOut PTO_piston('H');
 pros::ADIDigitalOut wing_piston_left('A');
 pros::ADIDigitalOut wing_piston_right('B');
 
-
 // Define Sensors
-pros::Optical cata_optic_sensor(69);
-pros::Rotation cata_rotation_sensor(69);
+pros::Optical cata_optic_sensor(19);
+pros::Rotation cata_rotation_sensor(11);
 
-// Get Variables
+// Get Debug Variables
 extern bool pto_6_motor_enabled;
 extern bool catapult_auto_shoot_enabled;
 
@@ -62,6 +61,7 @@ void autonomous() {
 void opcontrol() {
   // Default to 8 motor drive
   pto_toggle(false);
+
   // Handle printing stats to the controller
   master.clear();
   pros::Task controller_task(controller_stats_task, NULL, "Controller Print Task");
@@ -82,11 +82,17 @@ void opcontrol() {
     catapult_control();
 
     // Debug
-    print_to_screen(pto_6_motor_enabled ? "6 motor" : "8 motor", 0);
-    print_to_screen(std::to_string(cata_optic_sensor.get_brightness()), 1);
-    print_to_screen(isSlapperFull() ? "triball" : "no triball", 2);
-    print_to_screen(catapult_auto_shoot_enabled ? "auto" : "not auto", 3);
-    print_to_screen(isCataCharged() ? "charged" : "not charged", 4);
+    std::string drive_mode = pto_6_motor_enabled ? "6 motor" : "8 motor";
+    std::string triball_status = isSlapperFull() ? "triball loaded" : "no triball loaded";
+    std::string auto_shoot_status = catapult_auto_shoot_enabled ? "enabled" : "disabled";
+    std::string cata_charged_status = isCataCharged() ? "charged" : "not charged";
+    print_to_screen("drive mode: " + drive_mode, 0);
+    print_to_screen("optic brightness: " + std::to_string(cata_optic_sensor.get_brightness()), 1);
+    print_to_screen("triball status: " + triball_status, 2);
+    print_to_screen("cata auto shoot: " + auto_shoot_status, 3);
+    print_to_screen("cata charged status: " + cata_charged_status, 4);
+    print_to_screen("cata temp: " + std::to_string(PTO_catapult.get_temperature()) + "C", 5);
+    print_to_screen("battery level: " + std::to_string(pros::battery::get_capacity()) + "%", 6);
     
     // Keep the time between cycles constant
     pros::delay(ez::util::DELAY_TIME);

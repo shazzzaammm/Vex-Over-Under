@@ -14,7 +14,7 @@ const int CATAPULT_SHOOTING_VOLTAGE = 12000;
 bool catapult_auto_shoot_enabled = false;
 
 // Sensors
-const float TRIBALL_LOADED_BRIGHTNESS = .00005;
+const float TRIBALL_LOADED_BRIGHTNESS = .0025;
 const int CATAPULT_CHARGED_DEGREES = 3000;
 
 // PTO

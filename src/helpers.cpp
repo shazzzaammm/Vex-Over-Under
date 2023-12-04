@@ -129,13 +129,11 @@ void toggle_auto_shoot_catapult() {
 }
 
 bool isSlapperFull() {
-  // return cata_optic_sensor.get_brightness() < TRIBALL_LOADED_BRIGHTNESS;
-  return true;  // ! SWITCH BACK ONCE WE PLUG IN THE OPTIC SENSOR
+  return cata_optic_sensor.get_brightness() < TRIBALL_LOADED_BRIGHTNESS;
 }
 
 bool isCataCharged() {
-  // return cata_rotation_sensor.get_angle() < CATAPULT_CHARGED_DEGREES;
-  return true;  // ! SWITCH BACK ONCE WE PLUG IN THE ROTATION SENSOR
+  return cata_rotation_sensor.get_angle() < CATAPULT_CHARGED_DEGREES;
 }
 
 void catapult_control() {

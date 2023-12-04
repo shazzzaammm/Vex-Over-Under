@@ -15,29 +15,6 @@ extern pros::ADIDigitalOut wing_piston_right;
 extern pros::Optical cata_optic_sensor;
 extern pros::Rotation cata_rotation_sensor;
 
-// Get constants
-extern const int INTAKE_SPEED;
-extern const int INTAKE_VOLTAGE;
-
-extern const int CATAPULT_CHARGING_VOLTAGE;
-extern const int CATAPULT_SHOOTING_VOLTAGE;
-
-extern const float TRIBALL_LOADED_BRIGHTNESS;
-extern const int CATAPULT_CHARGED_DEGREES;
-
-// Get useful variables
-extern bool pto_6_motor_enabled;
-
-extern bool intake_toggle_enabled;
-extern bool outtake_toggle_enabled;
-
-extern bool wings_enabled;
-
-extern bool catapult_auto_shoot_enabled;
-
-// Get the control scheme
-extern ControlScheme selected_controls;
-
 #pragma endregion definitions
 
 #pragma region chassis
@@ -102,6 +79,7 @@ std::string getButtonDown() {
 void controller_stats_task(void* parameter) {
   int printIndex = 0;
   int loopIndex = 0;
+  match_start_time = pros::millis();
   while (true) {
     // Only print every 50ms
     if (loopIndex % 5 == 0) {
@@ -117,12 +95,28 @@ void controller_stats_task(void* parameter) {
 
 void print_stat_to_controller(int type) {
   // TODO maybe use a switch case instead
+  if (pros::competition::is_disabled()) {
+    if (type == 0) {
+      master.set_text(0, 0, "Good Luck!!!!");
+    } else if (type == 1) {
+      master.clear_line(1);
+    } else if (type == 2) {
+      std::string auton_name = ez::as::auton_selector.Autons[ez::as::auton_selector.current_auton_page].Name;
+      std::string auton_display_name = auton_name.substr(0, auton_name.find("\n", 0));
+      master.set_text(1, 0, auton_display_name);
+    } else {
+      master.clear();
+    }
+    return;
+  }
+
   if (type == 0) {
     master.set_text(0, 0, (pto_6_motor_enabled ? "Mode: 6 motor!!!!" : "Mode: 8 motor!!!!"));
   } else if (type == 1) {
     master.set_text(1, 0, getButtonDown());
   } else if (type == 2) {
-    master.set_text(2, 0, "Time: " + std::to_string(pros::millis() / 1000));
+    master.set_text(
+        2, 0, "Time Remaining: " + std::to_string((MATCH_LENGTH + match_start_time - pros::millis()) / 1000) + "  ");
   } else {
     master.clear();
   }

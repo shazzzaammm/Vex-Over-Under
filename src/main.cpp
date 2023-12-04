@@ -16,10 +16,6 @@ pros::ADIDigitalOut wing_piston_right('B');
 pros::Optical cata_optic_sensor(19);
 pros::Rotation cata_rotation_sensor(11);
 
-// Get Debug Variables
-extern bool pto_6_motor_enabled;
-extern bool catapult_auto_shoot_enabled;
-
 void initialize() {
 
   // Stop the user from doing anything while legacy ports configure.
@@ -81,18 +77,8 @@ void opcontrol() {
     // Handle catapult control
     catapult_control();
 
-    // Debug
-    std::string drive_mode = pto_6_motor_enabled ? "6 motor" : "8 motor";
-    std::string triball_status = isSlapperFull() ? "triball loaded" : "no triball loaded";
-    std::string auto_shoot_status = catapult_auto_shoot_enabled ? "enabled" : "disabled";
-    std::string cata_charged_status = isCataCharged() ? "charged" : "not charged";
-    print_to_screen("drive mode: " + drive_mode, 0);
-    print_to_screen("optic brightness: " + std::to_string(cata_optic_sensor.get_brightness()), 1);
-    print_to_screen("triball status: " + triball_status, 2);
-    print_to_screen("cata auto shoot: " + auto_shoot_status, 3);
-    print_to_screen("cata charged status: " + cata_charged_status, 4);
-    print_to_screen("cata temp: " + std::to_string(PTO_catapult.get_temperature()) + "C", 5);
-    print_to_screen("battery level: " + std::to_string(pros::battery::get_capacity()) + "%", 6);
+    // Handle debug information
+    print_debug();
     
     // Keep the time between cycles constant
     pros::delay(ez::util::DELAY_TIME);

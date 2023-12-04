@@ -1,3 +1,6 @@
+// Brain
+void print_debug();
+
 // Controller
 void rumble_controller();
 void controller_stats_task(void* parameter);
@@ -7,8 +10,6 @@ void print_stat_to_controller(int type);
 void chassis_control();
 
 // Catapult
-bool isCataCharged();
-bool isSlapperFull();
 void catapult_control();
 
 // Intake

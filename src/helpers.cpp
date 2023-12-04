@@ -17,6 +17,22 @@ extern pros::Rotation cata_rotation_sensor;
 
 #pragma endregion definitions
 
+#pragma region brain
+void print_debug() {
+  std::string drive_mode = pto_6_motor_enabled ? "6 motor" : "8 motor";
+  std::string triball_status = isSlapperFull() ? "triball loaded" : "no triball loaded";
+  std::string auto_shoot_status = catapult_auto_shoot_enabled ? "enabled" : "disabled";
+  std::string cata_charged_status = isCataCharged() ? "charged" : "not charged";
+  print_to_screen("drive mode: " + drive_mode, 0);
+  print_to_screen("optic brightness: " + std::to_string(cata_optic_sensor.get_brightness()), 1);
+  print_to_screen("triball status: " + triball_status, 2);
+  print_to_screen("cata auto shoot: " + auto_shoot_status, 3);
+  print_to_screen("cata charged status: " + cata_charged_status, 4);
+  print_to_screen("cata temp: " + std::to_string(PTO_catapult.get_temperature()) + "C", 5);
+  print_to_screen("battery level: " + std::to_string(pros::battery::get_capacity()) + "%", 6);
+}
+#pragma endregion brain
+
 #pragma region chassis
 void tank_drive() {
   // Move based off the joysticks and the orientation of the robot

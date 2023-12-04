@@ -1,21 +1,6 @@
 #include "main.h"
 #include "variables.hpp"
-
-#pragma region definitions
-// Get motors
-extern pros::Motor& PTO_intake;
-extern pros::Motor& PTO_catapult;
-
-// Get pistons
-extern pros::ADIDigitalOut PTO_piston;
-extern pros::ADIDigitalOut wing_piston_left;
-extern pros::ADIDigitalOut wing_piston_right;
-
-// Get sensors
-extern pros::Optical cata_optic_sensor;
-extern pros::Rotation cata_rotation_sensor;
-
-#pragma endregion definitions
+#include "robot_config.hpp"
 
 #pragma region brain
 void print_debug() {

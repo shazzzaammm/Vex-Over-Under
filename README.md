@@ -21,12 +21,12 @@ Wing Pistons = A + B
 ### Controls
 
 #### T_Controls
-B = Toggle Wings,
-A = Toggle PTO,
-X = Shoot Catapult,
-Y = Toggle Auto Shooting Catapult,
+X = Reverse Chassis,
+Y = Toggle Wings,
+A = Shoot Catapult,
+B = Toggle Auto Shooting Catapult,
 UP = 
-DOWN = Reverse Chassis
+DOWN = Toggle PTO
 LEFT = 
 RIGHT = 
 R1 = Toggle Intake,

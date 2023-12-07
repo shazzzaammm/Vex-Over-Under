@@ -13,8 +13,8 @@ Right Side = (3, 5, -6, -9),
 Catapult = -9,
 Intake = 10,
 IMU = 21,
-Rotation Sensor = ?,
-Optic Sensor = ?,
+Rotation Sensor = 11,
+Optic Sensor = 19,
 PTO Piston = H,
 Wing Pistons = A + B
 

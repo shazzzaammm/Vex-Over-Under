@@ -1,166 +1,216 @@
 #include "main.h"
+#include "robot_config.hpp"
+#include "variables.hpp"
 
-#pragma region definitions
-// Get motors
-extern pros::Motor& PTO_left;
-extern pros::Motor& PTO_right;
+#pragma region brain
+void print_debug() {
+  std::string drive_mode = pto_6_motor_enabled ? "6 motor" : "8 motor";
+  std::string triball_status = isSlapperFull() ? "triball loaded" : "no triball loaded";
+  std::string auto_shoot_status = catapult_auto_shoot_enabled ? "enabled" : "disabled";
+  std::string cata_charged_status = isCataCharged() ? "charged" : "not charged";
+  print_to_screen("drive mode: " + drive_mode, 0);
+  print_to_screen("optic brightness: " + std::to_string(cata_optic_sensor.get_brightness()), 1);
+  print_to_screen("triball status: " + triball_status, 2);
+  print_to_screen("cata auto shoot: " + auto_shoot_status, 3);
+  print_to_screen("cata charged status: " + cata_charged_status, 4);
+  print_to_screen("cata temp: " + std::to_string(PTO_catapult.get_temperature()) + "C", 5);
+  print_to_screen("battery level: " + std::to_string(pros::battery::get_capacity()) + "%", 6);
+}
+#pragma endregion brain
 
-extern pros::ADIDigitalOut PTO_piston;
-extern pros::ADIDigitalOut wing_piston_left;
-extern pros::ADIDigitalOut wing_piston_right;
-extern pros::ADIAnalogIn catapult_rotation_sensor;
+#pragma region chassis
+void tank_drive() {
+  // Move based off the joysticks and the orientation of the robot
+  if (!chassisIsReversed) {
+    chassis.set_tank(master.get_analog(ANALOG_LEFT_Y), master.get_analog(ANALOG_RIGHT_Y));
+  } else {
+    chassis.set_tank(-master.get_analog(ANALOG_RIGHT_Y), -master.get_analog(ANALOG_LEFT_Y));
+  }
+}
 
-extern pros::Motor intake;
-extern pros::Motor catapult;
+void reverse_chassis() {
+  chassisIsReversed = !chassisIsReversed;
+}
 
-// Define constants
-const int INTAKE_SPEED = 127;
-const int INTAKE_VOLTAGE = 9000;
-
-const int CATAPULT_CHARGING_DEGREES_MIN = 2500;
-const int CATAPULT_CHARGING_DEGREES_MAX = 4500;
-
-const int CATAPULT_CHARGING_VOLTAGE = 12000;
-const int CATAPULT_SHOOTING_VOLTAGE = 12000;
-
-// Define useful variables
-bool pto_endgame_enabled = false;
-
-bool intake_toggle_enabled = false;
-bool outtake_toggle_enabled = false;
-
-bool wing_toggle_enabled = false;
-
-bool catapult_auto_shoot_enabled = false;
-#pragma endregion definitions
+void chassis_control() {
+  tank_drive();
+  if (master.get_digital_new_press(selected_controls.reverseChassisButton)) {
+    reverse_chassis();
+  }
+}
+#pragma endregion chassis
 
 #pragma region controller
 void rumble_controller() {
   master.rumble(".");
 }
 
-void print_stats_controller() {
-  // Clear the controller screen
-  master.clear();
+std::string getButtonDown() {
+  // Used for debugging
+  if (master.get_digital(selected_controls.holdIntakeButton)) {
+    return "Intake Hold    ";
+  }
+  if (master.get_digital(selected_controls.holdOuttakeButton)) {
+    return "Outtake Hold   ";
+  }
+  if (master.get_digital(selected_controls.shootCatapultButton)) {
+    return "Catapult Hold  ";
+  }
+  if (master.get_digital(selected_controls.toggleCatapultButton)) {
+    return "Catapult Toggle";
+  }
+  if (master.get_digital(selected_controls.toggleIntakeButton)) {
+    return "Intake Toggle  ";
+  }
+  if (master.get_digital(selected_controls.toggleOuttakeButton)) {
+    return "Outtake Toggle ";
+  }
+  if (master.get_digital(selected_controls.togglePTOButton)) {
+    return "PTO Toggle     ";
+  }
+  if (master.get_digital(selected_controls.toggleWingsButton)) {
+    return "Wings Toggle   ";
+  }
+  if (master.get_digital(selected_controls.reverseChassisButton)) {
+    return "Reverse Chassis";
+  }
+  return "No Button Down ";
+}
 
-  // Print PTO mode
-  master.print(0, 0, "PTO mode: %d", pto_endgame_enabled ? 4 : 6);
+void controller_stats_task(void* parameter) {
+  int printIndex = 0;
+  int loopIndex = 0;
+  match_start_time = pros::millis();
+  while (true) {
+    // Only print every 50ms
+    if (loopIndex % 5 == 0) {
+      // Change which thing is printed each interval
+      print_stat_to_controller(printIndex);
+      printIndex++;
+      printIndex %= 3;
+    }
+    loopIndex++;
+    pros::delay(ez::util::DELAY_TIME);
+  }
+}
 
-  // Print the heading (0-360) of the robot
-  master.print(1, 0, "Heading: %d", chassis.imu.get_heading());
+void print_stat_to_controller(int type) {
+  // TODO maybe use a switch case instead
+  if (pros::competition::is_disabled()) {
+    if (type == 0) {
+      master.set_text(0, 0, "Good Luck!!!!");
+    } else if (type == 1) {
+      master.clear_line(1);
+    } else if (type == 2) {
+      std::string auton_name = ez::as::auton_selector.Autons[ez::as::auton_selector.current_auton_page].Name;
+      std::string auton_display_name = auton_name.substr(0, auton_name.find("\n", 0));
+      master.set_text(1, 0, auton_display_name);
+    } else {
+      master.clear();
+    }
+    return;
+  }
+
+  if (type == 0) {
+    master.set_text(0, 0, (pto_6_motor_enabled ? "Mode: 6 motor!!!!" : "Mode: 8 motor!!!!"));
+  } else if (type == 1) {
+    master.set_text(1, 0, getButtonDown());
+  } else if (type == 2) {
+    master.set_text(
+        2, 0, "Time Remaining: " + std::to_string((MATCH_LENGTH + match_start_time - pros::millis()) / 1000) + "  ");
+  } else {
+    master.clear();
+  }
 }
 #pragma endregion controller
 
 #pragma region catapult
-bool is_catapult_charging() {
-  return (catapult_rotation_sensor.get_value() >= CATAPULT_CHARGING_DEGREES_MIN &&
-        catapult_rotation_sensor.get_value() <= CATAPULT_CHARGING_DEGREES_MAX) ||
-        catapult_rotation_sensor.get_value() < 2080; // ? whyyyy does it need this part
-}
-
-void toggle_auto_shoot_catapult(){
+void toggle_auto_shoot_catapult() {
   catapult_auto_shoot_enabled = !catapult_auto_shoot_enabled;
 }
 
-void catapult_auton_task(void* paramater) {
-  // Used to keep the catapult charged during the auton
-  while (true) {
-    if (is_catapult_charging()) {
-      catapult.move_voltage(CATAPULT_CHARGING_VOLTAGE);
-    }
-    pros::delay(20);
-  }
+bool isSlapperFull() {
+  return cata_optic_sensor.get_brightness() < TRIBALL_LOADED_BRIGHTNESS;
+}
+
+bool isCataCharged() {
+  return cata_rotation_sensor.get_angle() < CATAPULT_CHARGED_DEGREES;
 }
 
 void catapult_control() {
-  if(master.get_digital_new_press(DIGITAL_Y)){
-    toggle_auto_shoot_catapult();
-  }
-
-  if (master.get_digital(DIGITAL_X) || catapult_auto_shoot_enabled) {
-    catapult.move_voltage(CATAPULT_SHOOTING_VOLTAGE);
-    rumble_controller();
+  // Make sure the catapult is moving the correct direction
+  PTO_catapult.set_reversed(pto_6_motor_enabled);
+  
+  if(!pto_6_motor_enabled){
     return;
   }
 
-  // Charge if not ready and not shooting
-  if (is_catapult_charging()) {
-    catapult.move_voltage(CATAPULT_CHARGING_VOLTAGE);
+
+  // Toggle automatic shooting (for match loading)
+  if (master.get_digital_new_press(selected_controls.toggleCatapultButton)) {
+    toggle_auto_shoot_catapult();
   }
 
-  // Turn off motor once charged
-  else {
-    catapult.brake();
+  // Shoot the catapult automatically, shoot the catapult manually, or charge the catapult automatically
+  if (master.get_digital(selected_controls.shootCatapultButton) || isSlapperFull() || !isCataCharged()) {
+    PTO_catapult.move_voltage(CATAPULT_SHOOTING_VOLTAGE);
+  }
+
+  // Stop the catapult unless we are in 8 motor drive
+  else if (pto_6_motor_enabled) {
+    PTO_catapult.brake();
   }
 }
 #pragma endregion catapult
 
 #pragma region pto
 void pto_toggle(bool toggle) {
-  // Toggle PTO motors + bool
-  pto_endgame_enabled = toggle;
-  chassis.pto_toggle({PTO_left, PTO_right}, toggle);
+  // Toggle PTO motors
+  pto_6_motor_enabled = toggle;
+  chassis.pto_toggle({PTO_intake, PTO_catapult}, toggle);
 
   // Actuate the piston
   PTO_piston.set_value(!toggle);
 }
 
-void set_pto_volts(int volts) {
-  // Only activates if engame is enabled
-  if (!pto_endgame_enabled)
-    return;
-
-  // Sets endgame voltage to the input value
-  PTO_left = volts;
-  PTO_right = volts;
-}
-
 void pto_control() {
   // Handle PTO activation/deactivation in user control
-  if (master.get_digital_new_press(DIGITAL_A))
-    pto_toggle(!pto_endgame_enabled);
+  if (master.get_digital_new_press(selected_controls.togglePTOButton)) {
+    pto_toggle(!pto_6_motor_enabled);
+  }
 }
 
 #pragma endregion pto
 
 #pragma region intake
 void spin_intake_for(float degrees) {
-  intake.move_relative(degrees, INTAKE_SPEED);
+  PTO_intake.move_relative(degrees, INTAKE_SPEED);
 }
 
 void set_intake_volts(int volts) {
-  intake.move_voltage(volts);
+  PTO_intake.move_voltage(volts);
 }
 
 void intake_control() {
   // Toggle the intake (inward direction)
-  if (master.get_digital_new_press(DIGITAL_R1)) {
+  if (master.get_digital_new_press(selected_controls.toggleIntakeButton)) {
     intake_toggle_enabled = !intake_toggle_enabled;
     outtake_toggle_enabled = false;
   }
   // Toggle the intake (outward direction)
-  if (master.get_digital_new_press(DIGITAL_L1)) {
+  if (master.get_digital_new_press(selected_controls.toggleOuttakeButton)) {
     outtake_toggle_enabled = !outtake_toggle_enabled;
     intake_toggle_enabled = false;
   }
 
-  // If toggled, intake stays on
-  if (intake_toggle_enabled) {
-    set_intake_volts(-INTAKE_VOLTAGE);
-    return;
-  }
-
-  if (outtake_toggle_enabled) {
+  // Hold buttons to control the intake
+  if (master.get_digital(selected_controls.holdOuttakeButton) || outtake_toggle_enabled) {
     set_intake_volts(INTAKE_VOLTAGE);
-    return;
-  }
-
-  // Hold buttons to control the intake (while not toggled)
-  if (master.get_digital(DIGITAL_L2)) {
-    set_intake_volts(INTAKE_VOLTAGE);
-  } else if (master.get_digital(DIGITAL_R2)) {
+    pto_toggle(true);
+  } else if (master.get_digital(selected_controls.holdIntakeButton) || intake_toggle_enabled) {
     set_intake_volts(-INTAKE_VOLTAGE);
-  } else {
+    pto_toggle(true);
+  } else if (pto_6_motor_enabled) {
     set_intake_volts(0);
   }
 }
@@ -170,27 +220,16 @@ void intake_control() {
 void wing_toggle(bool toggle) {
   wing_piston_right.set_value(toggle);
   wing_piston_left.set_value(toggle);
-  wing_toggle_enabled = toggle;
+  wings_enabled = toggle;
 }
 
 void wing_control() {
   // Handle enabling/disabling the wings in user control
-  if (master.get_digital_new_press(DIGITAL_B))
-    wing_toggle(!wing_toggle_enabled);
+  if (master.get_digital_new_press(selected_controls.toggleWingsButton))
+    wing_toggle(!wings_enabled);
 }
 #pragma endregion wings
 
 #pragma region endgame
-void toggle_endgame(bool toggle) {
-  // Only use endgame if PTO is in 4 motor mode
-  if (!pto_endgame_enabled)
-    return;
-
-  // Set the endgame motors to the correct position
-  if (toggle) {
-    // TODO turn on the endgame
-  } else {
-    // TODO turn off the endgame
-  }
-}
+// how is endgame gonna work im so lost
 #pragma endregion endgame

@@ -1,30 +1,11 @@
 #include "main.h"
-#include "helpers.hpp"
-
-// Define the chassis (PTO motors are in the middle of the curly braces)
-Drive chassis({-6, 9, -7}, {1, -8, 2}, 10, 4.125, 200, 0.5);
-
-// Define Motors
-pros::Motor& PTO_left = chassis.left_motors[1];
-pros::Motor& PTO_right = chassis.right_motors[1];
-pros::Motor intake(-20, false);
-pros::Motor catapult(-5, pros::E_MOTOR_GEAR_100, true);
-
-// Define pneumatics
-pros::ADIDigitalOut PTO_piston('A');
-pros::ADIDigitalOut wing_piston_left('C');
-pros::ADIDigitalOut wing_piston_right('D');
-
-// Define sensors (excluding IMU)
-pros::ADIAnalogIn catapult_rotation_sensor('B');
 
 void initialize() {
 
   // Stop the user from doing anything while legacy ports configure.
   pros::delay(500);
-
+  chassis.toggle_modify_curve_with_controller(false);
   chassis.set_active_brake(0.1);
-  chassis.set_curve_default(0, 0);
 
   default_constants();
   exit_condition_defaults();
@@ -32,23 +13,19 @@ void initialize() {
   // Define autons for the selector
   ez::as::auton_selector.add_autons({
       Auton("Test Auton\n\nchat is this real", test_auton),
-      Auton("Opposite Zone AutonWinPoint\n\nstart on the left side, score 4 triballs?, end touching the elevation bar",
-            opposite_zone_awp),
-      Auton("Opposite Zone Eliminations\n\nstart on the left side, the rest is TBD",
-            opposite_zone_elim),
       Auton("Same Zone AWP\n\nstart on the right side, score 4 triballs, end touching the elevation bar",
             same_zone_awp),
+      Auton("Opposite Zone AutonWinPoint\n\nstart on the left side, score 4 triballs?, end touching the elevation bar",
+            opposite_zone_awp),
+      Auton("Opposite Zone Eliminations\n\nstart on the left side, the rest is TBD", opposite_zone_elim),
       Auton("Same Zone Steal\n\nstart on the right side, steal the middle triballs, score preload ", same_zone_steal),
   });
-
-  // Set the motor brake modes
-  catapult.set_brake_mode(pros::E_MOTOR_BRAKE_COAST);
 
   // Initialize
   chassis.initialize();
   ez::as::initialize();
 
-  // Set PTO to 6 motor drive configuration
+  // Set PTO to 8 motor drive configuration
   pto_toggle(false);
 }
 
@@ -62,11 +39,15 @@ void autonomous() {
 }
 
 void opcontrol() {
-  // TODO Automatically deactivate the endgame
+  // Default to 8 motor drive
   pto_toggle(false);
+
+  // Handle printing stats to the controller
+  master.clear();
+  pros::Task controller_task(controller_stats_task, NULL, "Controller Print Task");
   while (true) {
     // Handle chassis control
-    chassis.tank();
+    chassis_control();
 
     // Handle pto control
     pto_control();
@@ -80,10 +61,9 @@ void opcontrol() {
     // Handle catapult control
     catapult_control();
 
-    // Print to the controller screen
-    // ? Why doesnt this work
-    print_stats_controller();
-
+    // Handle debug information
+    print_debug();
+    
     // Keep the time between cycles constant
     pros::delay(ez::util::DELAY_TIME);
   }

@@ -1,6 +1,6 @@
 #include "main.h"
-#include "variables.hpp"
 #include "robot_config.hpp"
+#include "variables.hpp"
 
 #pragma region brain
 void print_debug() {
@@ -140,6 +140,11 @@ bool isCataCharged() {
 void catapult_control() {
   // Make sure the catapult is moving the correct direction
   PTO_catapult.set_reversed(pto_6_motor_enabled);
+  
+  if(!pto_6_motor_enabled){
+    return;
+  }
+
 
   // Toggle automatic shooting (for match loading)
   if (master.get_digital_new_press(selected_controls.toggleCatapultButton)) {
@@ -147,10 +152,8 @@ void catapult_control() {
   }
 
   // Shoot the catapult automatically, shoot the catapult manually, or charge the catapult automatically
-  if (master.get_digital(selected_controls.shootCatapultButton) || (catapult_auto_shoot_enabled && isSlapperFull()) ||
-      (!isCataCharged() && pto_6_motor_enabled)) {
+  if (master.get_digital(selected_controls.shootCatapultButton) || isSlapperFull() || !isCataCharged()) {
     PTO_catapult.move_voltage(CATAPULT_SHOOTING_VOLTAGE);
-    pto_toggle(true);
   }
 
   // Stop the catapult unless we are in 8 motor drive

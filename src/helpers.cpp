@@ -165,11 +165,10 @@ bool isCataCharged() {
 void catapult_control() {
   // Make sure the catapult is moving the correct direction
   PTO_catapult.set_reversed(pto_6_motor_enabled);
-  
-  if(!pto_6_motor_enabled){
+
+  if (!pto_6_motor_enabled) {
     return;
   }
-
 
   // Toggle automatic shooting (for match loading)
   if (master.get_digital_new_press(selected_controls.toggleCatapultButton)) {
@@ -177,7 +176,8 @@ void catapult_control() {
   }
 
   // Shoot the catapult automatically, shoot the catapult manually, or charge the catapult automatically
-  if (master.get_digital(selected_controls.shootCatapultButton) || isSlapperFull() || !isCataCharged()) {
+  if (master.get_digital(selected_controls.shootCatapultButton) || (isSlapperFull() && toggle_auto_shoot_catapult) ||
+      !isCataCharged()) {
     PTO_catapult.move_voltage(CATAPULT_SHOOTING_VOLTAGE);
   }
 
@@ -228,11 +228,20 @@ void intake_control() {
     intake_toggle_enabled = false;
   }
 
+  // Move the intake while toggled and 6 motor
+  if (pto_6_motor_enabled) {
+    if (intake_toggle_enabled) {
+      set_intake_volts(-INTAKE_VOLTAGE);
+    } else if (outtake_toggle_enabled) {
+      set_intake_volts(INTAKE_VOLTAGE);
+    }
+  }
+
   // Hold buttons to control the intake
-  if (master.get_digital(selected_controls.holdOuttakeButton) || outtake_toggle_enabled) {
+  if (master.get_digital(selected_controls.holdOuttakeButton)) {
     set_intake_volts(INTAKE_VOLTAGE);
     pto_toggle(true);
-  } else if (master.get_digital(selected_controls.holdIntakeButton) || intake_toggle_enabled) {
+  } else if (master.get_digital(selected_controls.holdIntakeButton)) {
     set_intake_volts(-INTAKE_VOLTAGE);
     pto_toggle(true);
   } else if (pto_6_motor_enabled) {

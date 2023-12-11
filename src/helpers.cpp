@@ -19,17 +19,42 @@ void print_debug() {
 #pragma endregion brain
 
 #pragma region chassis
+void arcade_drive() {
+  // Arcade Split drive based off the joysticks and the orientation of the robot
+  int forward_stick = master.get_analog(ANALOG_LEFT_Y);
+  int turn_stick = master.get_analog(ANALOG_RIGHT_X);
+
+  if (!chassis_is_reversed) {
+    chassis.set_tank(forward_stick + turn_stick, forward_stick - turn_stick);
+  } else {
+    chassis.set_tank(-forward_stick - turn_stick, -forward_stick + turn_stick);
+  }
+}
+
 void tank_drive() {
-  // Move based off the joysticks and the orientation of the robot
-  if (!chassisIsReversed) {
+  // Tank drive based off the joysticks and the orientation of the robot
+  if (!chassis_is_reversed) {
     chassis.set_tank(master.get_analog(ANALOG_LEFT_Y), master.get_analog(ANALOG_RIGHT_Y));
   } else {
     chassis.set_tank(-master.get_analog(ANALOG_RIGHT_Y), -master.get_analog(ANALOG_LEFT_Y));
   }
 }
 
+void chassis_control(){
+  // Use the drive mode the user wants
+  switch (selected_controls.driveMode)
+  {
+  case TANK:
+    tank_drive();
+    break;
+  
+  case ARCADE:
+  arcade_drive();
+    break;
+  }
+}
 void reverse_chassis() {
-  chassisIsReversed = !chassisIsReversed;
+  chassis_is_reversed = !chassis_is_reversed;
 }
 
 void chassis_control() {

@@ -1,4 +1,7 @@
 #include "main.h"
+
+enum Drive_Type {TANK, ARCADE};
+
 class ControlScheme {
  public:
   pros::controller_digital_e_t holdIntakeButton;
@@ -10,12 +13,13 @@ class ControlScheme {
   pros::controller_digital_e_t toggleCatapultButton;
   pros::controller_digital_e_t shootCatapultButton;
   pros::controller_digital_e_t reverseChassisButton;
+  Drive_Type driveMode;
 
   ControlScheme(pros::controller_digital_e_t holdIntake, pros::controller_digital_e_t holdOuttake,
                 pros::controller_digital_e_t toggleIntake, pros::controller_digital_e_t toggleOuttake,
                 pros::controller_digital_e_t toggleWings, pros::controller_digital_e_t togglePTO,
                 pros::controller_digital_e_t toggleCatapult, pros::controller_digital_e_t shootCatapult,
-                pros::controller_digital_e_t reverseChassis) {
+                pros::controller_digital_e_t reverseChassis, Drive_Type drive_mode) {
     holdIntakeButton = holdIntake;
     holdOuttakeButton = holdOuttake;
     toggleIntakeButton = toggleIntake;
@@ -25,5 +29,6 @@ class ControlScheme {
     toggleCatapultButton = toggleCatapult;
     shootCatapultButton = shootCatapult;
     reverseChassisButton = reverseChassis;
+    driveMode = drive_mode;
   }
 };

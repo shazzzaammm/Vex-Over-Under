@@ -40,7 +40,7 @@ void tank_drive() {
   }
 }
 
-void chassis_control(){
+void drive_control(){
   // Use the drive mode the user wants
   switch (selected_controls.driveMode)
   {
@@ -53,12 +53,13 @@ void chassis_control(){
     break;
   }
 }
+
 void reverse_chassis() {
   chassis_is_reversed = !chassis_is_reversed;
 }
 
 void chassis_control() {
-  tank_drive();
+  drive_control();
   if (master.get_digital_new_press(selected_controls.reverseChassisButton)) {
     reverse_chassis();
   }
@@ -166,6 +167,7 @@ void catapult_control() {
   // Make sure the catapult is moving the correct direction
   PTO_catapult.set_reversed(pto_6_motor_enabled);
 
+  // Only move cata if we are in 6 motor
   if (!pto_6_motor_enabled) {
     return;
   }
@@ -204,7 +206,6 @@ void pto_control() {
     pto_toggle(!pto_6_motor_enabled);
   }
 }
-
 #pragma endregion pto
 
 #pragma region intake

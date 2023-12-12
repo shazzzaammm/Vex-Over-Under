@@ -42,7 +42,7 @@ void tank_drive() {
 
 void drive_control(){
   // Use the drive mode the user wants
-  switch (selected_controls.driveMode)
+  switch (selected_controls.drive_mode)
   {
   case TANK:
     tank_drive();
@@ -60,7 +60,7 @@ void reverse_chassis() {
 
 void chassis_control() {
   drive_control();
-  if (master.get_digital_new_press(selected_controls.reverseChassisButton)) {
+  if (master.get_digital_new_press(selected_controls.reverse_chassis_button)) {
     reverse_chassis();
   }
 }
@@ -73,31 +73,31 @@ void rumble_controller() {
 
 std::string getButtonDown() {
   // Used for debugging
-  if (master.get_digital(selected_controls.holdIntakeButton)) {
+  if (master.get_digital(selected_controls.hold_intake_button)) {
     return "Intake Hold    ";
   }
-  if (master.get_digital(selected_controls.holdOuttakeButton)) {
+  if (master.get_digital(selected_controls.hold_outtake_button)) {
     return "Outtake Hold   ";
   }
-  if (master.get_digital(selected_controls.shootCatapultButton)) {
+  if (master.get_digital(selected_controls.shoot_catapult_button)) {
     return "Catapult Hold  ";
   }
-  if (master.get_digital(selected_controls.toggleCatapultButton)) {
+  if (master.get_digital(selected_controls.toggle_catapult_button)) {
     return "Catapult Toggle";
   }
-  if (master.get_digital(selected_controls.toggleIntakeButton)) {
+  if (master.get_digital(selected_controls.toggle_intake_button)) {
     return "Intake Toggle  ";
   }
-  if (master.get_digital(selected_controls.toggleOuttakeButton)) {
+  if (master.get_digital(selected_controls.toggle_outtake_button)) {
     return "Outtake Toggle ";
   }
-  if (master.get_digital(selected_controls.togglePTOButton)) {
+  if (master.get_digital(selected_controls.toggle_PTO_button)) {
     return "PTO Toggle     ";
   }
-  if (master.get_digital(selected_controls.toggleWingsButton)) {
+  if (master.get_digital(selected_controls.toggle_wings_button)) {
     return "Wings Toggle   ";
   }
-  if (master.get_digital(selected_controls.reverseChassisButton)) {
+  if (master.get_digital(selected_controls.reverse_chassis_button)) {
     return "Reverse Chassis";
   }
   return "No Button Down ";
@@ -173,12 +173,12 @@ void catapult_control() {
   }
 
   // Toggle automatic shooting (for match loading)
-  if (master.get_digital_new_press(selected_controls.toggleCatapultButton)) {
+  if (master.get_digital_new_press(selected_controls.toggle_catapult_button)) {
     toggle_auto_shoot_catapult();
   }
 
   // Shoot the catapult automatically, shoot the catapult manually, or charge the catapult automatically
-  if (master.get_digital(selected_controls.shootCatapultButton) || (isSlapperFull() && toggle_auto_shoot_catapult) ||
+  if (master.get_digital(selected_controls.shoot_catapult_button) || (isSlapperFull() && toggle_auto_shoot_catapult) ||
       !isCataCharged()) {
     PTO_catapult.move_voltage(CATAPULT_SHOOTING_VOLTAGE);
   }
@@ -202,7 +202,7 @@ void pto_toggle(bool toggle) {
 
 void pto_control() {
   // Handle PTO activation/deactivation in user control
-  if (master.get_digital_new_press(selected_controls.togglePTOButton)) {
+  if (master.get_digital_new_press(selected_controls.toggle_PTO_button)) {
     pto_toggle(!pto_6_motor_enabled);
   }
 }
@@ -219,12 +219,12 @@ void set_intake_volts(int volts) {
 
 void intake_control() {
   // Toggle the intake (inward direction)
-  if (master.get_digital_new_press(selected_controls.toggleIntakeButton)) {
+  if (master.get_digital_new_press(selected_controls.toggle_intake_button)) {
     intake_toggle_enabled = !intake_toggle_enabled;
     outtake_toggle_enabled = false;
   }
   // Toggle the intake (outward direction)
-  if (master.get_digital_new_press(selected_controls.toggleOuttakeButton)) {
+  if (master.get_digital_new_press(selected_controls.toggle_outtake_button)) {
     outtake_toggle_enabled = !outtake_toggle_enabled;
     intake_toggle_enabled = false;
   }
@@ -239,10 +239,10 @@ void intake_control() {
   }
 
   // Hold buttons to control the intake
-  if (master.get_digital(selected_controls.holdOuttakeButton)) {
+  if (master.get_digital(selected_controls.hold_outtake_button)) {
     set_intake_volts(INTAKE_VOLTAGE);
     pto_toggle(true);
-  } else if (master.get_digital(selected_controls.holdIntakeButton)) {
+  } else if (master.get_digital(selected_controls.hold_intake_button)) {
     set_intake_volts(-INTAKE_VOLTAGE);
     pto_toggle(true);
   } else if (pto_6_motor_enabled) {
@@ -260,7 +260,7 @@ void wing_toggle(bool toggle) {
 
 void wing_control() {
   // Handle enabling/disabling the wings in user control
-  if (master.get_digital_new_press(selected_controls.toggleWingsButton))
+  if (master.get_digital_new_press(selected_controls.toggle_wings_button))
     wing_toggle(!wings_enabled);
 }
 #pragma endregion wings

@@ -40,17 +40,16 @@ void tank_drive() {
   }
 }
 
-void drive_control(){
+void drive_control() {
   // Use the drive mode the user wants
-  switch (selected_controls.drive_mode)
-  {
-  case TANK:
-    tank_drive();
-    break;
-  
-  case ARCADE:
-  arcade_drive();
-    break;
+  switch (selected_controls.drive_mode) {
+    case TANK:
+      tank_drive();
+      break;
+
+    case ARCADE:
+      arcade_drive();
+      break;
   }
 }
 
@@ -178,8 +177,8 @@ void catapult_control() {
   }
 
   // Shoot the catapult automatically, shoot the catapult manually, or charge the catapult automatically
-  if (master.get_digital(selected_controls.shoot_catapult_button) || (isSlapperFull() && toggle_auto_shoot_catapult) ||
-      !isCataCharged()) {
+  if (master.get_digital(selected_controls.shoot_catapult_button) || (isSlapperFull() && catapult_auto_shoot_enabled) ||
+      (!isCataCharged() && pto_6_motor_enabled)) {
     PTO_catapult.move_voltage(CATAPULT_SHOOTING_VOLTAGE);
   }
 
@@ -245,7 +244,7 @@ void intake_control() {
   } else if (master.get_digital(selected_controls.hold_intake_button)) {
     set_intake_volts(-INTAKE_VOLTAGE);
     pto_toggle(true);
-  } else if (pto_6_motor_enabled) {
+  } else if (pto_6_motor_enabled && !intake_toggle_enabled && !outtake_toggle_enabled) {
     set_intake_volts(0);
   }
 }

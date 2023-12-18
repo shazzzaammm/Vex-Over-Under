@@ -21,43 +21,43 @@ Wing Pistons = A + B
 ### Controls
 
 #### T_Controls
-X = Reverse Chassis,
-Y = Toggle Wings,
-A = Shoot Catapult,
-B = Toggle Auto Shooting Catapult,
+B = Toggle Wings
+A = Shoot Catapult
+X = Toggle Auto Shooting Catapult
+Y = 
 UP = 
-DOWN = Toggle PTO
-LEFT = 
-RIGHT = 
-R1 = Toggle Intake,
-R2 = Hold Intake,
-L1 = Toggle Outtake,
-L2 = Hold Outtake,
+DOWN = 
+LEFT = Toggle Outtake
+RIGHT = Toggle Intake
+L1 = Hold Outtake
+L2 = Toggle PTO
+R1 = Hold Intake
+R2 = Reverse Chassis
 
 #### G_Controls
-B = Toggle Wings,
-A = Toggle PTO,
-X = Toggle Auto Shooting Catapult,
-Y = Shoot Catapult,
+B = Toggle Wings
+A = Toggle PTO
+X = Toggle Auto Shooting Catapult
+Y = Shoot Catapult
 UP = 
 DOWN = Reverse Chassis
 LEFT = 
 RIGHT = 
-R1 = Hold Intake,
-R2 = Hold Outtake,
-L1 = Toggle Intake,
-L2 = Toggle Outtake,
+L1 = Toggle Intake
+L2 = Toggle Outtake
+R1 = Hold Intake
+R2 = Hold Outtake
 
 #### K_Controls
-B = Toggle PTO,
-A = Toggle Wings,
-X = Shoot Catapult,
-Y = Toggle Auto Shooting Catapult,
+B = Toggle PTO
+A = Toggle Wings
+X = Shoot Catapult
+Y = Toggle Auto Shooting Catapult
 UP = 
 DOWN = Reverse Chassis
 LEFT = 
 RIGHT = 
-R1 = Hold Outtake,
-R2 = Hold Intake,
-L1 = Toggle Outtake,
-L2 = Toggle Intake,
+L1 = Toggle Outtake
+L2 = Toggle Intake
+R1 = Hold Outtake
+R2 = Hold Intake

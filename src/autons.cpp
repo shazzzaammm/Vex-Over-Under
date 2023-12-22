@@ -35,7 +35,7 @@ void test_auton() {
 
 void same_zone_steal() {}
 
-void same_zone_awp() {
+void same_zone_elim() {
   int OFFSET = 45;
   
   wing_toggle(true);

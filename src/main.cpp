@@ -12,13 +12,13 @@ void initialize() {
 
   // Define autons for the selector
   ez::as::auton_selector.add_autons({
-      Auton("Test Auton\n\nchat is this real", test_auton),
-      Auton("Same Zone AWP\n\nstart on the right side, score 4 triballs, end touching the elevation bar",
-            same_zone_awp),
-      Auton("Opposite Zone AutonWinPoint\n\nstart on the left side, score 4 triballs?, end touching the elevation bar",
+      Auton("Test Auton", test_auton),
+      Auton("Same Zone AWP",
+            same_zone_elim),
+      Auton("Opposite Zone AutonWinPoint",
             opposite_zone_awp),
-      Auton("Opposite Zone Eliminations\n\nstart on the left side, the rest is TBD", opposite_zone_elim),
-      Auton("Same Zone Steal\n\nstart on the right side, steal the middle triballs, score preload ", same_zone_steal),
+      Auton("Opposite Zone Eliminations", opposite_zone_elim),
+      Auton("Same Zone Eliminations", same_zone_steal),
   });
 
   // Initialize

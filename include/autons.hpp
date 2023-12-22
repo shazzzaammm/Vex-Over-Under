@@ -7,7 +7,7 @@ extern Drive chassis;
 void test_auton();
 
 void same_zone_steal();
-void same_zone_awp();
+void same_zone_elim();
 
 void opposite_zone_awp();
 void opposite_zone_elim();

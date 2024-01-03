@@ -58,9 +58,6 @@ void opcontrol() {
     // Handle wing control
     wing_control();
 
-    // Handle catapult control
-    catapult_control();
-
     // Handle debug information
     print_debug();
     

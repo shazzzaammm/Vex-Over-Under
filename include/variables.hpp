@@ -8,14 +8,6 @@ const int INTAKE_VOLTAGE = 12000;
 bool intake_toggle_enabled = false;
 bool outtake_toggle_enabled = false;
 
-// Catapult
-const int CATAPULT_SHOOTING_VOLTAGE = 12000;
-bool catapult_auto_shoot_enabled = false;
-
-// Sensors
-const float TRIBALL_LOADED_BRIGHTNESS = .01;
-const int CATAPULT_CHARGED_DEGREES = 3000;
-
 // PTO
 bool pto_6_motor_enabled = false;
 

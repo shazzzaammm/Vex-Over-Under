@@ -8,6 +8,13 @@ const int INTAKE_VOLTAGE = 12000;
 bool intake_toggle_enabled = false;
 bool outtake_toggle_enabled = false;
 
+// Flywheel
+const int FLYWHEEL_RPM = 600;
+bool flywheel_toggle_enabled = false;
+
+// Lift
+bool lift_enabled = false;
+
 // PTO
 bool pto_6_motor_enabled = false;
 
@@ -24,7 +31,7 @@ const ControlScheme g_controls(DIGITAL_L1, DIGITAL_L2, DIGITAL_R1, DIGITAL_R2, D
                                DIGITAL_Y, DIGITAL_DOWN, TANK);
 const ControlScheme k_controls(DIGITAL_L2, DIGITAL_L1, DIGITAL_R2, DIGITAL_R1, DIGITAL_B, DIGITAL_A, DIGITAL_Y,
                                DIGITAL_X, DIGITAL_DOWN, TANK);
-ControlScheme selected_controls = g_controls;
+ControlScheme selected_controls = k_controls;
 
 // Util
 const int MATCH_LENGTH = 105000; // = 105 seconds

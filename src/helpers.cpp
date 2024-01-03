@@ -159,6 +159,61 @@ void pto_control() {
 }
 #pragma endregion pto
 
+#pragma region flywheel
+// Take back half controller
+// TODO move this to variables.hpp
+double error = 0;
+double prev_error = 0;
+double output = 0;
+double gain = .2;
+double feed_forward = 0;
+double take_back_half = 0;
+
+void set_flywheel_velocity(double target) {
+  error = target - (PTO_flywheel.get_actual_velocity());
+  output += (gain * error) + (feed_forward * target);
+
+  if (std::signbit(error) != std::signbit(prev_error)) {
+    output = .5 * (output + take_back_half);
+    take_back_half = output;
+    prev_error = error;
+  }
+
+  PTO_flywheel.move_voltage(output);
+}
+
+void flywheel_control() {
+  // Dont activate unless 6 motor
+  if (pto_6_motor_enabled)
+    return;
+
+  // Toggle flywheel
+  if (master.get_digital_new_press(selected_controls.toggle_flywheel_button)) {
+    flywheel_toggle_enabled = !flywheel_toggle_enabled;
+  }
+
+  // Spin the flywheel (using take back half)
+  //! PLEASE WORK PLEASE PLEASE PLEASE PLEASE
+  if (master.get_digital(selected_controls.hold_flywheel_button) || flywheel_toggle_enabled) {
+    set_flywheel_velocity(FLYWHEEL_RPM);
+  }
+}
+#pragma endregion flywheel
+
+#pragma region lift
+void toggle_lift() {
+  lift_enabled = !lift_enabled;
+  lift_piston.set_value(lift_enabled);
+}
+
+void lift_control() {
+  //TODO add button to controlscheme class
+  if (master.get_digital_new_press(DIGITAL_RIGHT)) {
+    toggle_lift();
+  }
+}
+#pragma endregion lift
+
 #pragma region intake
 void spin_intake_for(float degrees) {
   PTO_intake.move_relative(degrees, INTAKE_SPEED);

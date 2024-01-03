@@ -13,3 +13,4 @@ pros::Motor& PTO_flywheel = chassis.left_motors[3];
 pros::ADIDigitalOut PTO_piston('H');
 pros::ADIDigitalOut wing_piston_left('A');
 pros::ADIDigitalOut wing_piston_right('B');
+pros::ADIDigitalOut lift_piston('Z');

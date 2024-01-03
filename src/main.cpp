@@ -58,6 +58,12 @@ void opcontrol() {
     // Handle wing control
     wing_control();
 
+    // Handle flywheel control
+    flywheel_control();
+
+    // Handle lift control
+    lift_control();
+    
     // Handle debug information
     print_debug();
     

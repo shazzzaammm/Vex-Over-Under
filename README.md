@@ -8,7 +8,7 @@ We have a lot of autons planned for this year. We are only likely to use four in
 
 ### User Control
 
-We use a tank drive with 8 motors, 2 of which are PTO motors. The pto motors are allocated to the catapult and the intake. We have 3 total sensors, rotation, optic, and inertial. The rotation sensor is used to automatically charge the catapult. The optic sensor is used to automatically shoot the catapult when there is a triball loaded. The inertial sensor is used for our chassis PID.
+We use a tank drive with 8 motors, 2 of which are PTO motors. The pto motors are allocated to the flywheel and the intake. Our only sensor is the inertial sensor, which is used for our chassis PID. Our lift, PTO, and wings are all powered by pneumatic pistons.
 
 ### Ports
 
@@ -27,10 +27,10 @@ We use a tank drive with 8 motors, 2 of which are PTO motors. The pto motors are
 1. T_Controls
 
    - B = Toggle Wings
-   - A = Shoot Catapult
-   - X = Toggle Auto Shooting Catapult
+   - A = Hold Flywheel
+   - X = Toggle Flywheel
    - Y =
-   - UP =
+   - UP = Toggle Lift
    - DOWN =
    - LEFT = Toggle Outtake
    - RIGHT = Toggle Intake
@@ -43,9 +43,9 @@ We use a tank drive with 8 motors, 2 of which are PTO motors. The pto motors are
 
    - B = Toggle Wings
    - A = Toggle PTO
-   - X = Toggle Auto Shooting Catapult
-   - Y = Shoot Catapult
-   - UP =
+   - X = Toggle Flywheel
+   - Y = Hold Flywheel
+   - UP = Toggle Lift
    - DOWN = Reverse Chassis
    - LEFT =
    - RIGHT =
@@ -57,9 +57,9 @@ We use a tank drive with 8 motors, 2 of which are PTO motors. The pto motors are
 3. K_Controls
    - B = Toggle PTO
    - A = Toggle Wings
-   - X = Shoot Catapult
-   - Y = Toggle Auto Shooting Catapult
-   - UP =
+   - X = Hold Flywheel
+   - Y = Toggle Flywheel
+   - UP = Toggle Lift
    - DOWN = Reverse Chassis
    - LEFT =
    - RIGHT =

@@ -112,7 +112,6 @@ void controller_stats_task(void* parameter) {
 }
 
 void print_stat_to_controller(int type) {
-  // TODO maybe use a switch case instead
   if (pros::competition::is_disabled()) {
     if (type == 0) {
       master.set_text(0, 0, "Good Luck!!!!");
@@ -160,26 +159,17 @@ void pto_control() {
 #pragma endregion pto
 
 #pragma region flywheel
-// Take back half controller
-// TODO move this to variables.hpp
-double error = 0;
-double prev_error = 0;
-double output = 0;
-double gain = .2;
-double feed_forward = 0;
-double take_back_half = 0;
-
 void set_flywheel_velocity(double target) {
-  error = target - (PTO_flywheel.get_actual_velocity());
-  output += (gain * error) + (feed_forward * target);
+  TBH_error = target - (PTO_flywheel.get_actual_velocity());
+  TBH_output += (TBH_gain * TBH_error) + (TBH_feed_forward * target);
 
-  if (std::signbit(error) != std::signbit(prev_error)) {
-    output = .5 * (output + take_back_half);
-    take_back_half = output;
-    prev_error = error;
+  if (std::signbit(TBH_error) != std::signbit(TBH_prev_error)) {
+    TBH_output = .5 * (TBH_output + TBH_take_back_half);
+    TBH_take_back_half = TBH_output;
+    TBH_prev_error = TBH_error;
   }
 
-  PTO_flywheel.move_voltage(output);
+  PTO_flywheel.move_voltage(TBH_output);
 }
 
 void flywheel_control() {
@@ -207,8 +197,7 @@ void toggle_lift() {
 }
 
 void lift_control() {
-  //TODO add button to controlscheme class
-  if (master.get_digital_new_press(DIGITAL_RIGHT)) {
+  if (master.get_digital_new_press(selected_controls.toggle_lift_button)) {
     toggle_lift();
   }
 }

@@ -63,10 +63,10 @@ void opcontrol() {
 
     // Handle lift control
     lift_control();
-    
+
     // Handle debug information
     print_debug();
-    
+
     // Keep the time between cycles constant
     pros::delay(ez::util::DELAY_TIME);
   }

@@ -7,16 +7,49 @@ void print_debug() {
   // Prints a lot of debug information (this is so i dont go fully insane)
   std::string drive_mode = pto_6_motor_enabled ? "6 motor" : "8 motor";
   std::string flywheel_velocity = std::to_string(PTO_flywheel.get_actual_velocity()) + "rpm";
-  std::string lift_state = lift_enabled ? "up" : "down";
+  std::string lift_state = lift_enabled ? "up  " : "down";
   std::string flywheel_state =
-      flywheel_toggle_enabled || master.get_digital(selected_controls.hold_flywheel_button) ? "on" : "off";
+      flywheel_toggle_enabled || master.get_digital(selected_controls.hold_flywheel_button) ? "on " : "off";
 
   print_to_screen("drive mode: " + drive_mode, 0);
   print_to_screen("flywheel velocity: " + flywheel_velocity, 1);
   print_to_screen("flywheel enabled: " + flywheel_state, 2);
   print_to_screen("lift state: " + lift_state, 3);
-  print_to_screen("battery level: " + std::to_string(pros::battery::get_capacity()) + "%", 4);
+  check_motors_and_get_temp();
+  print_to_screen("battery level: " + std::to_string(pros::battery::get_capacity()) + "%", 5);
 }
+
+void check_motors_and_get_temp() {
+  std::vector<pros::Motor> motors = {
+      chassis.left_motors[0],  chassis.left_motors[1],  chassis.left_motors[2],  chassis.left_motors[3],
+      chassis.right_motors[0], chassis.right_motors[1], chassis.right_motors[2], chassis.right_motors[3],
+  };
+
+  double totalTemp = 0.0;
+  int count = 0;
+
+  for (auto& motor : motors) {
+    double temp = motor.get_temperature();
+    if (temp == PROS_ERR_F) {  // PROS_ERR_F is returned when the motor is unplugged
+      print_to_screen("Motor " + std::to_string(motor.get_port()) + " unplugged.", 4);
+      pros::delay(250);
+      master.rumble("---");
+    }
+
+    if (count < 6) {
+      totalTemp += temp;
+    }
+    ++count;
+  }
+
+  if (count == 0)
+    print_to_screen("No motors found", 4);
+
+  double averageTempCelsius = totalTemp / count;
+  double averageTempFahrenheit = averageTempCelsius * 9.0 / 5.0 + 32.0;
+  print_to_screen("Avgerage Temp: " + std::to_string(averageTempFahrenheit), 4);
+}
+
 #pragma endregion brain
 
 #pragma region chassis

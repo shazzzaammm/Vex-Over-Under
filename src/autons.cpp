@@ -33,9 +33,9 @@ void test_auton() {
   chassis.wait_drive();
 }
 
-void same_zone_steal() {}
+void same_zone_elim() {}
 
-void same_zone_elim() {
+void same_zone_awp() {
   int OFFSET = 45;
 
   wing_toggle(true);

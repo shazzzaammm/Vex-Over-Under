@@ -7,6 +7,7 @@ void controller_stats_task(void* parameter);
 void print_stat_to_controller(int type);
 
 // Chassis
+double map_inches_to_pid(double inches);
 void chassis_control();
 
 // Intake

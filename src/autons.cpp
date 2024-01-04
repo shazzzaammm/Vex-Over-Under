@@ -26,10 +26,10 @@ void spline_exit_condition() {
 }
 
 void test_auton() {
-  chassis.set_drive_pid(50, DRIVE_SPEED);
+  chassis.set_drive_pid(map_inches_to_pid(50), DRIVE_SPEED);
   chassis.wait_drive();
 
-  chassis.set_drive_pid(-50, DRIVE_SPEED);
+  chassis.set_drive_pid(map_inches_to_pid(-50), DRIVE_SPEED);
   chassis.wait_drive();
 }
 

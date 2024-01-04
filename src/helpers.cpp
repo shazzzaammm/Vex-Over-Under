@@ -53,6 +53,11 @@ void check_motors_and_get_temp() {
 #pragma endregion brain
 
 #pragma region chassis
+double map_inches_to_pid(double inches){
+  // TODO find the actual value instead of a guess
+  return inches * 2.25;
+}
+
 void arcade_drive() {
   // Arcade Split drive based off the joysticks and the orientation of the robot
   int forward_stick = master.get_analog(ANALOG_LEFT_Y);

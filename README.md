@@ -27,7 +27,7 @@ We use a tank drive with 8 motors, 2 of which are PTO motors. The pto motors are
 
 ### Controls
 
-1. T_Controls
+- T_Controls
 
    | Button | Function        |
    | ------ | --------------- |
@@ -44,7 +44,7 @@ We use a tank drive with 8 motors, 2 of which are PTO motors. The pto motors are
    | R1     | Hold Intake     |
    | R2     | Reverse Chassis |
 
-2. G_Controls
+- G_Controls
 
    | Button | Function        |
    | ------ | --------------- |
@@ -61,7 +61,7 @@ We use a tank drive with 8 motors, 2 of which are PTO motors. The pto motors are
    | R1     | Hold Intake     |
    | R2     | Hold Outtake    |
 
-3. K_Controls
+- K_Controls
 
    | Button | Function        |
    | ------ | --------------- |

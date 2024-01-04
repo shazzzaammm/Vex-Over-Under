@@ -17,7 +17,7 @@ void check_motors_and_get_temp() {
     if (temp == PROS_ERR_F) {  // PROS_ERR_F is returned when the motor is unplugged
       print_to_screen("Motor " + std::to_string(motor.get_port()) + " unplugged.", 4);
       pros::delay(250);
-      master.rumble("---");
+      rumble_controller();
     }
 
     if (count < 6) {

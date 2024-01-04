@@ -9,15 +9,16 @@ void print_stat_to_controller(int type);
 // Chassis
 void chassis_control();
 
-// Catapult
-bool isCataCharged();
-bool isSlapperFull();
-void catapult_control();
-
 // Intake
 void set_intake_volts(int volts);
 void spin_intake_for(float degrees);
 void intake_control();
+
+// Flywheel
+void flywheel_control();
+
+// Lift
+void lift_control();
 
 // PTO
 void pto_toggle(bool toggle);

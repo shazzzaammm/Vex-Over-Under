@@ -5,15 +5,7 @@
 #pragma region brain
 void print_debug() {
   std::string drive_mode = pto_6_motor_enabled ? "6 motor" : "8 motor";
-  std::string triball_status = isSlapperFull() ? "triball loaded" : "no triball loaded";
-  std::string auto_shoot_status = catapult_auto_shoot_enabled ? "enabled" : "disabled";
-  std::string cata_charged_status = isCataCharged() ? "charged" : "not charged";
   print_to_screen("drive mode: " + drive_mode, 0);
-  print_to_screen("optic brightness: " + std::to_string(cata_optic_sensor.get_brightness()), 1);
-  print_to_screen("triball status: " + triball_status, 2);
-  print_to_screen("cata auto shoot: " + auto_shoot_status, 3);
-  print_to_screen("cata charged status: " + cata_charged_status, 4);
-  print_to_screen("cata temp: " + std::to_string(PTO_catapult.get_temperature()) + "C", 5);
   print_to_screen("battery level: " + std::to_string(pros::battery::get_capacity()) + "%", 6);
 }
 #pragma endregion brain
@@ -78,10 +70,10 @@ std::string getButtonDown() {
   if (master.get_digital(selected_controls.hold_outtake_button)) {
     return "Outtake Hold   ";
   }
-  if (master.get_digital(selected_controls.shoot_catapult_button)) {
+  if (master.get_digital(selected_controls.hold_flywheel_button)) {
     return "Catapult Hold  ";
   }
-  if (master.get_digital(selected_controls.toggle_catapult_button)) {
+  if (master.get_digital(selected_controls.toggle_flywheel_button)) {
     return "Catapult Toggle";
   }
   if (master.get_digital(selected_controls.toggle_intake_button)) {
@@ -120,7 +112,6 @@ void controller_stats_task(void* parameter) {
 }
 
 void print_stat_to_controller(int type) {
-  // TODO maybe use a switch case instead
   if (pros::competition::is_disabled()) {
     if (type == 0) {
       master.set_text(0, 0, "Good Luck!!!!");
@@ -149,51 +140,11 @@ void print_stat_to_controller(int type) {
 }
 #pragma endregion controller
 
-#pragma region catapult
-void toggle_auto_shoot_catapult() {
-  catapult_auto_shoot_enabled = !catapult_auto_shoot_enabled;
-}
-
-bool isSlapperFull() {
-  return cata_optic_sensor.get_brightness() < TRIBALL_LOADED_BRIGHTNESS;
-}
-
-bool isCataCharged() {
-  return cata_rotation_sensor.get_angle() < CATAPULT_CHARGED_DEGREES;
-}
-
-void catapult_control() {
-  // Make sure the catapult is moving the correct direction
-  PTO_catapult.set_reversed(pto_6_motor_enabled);
-
-  // Only move cata if we are in 6 motor
-  if (!pto_6_motor_enabled) {
-    return;
-  }
-
-  // Toggle automatic shooting (for match loading)
-  if (master.get_digital_new_press(selected_controls.toggle_catapult_button)) {
-    toggle_auto_shoot_catapult();
-  }
-
-  // Shoot the catapult automatically, shoot the catapult manually, or charge the catapult automatically
-  if (master.get_digital(selected_controls.shoot_catapult_button) || (isSlapperFull() && catapult_auto_shoot_enabled) ||
-      (!isCataCharged() && pto_6_motor_enabled)) {
-    PTO_catapult.move_voltage(CATAPULT_SHOOTING_VOLTAGE);
-  }
-
-  // Stop the catapult unless we are in 8 motor drive
-  else if (pto_6_motor_enabled) {
-    PTO_catapult.brake();
-  }
-}
-#pragma endregion catapult
-
 #pragma region pto
 void pto_toggle(bool toggle) {
   // Toggle PTO motors
   pto_6_motor_enabled = toggle;
-  chassis.pto_toggle({PTO_intake, PTO_catapult}, toggle);
+  chassis.pto_toggle({PTO_intake, PTO_flywheel}, toggle);
 
   // Actuate the piston
   PTO_piston.set_value(!toggle);
@@ -206,6 +157,51 @@ void pto_control() {
   }
 }
 #pragma endregion pto
+
+#pragma region flywheel
+void set_flywheel_velocity(double target) {
+  TBH_error = target - (PTO_flywheel.get_actual_velocity());
+  TBH_output += (TBH_gain * TBH_error) + (TBH_feed_forward * target);
+
+  if (std::signbit(TBH_error) != std::signbit(TBH_prev_error)) {
+    TBH_output = .5 * (TBH_output + TBH_take_back_half);
+    TBH_take_back_half = TBH_output;
+    TBH_prev_error = TBH_error;
+  }
+
+  PTO_flywheel.move_voltage(TBH_output);
+}
+
+void flywheel_control() {
+  // Dont activate unless 6 motor
+  if (pto_6_motor_enabled)
+    return;
+
+  // Toggle flywheel
+  if (master.get_digital_new_press(selected_controls.toggle_flywheel_button)) {
+    flywheel_toggle_enabled = !flywheel_toggle_enabled;
+  }
+
+  // Spin the flywheel (using take back half)
+  //! PLEASE WORK PLEASE PLEASE PLEASE PLEASE
+  if (master.get_digital(selected_controls.hold_flywheel_button) || flywheel_toggle_enabled) {
+    set_flywheel_velocity(FLYWHEEL_RPM);
+  }
+}
+#pragma endregion flywheel
+
+#pragma region lift
+void toggle_lift() {
+  lift_enabled = !lift_enabled;
+  lift_piston.set_value(lift_enabled);
+}
+
+void lift_control() {
+  if (master.get_digital_new_press(selected_controls.toggle_lift_button)) {
+    toggle_lift();
+  }
+}
+#pragma endregion lift
 
 #pragma region intake
 void spin_intake_for(float degrees) {

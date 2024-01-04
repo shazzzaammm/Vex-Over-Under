@@ -37,9 +37,9 @@ void same_zone_steal() {}
 
 void same_zone_elim() {
   int OFFSET = 45;
-  
+
   wing_toggle(true);
-  
+
   chassis.set_drive_pid(60, DRIVE_SPEED);
   chassis.wait_drive();
 
@@ -62,7 +62,7 @@ void same_zone_elim() {
 
   wing_toggle(true);
 
-  chassis.set_turn_pid(180 -OFFSET, TURN_SPEED);
+  chassis.set_turn_pid(180 - OFFSET, TURN_SPEED);
   chassis.wait_drive();
 }
 

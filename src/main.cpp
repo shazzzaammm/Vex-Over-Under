@@ -58,12 +58,15 @@ void opcontrol() {
     // Handle wing control
     wing_control();
 
-    // Handle catapult control
-    catapult_control();
+    // Handle flywheel control
+    flywheel_control();
+
+    // Handle lift control
+    lift_control();
 
     // Handle debug information
     print_debug();
-    
+
     // Keep the time between cycles constant
     pros::delay(ez::util::DELAY_TIME);
   }

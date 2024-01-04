@@ -6,7 +6,7 @@ This program is the only program that 4303X is using this year. The main branch 
 
 ### Autons
 
-We have a lot of autons planned for this year, but are only likely to use 2 or 3. One of them will be the gremlin (5203G) same_awp_auto, one will be a "steal" auton on the opposite side, and one will be an awp on the opposite side. The gremlin auto should score us We will also have a skills auton. The plan is to match load until we cant anymore, then push all of them into the goal (so original).
+We have a lot of autons planned for this year, but are only likely to use 2. One of them will be the gremlin (5203G) same_awp_auto, and one will be a "steal" auton on the opposite side. The gremlin auto should score us 6 triballs while getting us the win point. The steal auton should score us 1 triball, prevent the opposite alliance from scoring the middle triballs, and get us the win point. We will also have a skills auton. The plan is to match load until we cant anymore, then push all of them into the goal (so original).
 
 ### User Control
 
@@ -65,15 +65,15 @@ We use a tank drive with 8 motors, 2 of which are PTO motors. The pto motors are
 
 | Button | Function        |
 | ------ | --------------- |
-| B      | Toggle PTO    |
-| A      | Toggle Wings      |
-| X      | Hold Flywheel |
-| Y      | Toggle Flywheel   |
+| B      | Toggle PTO      |
+| A      | Toggle Wings    |
+| X      | Hold Flywheel   |
+| Y      | Toggle Flywheel |
 | UP     | Toggle Lift     |
 | DOWN   | Reverse Chassis |
 | LEFT   |                 |
 | RIGHT  |                 |
-| L1     | Toggle Outtake   |
-| L2     | Toggle Intake  |
-| R1     | Hold Outtake     |
-| R2     | Hold Intake    |
+| L1     | Toggle Outtake  |
+| L2     | Toggle Intake   |
+| R1     | Hold Outtake    |
+| R2     | Hold Intake     |

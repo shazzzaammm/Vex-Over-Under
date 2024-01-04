@@ -29,51 +29,51 @@ We use a tank drive with 8 motors, 2 of which are PTO motors. The pto motors are
 
 1. T_Controls
 
-| Button | Function        |
-| ------ | --------------- |
-| B      | Toggle Wings    |
-| A      | Hold Flywheel   |
-| X      | Toggle Flywheel |
-| Y      |                 |
-| UP     | Toggle Lift     |
-| DOWN   |                 |
-| LEFT   | Toggle Outtake  |
-| RIGHT  | Toggle Intake   |
-| L1     | Hold Outtake    |
-| L2     | Toggle PTO      |
-| R1     | Hold Intake     |
-| R2     | Reverse Chassis |
+   | Button | Function        |
+   | ------ | --------------- |
+   | B      | Toggle Wings    |
+   | A      | Hold Flywheel   |
+   | X      | Toggle Flywheel |
+   | Y      |                 |
+   | UP     | Toggle Lift     |
+   | DOWN   |                 |
+   | LEFT   | Toggle Outtake  |
+   | RIGHT  | Toggle Intake   |
+   | L1     | Hold Outtake    |
+   | L2     | Toggle PTO      |
+   | R1     | Hold Intake     |
+   | R2     | Reverse Chassis |
 
 2. G_Controls
 
-| Button | Function        |
-| ------ | --------------- |
-| B      | Toggle Wings    |
-| A      | Toggle PTO      |
-| X      | Toggle Flywheel |
-| Y      | Hold Flywheel   |
-| UP     | Toggle Lift     |
-| DOWN   | Reverse Chassis |
-| LEFT   |                 |
-| RIGHT  |                 |
-| L1     | Toggle Intake   |
-| L2     | Toggle Outtake  |
-| R1     | Hold Intake     |
-| R2     | Hold Outtake    |
+   | Button | Function        |
+   | ------ | --------------- |
+   | B      | Toggle Wings    |
+   | A      | Toggle PTO      |
+   | X      | Toggle Flywheel |
+   | Y      | Hold Flywheel   |
+   | UP     | Toggle Lift     |
+   | DOWN   | Reverse Chassis |
+   | LEFT   |                 |
+   | RIGHT  |                 |
+   | L1     | Toggle Intake   |
+   | L2     | Toggle Outtake  |
+   | R1     | Hold Intake     |
+   | R2     | Hold Outtake    |
 
 3. K_Controls
 
-| Button | Function        |
-| ------ | --------------- |
-| B      | Toggle PTO      |
-| A      | Toggle Wings    |
-| X      | Hold Flywheel   |
-| Y      | Toggle Flywheel |
-| UP     | Toggle Lift     |
-| DOWN   | Reverse Chassis |
-| LEFT   |                 |
-| RIGHT  |                 |
-| L1     | Toggle Outtake  |
-| L2     | Toggle Intake   |
-| R1     | Hold Outtake    |
-| R2     | Hold Intake     |
+   | Button | Function        |
+   | ------ | --------------- |
+   | B      | Toggle PTO      |
+   | A      | Toggle Wings    |
+   | X      | Hold Flywheel   |
+   | Y      | Toggle Flywheel |
+   | UP     | Toggle Lift     |
+   | DOWN   | Reverse Chassis |
+   | LEFT   |                 |
+   | RIGHT  |                 |
+   | L1     | Toggle Outtake  |
+   | L2     | Toggle Intake   |
+   | R1     | Hold Outtake    |
+   | R2     | Hold Intake     |

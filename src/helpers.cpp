@@ -62,7 +62,7 @@ void rumble_controller() {
   master.rumble(".");
 }
 
-std::string getButtonDown() {
+std::string get_button_down() {
   // Used for debugging
   if (master.get_digital(selected_controls.hold_intake_button)) {
     return "Intake Hold    ";
@@ -71,10 +71,13 @@ std::string getButtonDown() {
     return "Outtake Hold   ";
   }
   if (master.get_digital(selected_controls.hold_flywheel_button)) {
-    return "Catapult Hold  ";
+    return "Flywheel Hold  ";
   }
   if (master.get_digital(selected_controls.toggle_flywheel_button)) {
-    return "Catapult Toggle";
+    return "Flywheel Toggle";
+  }
+  if (master.get_digital(selected_controls.toggle_lift_button)) {
+    return "Lift Toggle    ";
   }
   if (master.get_digital(selected_controls.toggle_intake_button)) {
     return "Intake Toggle  ";
@@ -130,7 +133,7 @@ void print_stat_to_controller(int type) {
   if (type == 0) {
     master.set_text(0, 0, (pto_6_motor_enabled ? "Mode: 6 motor!!!!" : "Mode: 8 motor!!!!"));
   } else if (type == 1) {
-    master.set_text(1, 0, getButtonDown());
+    master.set_text(1, 0, get_button_down());
   } else if (type == 2) {
     master.set_text(
         2, 0, "Time Remaining: " + std::to_string((MATCH_LENGTH + match_start_time - pros::millis()) / 1000) + "  ");

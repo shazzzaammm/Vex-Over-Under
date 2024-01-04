@@ -1,3 +1,5 @@
+![4303X logo](yixes.png "yixes!!!!")
+
 ### Description
 
 This program is the only program that 4303X is using this year. The main branch will always be the current version on our robot, and any other branch is used for testing new features without ruining our regular program (though usually we just ruin it anyways because merging isnt fun :c).

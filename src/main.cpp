@@ -14,9 +14,9 @@ void initialize() {
   ez::as::auton_selector.add_autons({
       Auton("Test Auton", test_auton),
       Auton("Same Zone AWP", same_zone_awp),
-      Auton("Opposite Zone AutonWinPoint", opposite_zone_awp),
-      Auton("Opposite Zone Eliminations", opposite_zone_elim),
-      Auton("Same Zone Eliminations", same_zone_elim),
+      Auton("Opposite Zone AWP", opposite_zone_awp),
+      Auton("Opposite Zone Elim", opposite_zone_elim),
+      Auton("Same Zone Elim", same_zone_elim),
   });
 
   // Initialize

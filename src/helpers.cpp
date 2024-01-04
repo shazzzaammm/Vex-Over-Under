@@ -4,12 +4,13 @@
 
 #pragma region brain
 void print_debug() {
+  // Prints a lot of debug information (this is so i dont go fully insane)
   std::string drive_mode = pto_6_motor_enabled ? "6 motor" : "8 motor";
   std::string flywheel_velocity = std::to_string(PTO_flywheel.get_actual_velocity()) + "rpm";
   std::string lift_state = lift_enabled ? "up" : "down";
   std::string flywheel_state =
       flywheel_toggle_enabled || master.get_digital(selected_controls.hold_flywheel_button) ? "on" : "off";
-  
+
   print_to_screen("drive mode: " + drive_mode, 0);
   print_to_screen("flywheel velocity: " + flywheel_velocity, 1);
   print_to_screen("flywheel enabled: " + flywheel_state, 2);
@@ -58,7 +59,9 @@ void reverse_chassis() {
 }
 
 void chassis_control() {
+  // Drive using the user's prefered method
   drive_control();
+  // Reverse chassis when requested
   if (master.get_digital_new_press(selected_controls.reverse_chassis_button)) {
     reverse_chassis();
   }
@@ -123,30 +126,33 @@ void controller_stats_task(void* parameter) {
 }
 
 void print_stat_to_controller(int type) {
+  // Behave differently if disabled
   if (pros::competition::is_disabled()) {
     if (type == 0) {
+      // :D
       master.set_text(0, 0, "Good Luck!!!!");
     } else if (type == 1) {
+      // Clear line to update more consistently
       master.clear_line(1);
     } else if (type == 2) {
+      // Print the auton name to the controller
       std::string auton_name = ez::as::auton_selector.Autons[ez::as::auton_selector.current_auton_page].Name;
       std::string auton_display_name = auton_name.substr(0, auton_name.find("\n", 0));
       master.set_text(1, 0, auton_display_name);
-    } else {
-      master.clear();
     }
     return;
-  }
-
-  if (type == 0) {
-    master.set_text(0, 0, (pto_6_motor_enabled ? "Mode: 6 motor!!!!" : "Mode: 8 motor!!!!"));
-  } else if (type == 1) {
-    master.set_text(1, 0, get_button_down());
-  } else if (type == 2) {
-    master.set_text(
-        2, 0, "Time Remaining: " + std::to_string((MATCH_LENGTH + match_start_time - pros::millis()) / 1000) + "  ");
   } else {
-    master.clear();
+    if (type == 0) {
+      // Prints the current drive mode
+      master.set_text(0, 0, (pto_6_motor_enabled ? "Mode: 6 motor!!!!" : "Mode: 8 motor!!!!"));
+    } else if (type == 1) {
+      // Prints the button being pressed (so we dont use the wrong controls)
+      master.set_text(1, 0, get_button_down());
+    } else if (type == 2) {
+      // Prints remaining time in the match
+      double time_remaining = (MATCH_LENGTH + match_start_time - pros::millis()) / 1000;
+      master.set_text(2, 0, "Time Remaining: " + std::to_string(time_remaining) + "  ");
+    }
   }
 }
 #pragma endregion controller
@@ -171,15 +177,19 @@ void pto_control() {
 
 #pragma region flywheel
 void set_flywheel_velocity(double target) {
+  // Get the difference between what we want and what we have
   TBH_error = target - (PTO_flywheel.get_actual_velocity());
+  // Update the output
   TBH_output += (TBH_gain * TBH_error) + (TBH_feed_forward * target);
 
+  // Check if the error has reversed directions (meaning oscillations are occuring)
   if (std::signbit(TBH_error) != std::signbit(TBH_prev_error)) {
+    // Take back half (omg the algorithm name!)
     TBH_output = .5 * (TBH_output + TBH_take_back_half);
     TBH_take_back_half = TBH_output;
     TBH_prev_error = TBH_error;
   }
-
+  // Move the flywheel based of the algorithm
   PTO_flywheel.move_voltage(TBH_output);
 }
 
@@ -193,7 +203,7 @@ void flywheel_control() {
     flywheel_toggle_enabled = !flywheel_toggle_enabled;
   }
 
-  // Spin the flywheel (using take back half)
+  // Spin the flywheel (using take back half) when requested
   //! PLEASE WORK PLEASE PLEASE PLEASE PLEASE
   if (master.get_digital(selected_controls.hold_flywheel_button) || flywheel_toggle_enabled) {
     set_flywheel_velocity(FLYWHEEL_RPM);
@@ -202,14 +212,14 @@ void flywheel_control() {
 #pragma endregion flywheel
 
 #pragma region lift
-void toggle_lift() {
-  lift_enabled = !lift_enabled;
-  lift_piston.set_value(lift_enabled);
+void lift_toggle(bool toggle) {
+  lift_enabled = toggle;
+  lift_piston.set_value(toggle);
 }
 
 void lift_control() {
   if (master.get_digital_new_press(selected_controls.toggle_lift_button)) {
-    toggle_lift();
+    lift_toggle(!lift_enabled);
   }
 }
 #pragma endregion lift
@@ -270,7 +280,3 @@ void wing_control() {
     wing_toggle(!wings_enabled);
 }
 #pragma endregion wings
-
-#pragma region endgame
-// how is endgame gonna work im so lost
-#pragma endregion endgame

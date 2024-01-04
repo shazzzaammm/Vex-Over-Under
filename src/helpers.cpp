@@ -3,22 +3,6 @@
 #include "variables.hpp"
 
 #pragma region brain
-void print_debug() {
-  // Prints a lot of debug information (this is so i dont go fully insane)
-  std::string drive_mode = pto_6_motor_enabled ? "6 motor" : "8 motor";
-  std::string flywheel_velocity = std::to_string(PTO_flywheel.get_actual_velocity()) + "rpm";
-  std::string lift_state = lift_enabled ? "up  " : "down";
-  std::string flywheel_state =
-      flywheel_toggle_enabled || master.get_digital(selected_controls.hold_flywheel_button) ? "on " : "off";
-
-  print_to_screen("drive mode: " + drive_mode, 0);
-  print_to_screen("flywheel velocity: " + flywheel_velocity, 1);
-  print_to_screen("flywheel enabled: " + flywheel_state, 2);
-  print_to_screen("lift state: " + lift_state, 3);
-  check_motors_and_get_temp();
-  print_to_screen("battery level: " + std::to_string(pros::battery::get_capacity()) + "%", 5);
-}
-
 void check_motors_and_get_temp() {
   std::vector<pros::Motor> motors = {
       chassis.left_motors[0],  chassis.left_motors[1],  chassis.left_motors[2],  chassis.left_motors[3],
@@ -50,6 +34,22 @@ void check_motors_and_get_temp() {
   print_to_screen("Avgerage Temp: " + std::to_string(averageTempFahrenheit), 4);
 }
 
+
+void print_debug() {
+  // Prints a lot of debug information (this is so i dont go fully insane)
+  std::string drive_mode = pto_6_motor_enabled ? "6 motor" : "8 motor";
+  std::string flywheel_velocity = std::to_string(PTO_flywheel.get_actual_velocity()) + "rpm";
+  std::string lift_state = lift_enabled ? "up  " : "down";
+  std::string flywheel_state =
+      flywheel_toggle_enabled || master.get_digital(selected_controls.hold_flywheel_button) ? "on " : "off";
+
+  print_to_screen("drive mode: " + drive_mode, 0);
+  print_to_screen("flywheel velocity: " + flywheel_velocity, 1);
+  print_to_screen("flywheel enabled: " + flywheel_state, 2);
+  print_to_screen("lift state: " + lift_state, 3);
+  check_motors_and_get_temp();
+  print_to_screen("battery level: " + std::to_string(pros::battery::get_capacity()) + "%", 5);
+}
 #pragma endregion brain
 
 #pragma region chassis

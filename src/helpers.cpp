@@ -34,7 +34,6 @@ void check_motors_and_get_temp() {
   print_to_screen("Avgerage Temp: " + std::to_string(averageTempFahrenheit), 4);
 }
 
-
 void print_debug() {
   // Prints a lot of debug information (this is so i dont go fully insane)
   std::string drive_mode = pto_6_motor_enabled ? "6 motor" : "8 motor";
@@ -53,7 +52,7 @@ void print_debug() {
 #pragma endregion brain
 
 #pragma region chassis
-double map_inches_to_pid(double inches){
+double map_inches_to_pid(double inches) {
   // TODO find the actual value instead of a guess
   return inches * 2.25;
 }
@@ -242,7 +241,6 @@ void flywheel_control() {
   }
 
   // Spin the flywheel (using take back half) when requested
-  //! PLEASE WORK PLEASE PLEASE PLEASE PLEASE
   if (master.get_digital(selected_controls.hold_flywheel_button) || flywheel_toggle_enabled) {
     set_flywheel_velocity(FLYWHEEL_RPM);
   }

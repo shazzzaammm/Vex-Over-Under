@@ -41,7 +41,6 @@ void print_debug() {
   std::string lift_state = lift_enabled ? "up  " : "down";
   std::string flywheel_state =
       flywheel_toggle_enabled || master.get_digital(selected_controls.hold_flywheel_button) ? "on " : "off";
-
   print_to_screen("drive mode: " + drive_mode, 0);
   print_to_screen("flywheel velocity: " + flywheel_velocity, 1);
   print_to_screen("flywheel enabled: " + flywheel_state, 2);
@@ -201,7 +200,7 @@ void pto_toggle(bool toggle) {
   chassis.pto_toggle({PTO_intake, PTO_flywheel}, toggle);
 
   // Actuate the piston
-  PTO_piston.set_value(!toggle);
+  PTO_piston.set_value(toggle);
 }
 
 void pto_control() {
@@ -213,6 +212,14 @@ void pto_control() {
 #pragma endregion pto
 
 #pragma region flywheel
+void reset_TBH() {
+  TBH_error = 0;
+  TBH_prev_error = 0;
+  TBH_output = 0;
+  TBH_feed_forward = 0;
+  TBH_take_back_half = 0;
+}
+
 void set_flywheel_velocity(double target) {
   // Get the difference between what we want and what we have
   TBH_error = target - (PTO_flywheel.get_actual_velocity());
@@ -232,8 +239,9 @@ void set_flywheel_velocity(double target) {
 
 void flywheel_control() {
   // Dont activate unless 6 motor
-  if (pto_6_motor_enabled)
+  if (!pto_6_motor_enabled) {
     return;
+  }
 
   // Toggle flywheel
   if (master.get_digital_new_press(selected_controls.toggle_flywheel_button)) {
@@ -243,6 +251,9 @@ void flywheel_control() {
   // Spin the flywheel (using take back half) when requested
   if (master.get_digital(selected_controls.hold_flywheel_button) || flywheel_toggle_enabled) {
     set_flywheel_velocity(FLYWHEEL_RPM);
+  } else {
+    reset_TBH();
+    PTO_flywheel.move_voltage(0);
   }
 }
 #pragma endregion flywheel
@@ -305,8 +316,7 @@ void intake_control() {
 
 #pragma region wings
 void wing_toggle(bool toggle) {
-  wing_piston_right.set_value(toggle);
-  wing_piston_left.set_value(toggle);
+  wing_piston.set_value(toggle);
   wings_enabled = toggle;
 }
 

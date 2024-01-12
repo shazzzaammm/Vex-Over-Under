@@ -25,19 +25,27 @@ void spline_exit_condition() {
   chassis.set_exit_condition(chassis.turn_exit, 10, 3, 1, 25, 500, 500);
 }
 
-void test_auton() {
-  chassis.set_drive_pid(map_inches_to_pid(50), DRIVE_SPEED);
-  chassis.wait_drive();
-
-  chassis.set_drive_pid(map_inches_to_pid(-50), DRIVE_SPEED);
-  chassis.wait_drive();
+void unstow(){
+  pto_toggle(true);
+  spin_intake_for(-250);
 }
 
-void same_zone_elim() {}
+void test_auton() {
+  unstow();
+  // chassis.set_drive_pid(map_inches_to_pid(50), DRIVE_SPEED);
+  // chassis.wait_drive();
+
+  // chassis.set_drive_pid(map_inches_to_pid(-50), DRIVE_SPEED);
+  // chassis.wait_drive();
+}
+
+void same_zone_elim() {
+  unstow();
+}
 
 void same_zone_awp() {
   int OFFSET = 45;
-
+  unstow();
   wing_toggle(true);
 
   chassis.set_drive_pid(60, DRIVE_SPEED);
@@ -67,6 +75,7 @@ void same_zone_awp() {
 }
 
 void opposite_zone_awp() {
+  unstow();
   int OFFSET = 135;
   chassis.set_drive_pid(-20, DRIVE_SPEED);
   chassis.wait_drive();
@@ -104,7 +113,7 @@ void opposite_zone_awp() {
 }
 
 void opposite_zone_elim() {
-  pto_toggle(false);
+  unstow();
 
   chassis.set_drive_pid(200, DRIVE_SPEED, false);
   chassis.wait_until(180);

@@ -51,10 +51,6 @@ void print_debug() {
 #pragma endregion brain
 
 #pragma region chassis
-double map_inches_to_pid(double inches) {
-  // TODO find the actual value instead of a guess
-  return inches * 2.25;
-}
 
 void arcade_drive() {
   // Arcade Split drive based off the joysticks and the orientation of the robot

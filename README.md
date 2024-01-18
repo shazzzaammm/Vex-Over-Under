@@ -21,9 +21,9 @@ We use a tank drive with 8 motors, 2 of which are PTO motors. The pto motors are
 | Flywheel   | 2               |
 | Intake     | 11              |
 | IMU        | 7               |
-| PTO        | ?               |
-| Wings      | ?               |
-| Lift       | ?               |
+| PTO        | B               |
+| Wings      | C               |
+| Lift       | A               |
 
 ### Controls
 

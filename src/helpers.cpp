@@ -326,3 +326,30 @@ void wing_control() {
     wing_toggle(!wings_enabled);
 }
 #pragma endregion wings
+
+#pragma region endgame
+bool endgame_buttons_down() {
+  std::vector buttons = selected_controls.expansion_buttons;
+
+  for (auto button = buttons.begin(); button != buttons.end(); ++button) {
+    if (!master.get_digital(*button)) {
+      return false;
+    }
+  }
+  return true;
+}
+
+void endgame_toggle(bool enable){
+  // Toggle variable
+  endgame_enabled = enable;
+
+  // TODO actually put in the logic
+}
+
+void endgame_control(){
+  // Handle toggling the endgame in user control
+  if (endgame_buttons_down()){
+    endgame_toggle(!endgame_enabled);
+  }
+}
+#pragma endregion endgame

@@ -28,3 +28,8 @@ void pto_control();
 // Wings
 void wing_toggle(bool toggle);
 void wing_control();
+
+// Endgame
+bool endgame_buttons_down();
+void endgame_toggle(bool toggle);
+void endgame_control();

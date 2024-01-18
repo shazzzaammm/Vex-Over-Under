@@ -30,6 +30,9 @@ bool wings_enabled = false;
 // Chassis
 bool chassis_is_reversed = false;
 
+// Endgame
+bool endgame_enabled = false;
+
 // Controls
 const ControlScheme t_controls(DIGITAL_R1, DIGITAL_L1, DIGITAL_RIGHT, DIGITAL_LEFT, DIGITAL_B, DIGITAL_R2, DIGITAL_X,
                                DIGITAL_A, DIGITAL_L2, DIGITAL_Y, {DIGITAL_L1, DIGITAL_L2, DIGITAL_R1, DIGITAL_R2},

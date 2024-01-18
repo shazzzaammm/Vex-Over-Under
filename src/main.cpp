@@ -56,6 +56,9 @@ void opcontrol() {
     // Handle lift control
     lift_control();
 
+    // Handle endgame control
+    endgame_control();
+
     // Handle debug information
     print_debug();
 

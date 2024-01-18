@@ -43,7 +43,7 @@ void print_debug() {
       flywheel_toggle_enabled || master.get_digital(selected_controls.hold_flywheel_button) ? "on " : "off";
   std::string endgame_button_state = endgame_buttons_down() ? "down" : "up  ";
   std::string endgame_state = endgame_enabled ? "on " : "off";
-  
+
   print_to_screen("drive mode: " + drive_mode, 0);
   print_to_screen("flywheel velocity: " + flywheel_velocity, 1);
   print_to_screen("flywheel enabled: " + flywheel_state, 2);
@@ -330,7 +330,7 @@ void wing_control() {
 
 #pragma region endgame
 bool endgame_buttons_down() {
-  std::vector buttons = selected_controls.expansion_buttons;
+  std::vector<pros::controller_digital_e_t> buttons = selected_controls.expansion_buttons;
 
   for (auto button = buttons.begin(); button != buttons.end(); ++button) {
     if (!master.get_digital(*button)) {

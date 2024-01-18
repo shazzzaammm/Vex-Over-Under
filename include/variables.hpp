@@ -32,11 +32,14 @@ bool chassis_is_reversed = false;
 
 // Controls
 const ControlScheme t_controls(DIGITAL_R1, DIGITAL_L1, DIGITAL_RIGHT, DIGITAL_LEFT, DIGITAL_B, DIGITAL_R2, DIGITAL_X,
-                               DIGITAL_A, DIGITAL_L2, DIGITAL_Y, TANK);
+                               DIGITAL_A, DIGITAL_L2, DIGITAL_Y, {DIGITAL_L1, DIGITAL_L2, DIGITAL_R1, DIGITAL_R2},
+                               TANK);
 const ControlScheme g_controls(DIGITAL_L1, DIGITAL_L2, DIGITAL_R1, DIGITAL_R2, DIGITAL_A, DIGITAL_B, DIGITAL_X,
-                               DIGITAL_Y, DIGITAL_DOWN, DIGITAL_UP, TANK);
+                               DIGITAL_Y, DIGITAL_DOWN, DIGITAL_UP, {DIGITAL_L1, DIGITAL_L2, DIGITAL_R1, DIGITAL_R2},
+                               TANK);
 const ControlScheme k_controls(DIGITAL_L2, DIGITAL_L1, DIGITAL_R2, DIGITAL_R1, DIGITAL_B, DIGITAL_A, DIGITAL_Y,
-                               DIGITAL_X, DIGITAL_DOWN, DIGITAL_UP, TANK);
+                               DIGITAL_X, DIGITAL_DOWN, DIGITAL_UP, {DIGITAL_L1, DIGITAL_L2, DIGITAL_R1, DIGITAL_R2},
+                               TANK);
 ControlScheme selected_controls = k_controls;
 
 // Util

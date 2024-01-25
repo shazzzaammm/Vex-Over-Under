@@ -6,6 +6,8 @@ extern Drive chassis;
 
 void test_auton();
 
+void four_ball();
+
 void same_zone_awp();
 void same_zone_elim();
 

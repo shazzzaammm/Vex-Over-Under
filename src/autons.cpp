@@ -32,136 +32,81 @@ double map_inches_to_pid(double inches) {
 void unstow(bool stay_6_motor) {
   pto_toggle(true);
   spin_intake_for(-250);
-  pto_toggle(stay_6_motor);
 }
 
-void test_auton() {
-  unstow(false);
+void test_auton() {}
 
-  chassis.set_turn_pid(0, TURN_SPEED);
-  chassis.wait_until(0);
-  chassis.set_drive_pid(map_inches_to_pid(56), DRIVE_SPEED);
+void four_ball() {
+  int offset = -90;
+  pto_toggle(true);
+
+  set_intake_volts(-12000);
+
+  chassis.set_drive_pid(map_inches_to_pid(24), DRIVE_SPEED);
+  chassis.wait_until(map_inches_to_pid(14));
+  set_intake_volts(12000);
   chassis.wait_drive();
 
-  chassis.set_turn_pid(90, TURN_SPEED);
-  chassis.wait_drive();
-  chassis.set_drive_pid(map_inches_to_pid(19), DRIVE_SPEED);
+  chassis.set_drive_pid(map_inches_to_pid(-34), DRIVE_SPEED);
   chassis.wait_drive();
 
-  chassis.set_drive_pid(map_inches_to_pid(-19), DRIVE_SPEED);
-  chassis.wait_drive();
-}
-
-void same_zone_elim() {
-  unstow(false);
-}
-
-void same_zone_awp() {
-  int OFFSET = 45;
-  unstow(false);
-  wing_toggle(true);
-
-  chassis.set_drive_pid(60, DRIVE_SPEED);
+  chassis.set_turn_pid(45 - offset, TURN_SPEED);
   chassis.wait_drive();
 
-  chassis.set_swing_pid(RIGHT_SWING, 0 - OFFSET, SWING_SPEED);
+  chassis.set_drive_pid(map_inches_to_pid(18), DRIVE_SPEED);
   chassis.wait_drive();
 
-  chassis.set_drive_pid(85, DRIVE_SPEED);
+  chassis.set_swing_pid(ez::RIGHT_SWING, 0 - offset, SWING_SPEED);
   chassis.wait_drive();
 
-  chassis.set_drive_pid(-65, DRIVE_SPEED);
+  set_intake_volts(-12000);
+
+  chassis.set_drive_pid(map_inches_to_pid(11), DRIVE_SPEED);
   chassis.wait_drive();
 
-  wing_toggle(false);
-
-  chassis.set_turn_pid(-45 - OFFSET, TURN_SPEED);
+  chassis.set_drive_pid(map_inches_to_pid(-5), DRIVE_SPEED);
   chassis.wait_drive();
 
-  chassis.set_drive_pid(195, DRIVE_SPEED);
+  set_intake_volts(0);
+
+  chassis.set_drive_pid(map_inches_to_pid(5), DRIVE_SPEED);
   chassis.wait_drive();
 
-  wing_toggle(true);
-
-  chassis.set_turn_pid(180 - OFFSET, TURN_SPEED);
+  chassis.set_drive_pid(map_inches_to_pid(-10), DRIVE_SPEED);
   chassis.wait_drive();
-}
 
-void opposite_zone_awp() {
-  unstow(false);
-  int OFFSET = 135;
-  chassis.set_drive_pid(-20, DRIVE_SPEED);
+  chassis.set_turn_pid(-70 - offset, TURN_SPEED);
+  chassis.wait_drive();
+
+  chassis.set_drive_pid(map_inches_to_pid(50), DRIVE_SPEED);
+  chassis.wait_until(25);
+  set_intake_volts(12000);
   chassis.wait_drive();
 
   wing_toggle(true);
 
-  chassis.set_drive_pid(-55, DRIVE_SPEED);
+  chassis.set_turn_pid(0 - offset, TURN_SPEED);
   chassis.wait_drive();
 
-  chassis.set_turn_pid(230 - OFFSET, 75);
+  chassis.set_drive_pid(map_inches_to_pid(14.5), DRIVE_SPEED);
   chassis.wait_drive();
 
-  wing_toggle(false);
 
-  chassis.set_drive_pid(-235, DRIVE_SPEED);
+  chassis.set_swing_pid(ez::LEFT_SWING, 90 - offset, SWING_SPEED);
   chassis.wait_drive();
 
-  wing_toggle(true);
-
-  chassis.set_turn_pid(360 - OFFSET, TURN_SPEED);
+  set_intake_volts(-12000);
+  chassis.set_drive_pid(map_inches_to_pid(23), DRIVE_SPEED);
   chassis.wait_drive();
 
-  wing_toggle(false);
-
-  chassis.set_drive_pid(-80, DRIVE_SPEED);
-  chassis.wait_drive();
-
-  chassis.set_turn_pid(180 - OFFSET, TURN_SPEED);
-  chassis.wait_drive();
-
-  wing_toggle(true);
-
-  chassis.set_drive_pid(500, 127);
+  chassis.set_drive_pid(map_inches_to_pid(-10), DRIVE_SPEED);
   chassis.wait_drive();
 }
 
-void opposite_zone_elim() {
-  unstow(false);
+void same_zone_elim() {}
 
-  chassis.set_drive_pid(200, DRIVE_SPEED, false);
-  chassis.wait_until(180);
-  wing_toggle(true);
-  chassis.wait_drive();
+void same_zone_awp() {}
 
-  chassis.set_turn_pid(-90, TURN_SPEED);
-  wing_toggle(false);
-  chassis.wait_drive();
+void opposite_zone_awp() {}
 
-  chassis.set_drive_pid(40, DRIVE_SPEED);
-  chassis.wait_drive();
-
-  chassis.set_drive_pid(-50, DRIVE_SPEED);
-  chassis.wait_drive();
-
-  chassis.set_turn_pid(90, TURN_SPEED);
-  chassis.wait_drive();
-
-  wing_toggle(true);
-
-  chassis.set_drive_pid(115, DRIVE_SPEED);
-  chassis.wait_drive();
-
-  chassis.set_drive_pid(-25, DRIVE_SPEED);
-  chassis.wait_drive();
-
-  wing_toggle(false);
-
-  chassis.set_turn_pid(220, TURN_SPEED);
-  chassis.wait_drive();
-
-  chassis.set_drive_pid(175, DRIVE_SPEED);
-  chassis.wait_drive();
-
-  chassis.set_swing_pid(RIGHT_SWING, -40, 127);
-  chassis.wait_drive();
-}
+void opposite_zone_elim() {}

@@ -1,8 +1,8 @@
 #include "main.h"
-
 const int DRIVE_SPEED = 115;
 const int TURN_SPEED = 90;
 const int SWING_SPEED = 90;
+const int MAX_SPEED = 127;
 
 void default_constants() {
   chassis.set_slew_min_power(80, 80);
@@ -35,6 +35,84 @@ void unstow(bool stay_6_motor) {
 }
 
 void test_auton() {}
+
+void five_ball() {
+  chassis.set_exit_condition(chassis.turn_exit, 25, 3, 200, 7, 500, 500);
+
+  int offset = -90;
+  pto_toggle(true);
+
+  set_intake_volts(-12000);
+
+  chassis.set_drive_pid(map_inches_to_pid(24), 127);
+  chassis.wait_until(map_inches_to_pid(14));
+  set_intake_volts(12000);
+  chassis.wait_drive();
+
+  chassis.set_drive_pid(map_inches_to_pid(-34), 127);
+  chassis.wait_drive();
+
+  chassis.set_turn_pid(45 - offset, TURN_SPEED);
+  chassis.wait_drive();
+
+  chassis.set_drive_pid(map_inches_to_pid(18), 127);
+  chassis.wait_drive();
+
+  chassis.set_swing_pid(ez::RIGHT_SWING, 0 - offset, 127);
+  chassis.wait_drive();
+
+  set_intake_volts(-12000);
+
+  chassis.set_drive_pid(map_inches_to_pid(10), 127);
+  chassis.wait_drive();
+
+  chassis.set_drive_pid(map_inches_to_pid(-5), 127);
+  chassis.wait_drive();
+
+  set_intake_volts(0);
+
+  chassis.set_drive_pid(map_inches_to_pid(5), 127);
+  chassis.wait_drive();
+
+  chassis.set_drive_pid(map_inches_to_pid(-10), 127);
+  chassis.wait_drive();
+
+  chassis.set_turn_pid(-70 - offset, 127);
+  chassis.wait_drive();
+
+  chassis.set_drive_pid(map_inches_to_pid(50), 127);
+  chassis.wait_until(25);
+  set_intake_volts(12000);
+  chassis.wait_drive();
+
+  chassis.set_turn_pid(58 - offset, 127);
+  chassis.wait_drive();
+
+  set_intake_volts(-12000);
+
+  chassis.set_drive_pid(map_inches_to_pid(5), 127);
+  chassis.wait_drive();
+
+  chassis.set_turn_pid(-39.69 - offset, 127);
+  chassis.wait_drive();
+
+  set_intake_volts(12000);
+
+  chassis.set_drive_pid(map_inches_to_pid(22), 127);
+  chassis.wait_drive();
+
+  chassis.set_turn_pid(90 - offset, TURN_SPEED);
+  chassis.wait_drive();
+
+  wing_toggle(true);
+  set_intake_volts(-12000);
+
+  chassis.set_drive_pid(map_inches_to_pid(25), DRIVE_SPEED);
+  chassis.wait_drive();
+
+  chassis.set_drive_pid(map_inches_to_pid(-30), DRIVE_SPEED);
+  chassis.wait_drive();
+}
 
 void four_ball() {
   int offset = -90;
@@ -90,7 +168,6 @@ void four_ball() {
 
   chassis.set_drive_pid(map_inches_to_pid(14.5), DRIVE_SPEED);
   chassis.wait_drive();
-
 
   chassis.set_swing_pid(ez::LEFT_SWING, 90 - offset, SWING_SPEED);
   chassis.wait_drive();

@@ -73,7 +73,24 @@ We use a tank drive with 8 motors, 2 of which are PTO motors. The pto motors are
   | DOWN   | Reverse Chassis |
   | LEFT   |                 |
   | RIGHT  |                 |
-  | L1     | Toggle Outtake  |
-  | L2     | Toggle Intake   |
-  | R1     | Hold Outtake    |
-  | R2     | Hold Intake     |
+  | L1     | Hold Outtake    |
+  | L2     | Hold Intake     |
+  | R1     | Toggle Outtake  |
+  | R2     | Toggle Intake   |
+
+- A_Controls
+
+  | Button | Function        |
+  | ------ | --------------- |
+  | B      |                 |
+  | A      | Toggle PTO      |
+  | X      | Toggle Flywheel |
+  | Y      | Hold Flywheel   |
+  | UP     | Toggle Lift     |
+  | DOWN   | Reverse Chassis |
+  | LEFT   | Null Button     |
+  | RIGHT  |                 |
+  | L1     | Toggle Wings    |
+  | L2     | Toggle Wings    |
+  | R1     | Toggle Outtake  |
+  | R2     | Toggle Intake   |

@@ -40,12 +40,12 @@ const ControlScheme t_controls(DIGITAL_R1, DIGITAL_L1, DIGITAL_RIGHT, DIGITAL_LE
 const ControlScheme g_controls(DIGITAL_L1, DIGITAL_L2, DIGITAL_R1, DIGITAL_R2, {DIGITAL_A}, DIGITAL_B, DIGITAL_X,
                                DIGITAL_Y, DIGITAL_DOWN, DIGITAL_UP, {DIGITAL_L1, DIGITAL_L2, DIGITAL_R1, DIGITAL_R2},
                                TANK);
-const ControlScheme k_controls(DIGITAL_L2, DIGITAL_L1, DIGITAL_R2, DIGITAL_R1, {DIGITAL_B}, DIGITAL_A, DIGITAL_Y,
+const ControlScheme k_controls(DIGITAL_R2, DIGITAL_R1, DIGITAL_L2, DIGITAL_L1, {DIGITAL_B}, DIGITAL_A, DIGITAL_Y,
                                DIGITAL_X, DIGITAL_DOWN, DIGITAL_UP, {DIGITAL_L1, DIGITAL_L2, DIGITAL_R1, DIGITAL_R2},
                                TANK);
-const ControlScheme a_controls(DIGITAL_L2, DIGITAL_L1, DIGITAL_R2, DIGITAL_R1, {DIGITAL_B}, DIGITAL_A, DIGITAL_X,
-                               DIGITAL_Y, DIGITAL_DOWN, DIGITAL_UP, {DIGITAL_L1, DIGITAL_L2, DIGITAL_R1, DIGITAL_R2},
-                               TANK);
+const ControlScheme a_controls(DIGITAL_LEFT, DIGITAL_RIGHT, DIGITAL_R2, DIGITAL_R1, {DIGITAL_L2, DIGITAL_L1}, DIGITAL_A,
+                               DIGITAL_X, DIGITAL_Y, DIGITAL_DOWN, DIGITAL_UP,
+                               {DIGITAL_L1, DIGITAL_L2, DIGITAL_R1, DIGITAL_R2}, TANK);
 ControlScheme selected_controls = a_controls;
 
 // Util

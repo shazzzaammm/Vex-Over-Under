@@ -115,6 +115,15 @@ bool check_multi_press(std::vector<pros::controller_digital_e_t> buttons) {
   return true;
 }
 
+bool any_button_down(std::vector<pros::controller_digital_e_t> buttons) {
+  for (auto button = buttons.begin(); button != buttons.end(); ++button) {
+    if (master.get_digital(*button)) {
+      return true;
+    }
+  }
+  return false;
+}
+
 void rumble_controller() {
   master.rumble(".");
 }

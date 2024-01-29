@@ -106,7 +106,7 @@ void chassis_control() {
 #pragma endregion chassis
 
 #pragma region controller
-bool check_multi_press(std::vector<pros::controller_digital_e_t> buttons) {
+bool multi_pressing(std::vector<pros::controller_digital_e_t> buttons) {
   for (auto button = buttons.begin(); button != buttons.end(); ++button) {
     if (!master.get_digital(*button)) {
       return false;
@@ -154,8 +154,11 @@ std::string get_button_down() {
   if (master.get_digital(selected_controls.toggle_PTO_button)) {
     return "PTO Toggle     ";
   }
-  if (master.get_digital(selected_controls.toggle_wings_button)) {
+  if (any_button_down(selected_controls.toggle_wings_buttons)) {
     return "Wings Toggle   ";
+  }
+  if (multi_pressing(selected_controls.expansion_buttons)) {
+    return "End Game       ";
   }
   if (master.get_digital(selected_controls.reverse_chassis_button)) {
     return "Reverse Chassis";
@@ -342,7 +345,7 @@ void wing_toggle(bool toggle) {
 
 void wing_control() {
   // Handle enabling/disabling the wings in user control
-  if (master.get_digital_new_press(selected_controls.toggle_wings_button))
+  if (any_button_down(selected_controls.toggle_wings_buttons))
     wing_toggle(!wings_enabled);
 }
 #pragma endregion wings
@@ -357,7 +360,7 @@ void endgame_toggle(bool enable) {
 
 void endgame_control() {
   // Handle toggling the endgame in user control
-  if (check_multi_press(selected_controls.expansion_buttons)) {
+  if (multi_pressing(selected_controls.expansion_buttons)) {
     endgame_toggle(!endgame_enabled);
   }
 }

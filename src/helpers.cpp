@@ -106,6 +106,15 @@ void chassis_control() {
 #pragma endregion chassis
 
 #pragma region controller
+bool check_multi_press(std::vector<pros::controller_digital_e_t> buttons) {
+  for (auto button = buttons.begin(); button != buttons.end(); ++button) {
+    if (!master.get_digital(*button)) {
+      return false;
+    }
+  }
+  return true;
+}
+
 void rumble_controller() {
   master.rumble(".");
 }
@@ -330,17 +339,6 @@ void wing_control() {
 #pragma endregion wings
 
 #pragma region endgame
-bool endgame_buttons_down() {
-  std::vector<pros::controller_digital_e_t> buttons = selected_controls.expansion_buttons;
-
-  for (auto button = buttons.begin(); button != buttons.end(); ++button) {
-    if (!master.get_digital(*button)) {
-      return false;
-    }
-  }
-  return true;
-}
-
 void endgame_toggle(bool enable) {
   // Toggle variable
   endgame_enabled = enable;
@@ -350,7 +348,7 @@ void endgame_toggle(bool enable) {
 
 void endgame_control() {
   // Handle toggling the endgame in user control
-  if (endgame_buttons_down()) {
+  if (check_multi_press(selected_controls.expansion_buttons)) {
     endgame_toggle(!endgame_enabled);
   }
 }

@@ -41,7 +41,6 @@ void print_debug() {
   std::string lift_state = lift_enabled ? "up  " : "down";
   std::string flywheel_state =
       flywheel_toggle_enabled || master.get_digital(selected_controls.hold_flywheel_button) ? "on " : "off";
-  std::string endgame_button_state = endgame_buttons_down() ? "down" : "up  ";
   std::string endgame_state = endgame_enabled ? "on " : "off";
 
   print_to_screen("drive mode: " + drive_mode, 0);
@@ -49,9 +48,8 @@ void print_debug() {
   print_to_screen("flywheel enabled: " + flywheel_state, 2);
   print_to_screen("lift state: " + lift_state, 3);
   check_motors_and_get_temp();
-  print_to_screen("endgame buttons: " + endgame_button_state, 5);
-  print_to_screen("endgame enabled: " + endgame_state, 6);
-  print_to_screen("battery level: " + std::to_string(pros::battery::get_capacity()) + "%", 7);
+  print_to_screen("endgame enabled: " + endgame_state, 5);
+  print_to_screen("battery level: " + std::to_string(pros::battery::get_capacity()) + "%", 6);
 }
 #pragma endregion brain
 

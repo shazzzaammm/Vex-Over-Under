@@ -19,6 +19,7 @@ void flywheel_control();
 
 // Lift
 void lift_control();
+void lift_toggle(bool toggle);
 
 // PTO
 void pto_toggle(bool toggle);
@@ -29,6 +30,5 @@ void wing_toggle(bool toggle);
 void wing_control();
 
 // Endgame
-bool endgame_buttons_down();
 void endgame_toggle(bool toggle);
 void endgame_control();

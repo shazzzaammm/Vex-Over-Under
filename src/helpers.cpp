@@ -244,9 +244,10 @@ void flywheel_control() {
     return;
   }
 
-  // Toggle flywheel
+  // Toggle flywheel (with lift for convienience)
   if (master.get_digital_new_press(selected_controls.toggle_flywheel_button)) {
     flywheel_toggle_enabled = !flywheel_toggle_enabled;
+    lift_toggle(flywheel_toggle_enabled);
   }
 
   // Spin the flywheel (using take back half) when requested

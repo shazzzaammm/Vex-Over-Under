@@ -20,6 +20,8 @@ double TBH_take_back_half = 0;
 
 // Lift
 bool lift_enabled = false;
+int LIFT_DELAY = 100;
+int lift_delay_timer = 0;
 
 // PTO
 bool pto_6_motor_enabled = false;
@@ -44,7 +46,7 @@ const ControlScheme k_controls(DIGITAL_R2, DIGITAL_R1, DIGITAL_L2, DIGITAL_L1, {
                                DIGITAL_X, DIGITAL_DOWN, DIGITAL_UP, {DIGITAL_L1, DIGITAL_L2, DIGITAL_R1, DIGITAL_R2},
                                TANK);
 const ControlScheme a_controls(DIGITAL_LEFT, DIGITAL_RIGHT, DIGITAL_R2, DIGITAL_R1, {DIGITAL_L2, DIGITAL_L1}, DIGITAL_A,
-                               DIGITAL_X, DIGITAL_Y, DIGITAL_DOWN, DIGITAL_UP,
+                               DIGITAL_Y, DIGITAL_X, DIGITAL_DOWN, DIGITAL_UP,
                                {DIGITAL_L1, DIGITAL_L2, DIGITAL_R1, DIGITAL_R2}, TANK);
 ControlScheme selected_controls = a_controls;
 

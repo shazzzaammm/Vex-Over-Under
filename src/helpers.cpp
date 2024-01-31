@@ -115,7 +115,7 @@ bool multi_pressing(std::vector<pros::controller_digital_e_t> buttons) {
 
 bool any_button_down(std::vector<pros::controller_digital_e_t> buttons) {
   for (auto button = buttons.begin(); button != buttons.end(); ++button) {
-    if (master.get_digital(*button)) {
+    if (master.get_digital_new_press(*button)) {
       return true;
     }
   }
@@ -266,7 +266,17 @@ void flywheel_control() {
   // Toggle flywheel (with lift for convienience)
   if (master.get_digital_new_press(selected_controls.toggle_flywheel_button)) {
     flywheel_toggle_enabled = !flywheel_toggle_enabled;
-    lift_toggle(flywheel_toggle_enabled);
+  }
+
+  if (flywheel_toggle_enabled) {
+    if (LIFT_DELAY < lift_delay_timer) {
+      lift_toggle(true);
+    } else {
+      lift_delay_timer++;
+    }
+  } else {
+    lift_delay_timer = 0;
+    lift_toggle(false);
   }
 
   // Spin the flywheel (using take back half) when requested

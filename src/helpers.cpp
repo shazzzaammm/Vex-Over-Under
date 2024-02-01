@@ -221,6 +221,46 @@ void pto_control() {
 }
 #pragma endregion pto
 
+#pragma region slapper
+void slapper_auto_shoot_toggle() {
+  slapper_auto_shoot_enabled = !slapper_auto_shoot_enabled;
+}
+
+bool is_slapper_full() {
+  return slapper_distance_sensor.get() <= TRIBALL_DISTANCE;
+}
+
+bool is_slapper_charged() {
+  return (slapper_rotation_sensor.get_angle() >= SLAPPER_CHARGED_ROTATION_A - SLAPPER_CHARGED_LEEWAY &&
+          SLAPPER_CHARGED_ROTATION_A + SLAPPER_CHARGED_LEEWAY >= slapper_rotation_sensor.get_angle()) ||
+         (slapper_rotation_sensor.get_angle() >= SLAPPER_CHARGED_ROTATION_B - SLAPPER_CHARGED_LEEWAY &&
+          SLAPPER_CHARGED_ROTATION_B + SLAPPER_CHARGED_LEEWAY >= slapper_rotation_sensor.get_angle());
+}
+
+void slapper_control() {
+  // Only move slapper if we are in 6 motor
+  if (!pto_6_motor_enabled) {
+    return;
+  }
+
+  // Toggle automatic shooting (for match loading)
+  if (master.get_digital_new_press(selected_controls.toggle_slapper_button)) {
+    slapper_auto_shoot_toggle();
+  }
+
+  // Shoot the slapper automatically, shoot the slapper manually, or charge the slapper automatically
+  if (master.get_digital(selected_controls.hold_slapper_button) || (is_slapper_full() && slapper_auto_shoot_enabled) ||
+      (!is_slapper_charged())) {
+    PTO_slapper.move_voltage(SLAPPER_VOLTAGE);
+  }
+
+  // Stop the slapper
+  else {
+    PTO_slapper.brake();
+  }
+}
+#pragma endregion slapper
+
 #pragma region intake
 void spin_intake_for(float degrees) {
   PTO_intake.move_relative(degrees, INTAKE_SPEED);

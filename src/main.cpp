@@ -46,6 +46,9 @@ void opcontrol() {
     // Handle intake control
     intake_control();
 
+    // Handle slapper control
+    slapper_control();
+
     // Handle wing control
     wing_control();
 

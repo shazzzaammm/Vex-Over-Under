@@ -13,3 +13,7 @@ pros::Motor& PTO_slapper = chassis.right_motors[3];
 // Define Pneumatics
 pros::ADIDigitalOut PTO_piston('B');
 pros::ADIDigitalOut wing_piston('C');
+
+// Define Sensors
+pros::Distance slapper_distance_sensor(69);
+pros::Rotation slapper_rotation_sensor(69);

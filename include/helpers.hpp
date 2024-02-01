@@ -14,6 +14,9 @@ void set_intake_volts(int volts);
 void spin_intake_for(float degrees);
 void intake_control();
 
+// Slapper
+void slapper_control();
+
 // PTO
 void pto_toggle(bool toggle);
 void pto_control();

@@ -49,12 +49,6 @@ void opcontrol() {
     // Handle wing control
     wing_control();
 
-    // Handle flywheel control
-    flywheel_control();
-
-    // Handle lift control
-    lift_control();
-
     // Handle endgame control
     endgame_control();
 

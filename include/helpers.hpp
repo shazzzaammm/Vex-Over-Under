@@ -14,13 +14,6 @@ void set_intake_volts(int volts);
 void spin_intake_for(float degrees);
 void intake_control();
 
-// Flywheel
-void flywheel_control();
-
-// Lift
-void lift_control();
-void lift_toggle(bool toggle);
-
 // PTO
 void pto_toggle(bool toggle);
 void pto_control();

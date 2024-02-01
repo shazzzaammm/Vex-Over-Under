@@ -8,6 +8,7 @@ void test_auton();
 
 void four_ball();
 void five_ball();
+void six_ball();
 
 void same_zone_awp();
 void same_zone_elim();

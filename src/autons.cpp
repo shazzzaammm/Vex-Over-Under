@@ -37,21 +37,34 @@ void unstow(bool stay_6_motor) {
 void test_auton() {}
 
 void five_ball() {
+  // Trade turning accuracy for speed
   chassis.set_exit_condition(chassis.turn_exit, 25, 3, 200, 7, 500, 500);
 
+  // Set the offset 
   int offset = -90;
+  
+  // 6 motor mode
   pto_toggle(true);
 
+  // Unstow
   set_intake_volts(-12000);
 
+  // Drive toward the ball under endgame bar
   chassis.set_drive_pid(map_inches_to_pid(24), 127);
   chassis.wait_until(map_inches_to_pid(14));
+  
+  // Intake the ball under endgame bar
   set_intake_volts(12000);
   chassis.wait_drive();
 
+  // Back up towards goal
   chassis.set_drive_pid(map_inches_to_pid(-34), 127);
+  chassis.wait_until(map_inches_to_pid(-6));
+  // Stop intaking (saving power and stuff)
+  set_intake_volts(0);
   chassis.wait_drive();
 
+  // 
   chassis.set_turn_pid(45 - offset, TURN_SPEED);
   chassis.wait_drive();
 
@@ -81,37 +94,53 @@ void five_ball() {
   chassis.wait_drive();
 
   chassis.set_drive_pid(map_inches_to_pid(50), 127);
-  chassis.wait_until(25);
+  chassis.wait_until(map_inches_to_pid(25));
   set_intake_volts(12000);
   chassis.wait_drive();
 
   chassis.set_turn_pid(58 - offset, 127);
+  chassis.wait_until(25);
+  set_intake_volts(0);
   chassis.wait_drive();
 
   set_intake_volts(-12000);
 
-  chassis.set_drive_pid(map_inches_to_pid(5), 127);
+  chassis.set_drive_pid(map_inches_to_pid(10), 127);
+  chassis.wait_drive();
+
+  chassis.set_drive_pid(map_inches_to_pid(-5), 127);
   chassis.wait_drive();
 
   chassis.set_turn_pid(-39.69 - offset, 127);
   chassis.wait_drive();
 
   set_intake_volts(12000);
+  chassis.set_exit_condition(chassis.turn_exit, 5, 3, 10, 7, 50, 50);
 
-  chassis.set_drive_pid(map_inches_to_pid(22), 127);
+  chassis.set_drive_pid(map_inches_to_pid(17), 127);
   chassis.wait_drive();
 
-  chassis.set_turn_pid(90 - offset, TURN_SPEED);
-  chassis.wait_drive();
+  chassis.set_turn_pid(90 - offset, 127);
+  pros::delay(600);
 
-  wing_toggle(true);
+  chassis.set_exit_condition(chassis.turn_exit, 25, 3, 200, 7, 500, 500);
+
   set_intake_volts(-12000);
 
-  chassis.set_drive_pid(map_inches_to_pid(25), DRIVE_SPEED);
+  chassis.set_drive_pid(map_inches_to_pid(25), 127);
   chassis.wait_drive();
 
-  chassis.set_drive_pid(map_inches_to_pid(-30), DRIVE_SPEED);
+  chassis.set_drive_pid(map_inches_to_pid(-10), 127);
   chassis.wait_drive();
+
+  chassis.set_turn_pid(-90 - offset, 127); 
+  chassis.wait_drive();
+
+  set_intake_volts(0);
+  wing_toggle(true);
+
+  chassis.set_drive_pid(map_inches_to_pid(-20), 127);
+  pros::delay(750);
 }
 
 void four_ball() {

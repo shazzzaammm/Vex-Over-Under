@@ -10,7 +10,7 @@ void default_constants() {
   chassis.set_pid_constants(&chassis.headingPID, 11, 0, 20, 0);
   chassis.set_pid_constants(&chassis.forward_drivePID, 0.45, 0, 5, 0);
   chassis.set_pid_constants(&chassis.backward_drivePID, 0.45, 0, 5, 0);
-  chassis.set_pid_constants(&chassis.turnPID, 5, 0.003, 35, 15);
+  chassis.set_pid_constants(&chassis.turnPID, 4.69, 0, 35, 15);
   chassis.set_pid_constants(&chassis.swingPID, 7, 0, 45, 0);
 }
 
@@ -34,7 +34,10 @@ void unstow(bool stay_6_motor) {
   spin_intake_for(-250);
 }
 
-void test_auton() {}
+void test_auton() {
+  chassis.set_swing_pid(ez::LEFT_SWING, 90, SWING_SPEED);
+  chassis.wait_drive();
+}
 
 void five_ball() {
   chassis.set_exit_condition(chassis.turn_exit, 25, 3, 200, 7, 500, 500);

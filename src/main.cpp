@@ -46,14 +46,11 @@ void opcontrol() {
     // Handle intake control
     intake_control();
 
+    // Handle slapper control
+    slapper_control();
+
     // Handle wing control
     wing_control();
-
-    // Handle flywheel control
-    flywheel_control();
-
-    // Handle lift control
-    lift_control();
 
     // Handle endgame control
     endgame_control();

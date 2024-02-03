@@ -12,11 +12,11 @@ bool outtake_toggle_enabled = false;
 bool pto_6_motor_enabled = false;
 
 // Slapper
-const int TRIBALL_DISTANCE = 100;
+const double TRIBALL_BRIGHTNESS = .0075;
 const int SLAPPER_CHARGED_ROTATION_A = 0;
-const int SLAPPER_CHARGED_ROTATION_B = 180;
-const int SLAPPER_CHARGED_LEEWAY = 2;
-const int SLAPPER_VOLTAGE = 12000;
+const int SLAPPER_CHARGED_ROTATION_B = 19406;
+const int SLAPPER_CHARGED_LEEWAY = 1000;
+const int SLAPPER_VOLTAGE = -12000;
 bool slapper_auto_shoot_enabled = false;
 
 // Wings
@@ -36,7 +36,7 @@ const ControlScheme g_controls(DIGITAL_L1, DIGITAL_L2, DIGITAL_R1, DIGITAL_R2, {
 const ControlScheme k_controls(DIGITAL_R2, DIGITAL_R1, DIGITAL_L2, DIGITAL_L1, {DIGITAL_B}, DIGITAL_A, DIGITAL_Y,
                                DIGITAL_X, DIGITAL_DOWN, {DIGITAL_L1, DIGITAL_L2, DIGITAL_R1, DIGITAL_R2}, TANK);
 const ControlScheme a_controls(DIGITAL_LEFT, DIGITAL_RIGHT, DIGITAL_R2, DIGITAL_R1, {DIGITAL_L2, DIGITAL_L1}, DIGITAL_A,
-                               DIGITAL_Y, DIGITAL_X, DIGITAL_DOWN, {DIGITAL_L1, DIGITAL_L2, DIGITAL_R1, DIGITAL_R2},
+                               DIGITAL_X, DIGITAL_Y, DIGITAL_DOWN, {DIGITAL_L1, DIGITAL_L2, DIGITAL_R1, DIGITAL_R2},
                                TANK);
 ControlScheme selected_controls = a_controls;
 

@@ -16,7 +16,8 @@ void intake_control();
 
 // Slapper
 void slapper_control();
-
+bool is_slapper_charged();
+bool is_slapper_full();
 // PTO
 void pto_toggle(bool toggle);
 void pto_control();

@@ -38,8 +38,14 @@ void print_debug() {
   // Prints a lot of debug information (this is so i dont go fully insane)
   std::string drive_mode = pto_6_motor_enabled ? "6 motor" : "8 motor";
   std::string endgame_state = endgame_enabled ? "on " : "off";
+  std::string slapper_state = is_slapper_charged() ? "ye" : "no";
+  std::string optic_state = is_slapper_full() ? "ye" : "no";
+  std::string optic_brightness = std::to_string(slapper_optic_sensor.get_brightness());
 
   print_to_screen("drive mode: " + drive_mode, 0);
+  print_to_screen("charged: " + slapper_state, 1);
+  print_to_screen("full: " + optic_state, 2);
+  print_to_screen("birt: " + optic_brightness, 3);
   check_motors_and_get_temp();
   print_to_screen("endgame enabled: " + endgame_state, 5);
   print_to_screen("battery level: " + std::to_string(pros::battery::get_capacity()) + "%", 6);
@@ -227,14 +233,14 @@ void slapper_auto_shoot_toggle() {
 }
 
 bool is_slapper_full() {
-  return slapper_distance_sensor.get() <= TRIBALL_DISTANCE;
+  return slapper_optic_sensor.get_brightness() <= TRIBALL_BRIGHTNESS;
 }
 
 bool is_slapper_charged() {
   return (slapper_rotation_sensor.get_angle() >= SLAPPER_CHARGED_ROTATION_A - SLAPPER_CHARGED_LEEWAY &&
-          SLAPPER_CHARGED_ROTATION_A + SLAPPER_CHARGED_LEEWAY >= slapper_rotation_sensor.get_angle()) ||
+          slapper_rotation_sensor.get_angle() <= SLAPPER_CHARGED_ROTATION_A + SLAPPER_CHARGED_LEEWAY) ||
          (slapper_rotation_sensor.get_angle() >= SLAPPER_CHARGED_ROTATION_B - SLAPPER_CHARGED_LEEWAY &&
-          SLAPPER_CHARGED_ROTATION_B + SLAPPER_CHARGED_LEEWAY >= slapper_rotation_sensor.get_angle());
+          slapper_rotation_sensor.get_angle() <= SLAPPER_CHARGED_ROTATION_B + SLAPPER_CHARGED_LEEWAY);
 }
 
 void slapper_control() {
@@ -322,7 +328,7 @@ void endgame_toggle(bool enable) {
   // Toggle variable
   endgame_enabled = enable;
 
-  // TODO actually put in the logic
+  hang_piston.set_value(endgame_enabled);
 }
 
 void endgame_control() {

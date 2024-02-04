@@ -245,6 +245,23 @@ bool is_slapper_charged() {
           slapper_rotation_sensor.get_angle() <= SLAPPER_CHARGED_ROTATION_B + SLAPPER_CHARGED_LEEWAY);
 }
 
+void slapper_auton_task(void* parameter) {
+  int total_shot = 0;
+  while (true) {
+    if (!is_slapper_charged()) {
+      PTO_slapper.move_voltage(SLAPPER_VOLTAGE);
+    } else if (is_slapper_full()) {
+      PTO_slapper.move_voltage(SLAPPER_VOLTAGE);
+      total_shot++;
+      pros::delay(3 * ez::util::DELAY_TIME);
+    }
+    pros::delay(ez::util::DELAY_TIME);
+    if (total_shot>45){
+      break;
+    }
+  }
+}
+
 void slapper_control() {
   // Only move slapper if we are in 6 motor
   if (!pto_6_motor_enabled) {

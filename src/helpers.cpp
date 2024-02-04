@@ -105,7 +105,9 @@ void chassis_control() {
 #pragma region controller
 bool multi_pressing(std::vector<pros::controller_digital_e_t> buttons) {
   for (auto button = buttons.begin(); button != buttons.end(); ++button) {
-    if (!master.get_digital(*button)) {
+    if (*button == *buttons.end() && !master.get_digital_new_press(*button)) {
+      return false;
+    } else if (!master.get_digital(*button)) {
       return false;
     }
   }

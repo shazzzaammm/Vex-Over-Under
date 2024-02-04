@@ -281,11 +281,13 @@ void set_intake_volts(int volts) {
 void intake_control() {
   // Toggle the intake (inward direction)
   if (master.get_digital_new_press(selected_controls.toggle_intake_button)) {
+    pto_toggle(true);
     intake_toggle_enabled = !intake_toggle_enabled;
     outtake_toggle_enabled = false;
   }
   // Toggle the intake (outward direction)
   if (master.get_digital_new_press(selected_controls.toggle_outtake_button)) {
+    pto_toggle(true);
     outtake_toggle_enabled = !outtake_toggle_enabled;
     intake_toggle_enabled = false;
   }

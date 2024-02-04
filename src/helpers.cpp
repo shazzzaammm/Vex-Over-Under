@@ -329,10 +329,15 @@ void wing_control() {
 
 #pragma region endgame
 void endgame_toggle(bool enable) {
+  if (endgame_cooldown_timer > 0) {
+    return;
+  }
   // Toggle variable
   endgame_enabled = enable;
 
   hang_piston.set_value(endgame_enabled);
+
+  endgame_cooldown_timer = ENDGAME_COOLDOWN;
 }
 
 void endgame_control() {
@@ -340,5 +345,8 @@ void endgame_control() {
   if (multi_pressing(selected_controls.expansion_buttons)) {
     endgame_toggle(!endgame_enabled);
   }
+
+  // Timer
+  endgame_cooldown_timer -= ez::util::DELAY_TIME;
 }
 #pragma endregion endgame

@@ -16,5 +16,5 @@ pros::ADIDigitalOut PTO_piston('B');
 pros::ADIDigitalOut hang_piston('C');
 
 // Define Sensors
-pros::Optical slapper_optic_sensor(9);
+pros::Optical slapper_optic_sensor(5);
 pros::Rotation slapper_rotation_sensor(10);

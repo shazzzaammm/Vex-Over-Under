@@ -90,21 +90,23 @@ void skills() {
   int timer = 0;
   bool p_full = false;
   while (true) {
+    print_to_screen("Shot: " + std::to_string(total_shot / 69), 0);
+    print_to_screen("Timer: " + std::to_string(timer), 1);
     if (!is_slapper_charged()) {
-      PTO_slapper.move_voltage(-12000);
-    } else if (is_slapper_full() && is_slapper_charged()) {
       PTO_slapper.move_voltage(-12000);
       if (!p_full) {
         total_shot++;
       }
+    } else if (is_slapper_full() && is_slapper_charged()) {
+      PTO_slapper.move_voltage(-12000);
       pros::delay(3 * ez::util::DELAY_TIME);
     } else {
       PTO_slapper.move_voltage(0);
     }
     pros::delay(ez::util::DELAY_TIME);
-    // timer += ez::util::DELAY_TIME;
+    timer += ez::util::DELAY_TIME;
     p_full = is_slapper_full();
-    if (total_shot >= 100 || timer >= 30000) {
+    if (total_shot / 69 >= 46 || timer >= 30000) {
       break;
     }
   }

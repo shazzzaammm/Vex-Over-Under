@@ -6,7 +6,7 @@ This program is the only program that 4303X is using this year. The main branch 
 
 ### Autons
 
-We have multiple autons in the works, but we are only likely to end up using two or three in matches. We will have a far side 6 ball auton (similar to korvex), a close side 1 ball awp that ends with us touching the endgame bar (similar to exobits), and a close side bowl setup auton that lets us bowl three or four triballs as soon as matches start (similar to hope robotics). We will also have a skills auton. The plan is to match load until we cant anymore, push them all in the goal, and hang (like robokauz).
+We have multiple autons in the works, but we are only likely to end up using two or three in matches. We will have a far side 6 ball auton (similar to 80508X korvex), a close side 1 ball awp that ends with us touching the endgame bar (similar to 80708Y exobits), and a close side bowl setup auton that lets us bowl three or four triballs as soon as matches start (similar to 19589A hope robotics). We will also have a skills auton. The plan is to match load until we cant anymore, push them all in the goal, and hang (like robokauz).
 
 ### User Control
 

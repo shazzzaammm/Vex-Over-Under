@@ -40,12 +40,12 @@ void print_debug() {
   std::string endgame_state = endgame_enabled ? "on " : "off";
   std::string slapper_state = is_slapper_charged() ? "ye" : "no";
   std::string optic_state = is_slapper_full() ? "ye" : "no";
-  std::string optic_brightness = std::to_string(slapper_optic_sensor.get_brightness());
+  std::string slapper_rotation = std::to_string(slapper_rotation_sensor.get_angle());
 
   print_to_screen("drive mode: " + drive_mode, 0);
   print_to_screen("charged: " + slapper_state, 1);
   print_to_screen("full: " + optic_state, 2);
-  print_to_screen("birt: " + optic_brightness, 3);
+  print_to_screen("rot: " + slapper_rotation, 3);
   check_motors_and_get_temp();
   print_to_screen("endgame enabled: " + endgame_state, 5);
   print_to_screen("battery level: " + std::to_string(pros::battery::get_capacity()) + "%", 6);

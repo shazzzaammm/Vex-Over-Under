@@ -14,7 +14,7 @@ bool pto_6_motor_enabled = false;
 // Slapper
 const double TRIBALL_BRIGHTNESS = .0075;
 const int SLAPPER_CHARGED_ROTATION_A = 0;
-const int SLAPPER_CHARGED_ROTATION_B = 19406;
+const int SLAPPER_CHARGED_ROTATION_B = 18000;
 const int SLAPPER_CHARGED_LEEWAY = 1000;
 const int SLAPPER_VOLTAGE = -12000;
 bool slapper_auto_shoot_enabled = false;
@@ -28,7 +28,7 @@ bool chassis_is_reversed = false;
 // Endgame
 bool endgame_enabled = false;
 int endgame_cooldown_timer = 0;
-const int ENDGAME_COOLDOWN = 100;
+const int ENDGAME_COOLDOWN = 2500;
 
 // Controls
 const ControlScheme t_controls(DIGITAL_R1, DIGITAL_L1, DIGITAL_RIGHT, DIGITAL_LEFT, {DIGITAL_B}, DIGITAL_R2, DIGITAL_X,

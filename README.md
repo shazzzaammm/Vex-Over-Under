@@ -16,13 +16,13 @@ We use a tank drive with 8 motors, 2 of which are PTO motors. The pto motors are
 
 | Subsystem  | Port(s)          |
 | ---------- | ---------------- |
-| Left Side  | 7, 8, -2, 1      |
+| Left Side  | 15, -8, -13, 14  |
 | Right Side | -18, 17, 20, -19 |
 | Slapper    | -19              |
-| Intake     | 1                |
+| Intake     | 14               |
 | IMU        | 16               |
 | Optic      | 5                |
-| Rotation   | 10               |
+| Rotation   | 12               |
 | PTO        | B                |
 | Wings      | A                |
 | Endgame    | C                |

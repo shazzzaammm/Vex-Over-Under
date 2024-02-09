@@ -53,7 +53,7 @@ void five_ball() {
   set_intake_volts(-12000);
 
   // Drive toward the ball under endgame bar
-  chassis.set_drive_pid(map_inches_to_pid(24), 127);
+  chassis.set_drive_pid(map_inches_to_pid(24), MAX_SPEED);
   chassis.wait_until(map_inches_to_pid(20));
 
   // Intake the ball under endgame bar
@@ -61,7 +61,7 @@ void five_ball() {
   chassis.wait_drive();
 
   // Back up towards goal
-  chassis.set_drive_pid(map_inches_to_pid(-34), 127);
+  chassis.set_drive_pid(map_inches_to_pid(-34), MAX_SPEED);
   chassis.wait_drive();
 
   // Turn to be parallel with match load zone
@@ -69,47 +69,47 @@ void five_ball() {
   chassis.wait_drive();
 
   // Drive towards goal
-  chassis.set_drive_pid(map_inches_to_pid(18), 127);
+  chassis.set_drive_pid(map_inches_to_pid(18), MAX_SPEED);
   chassis.wait_drive();
 
   // Swing to face goal
-  chassis.set_swing_pid(ez::RIGHT_SWING, 0 - offset, 127);
+  chassis.set_swing_pid(ez::RIGHT_SWING, 0 - offset, MAX_SPEED);
   chassis.wait_drive();
 
   // Outtake
   set_intake_volts(-12000);
 
   // Score preload and previously scored ball
-  chassis.set_drive_pid(map_inches_to_pid(10), 127);
+  chassis.set_drive_pid(map_inches_to_pid(10), MAX_SPEED);
   chassis.wait_drive();
 
   // Back up
-  chassis.set_drive_pid(map_inches_to_pid(-5), 127);
+  chassis.set_drive_pid(map_inches_to_pid(-5), MAX_SPEED);
   chassis.wait_drive();
 
   // Turn off the intake
   set_intake_volts(0);
 
   // Push balls in again
-  chassis.set_drive_pid(map_inches_to_pid(5), 127);
+  chassis.set_drive_pid(map_inches_to_pid(5), MAX_SPEED);
   chassis.wait_drive();
 
   // Back away from goal
-  chassis.set_drive_pid(map_inches_to_pid(-10), 127);
+  chassis.set_drive_pid(map_inches_to_pid(-10), MAX_SPEED);
   chassis.wait_drive();
 
   // turn towards the safe ball
-  chassis.set_turn_pid(-70 - offset, 127);
+  chassis.set_turn_pid(-70 - offset, MAX_SPEED);
   chassis.wait_drive();
 
   // drive towards safe ball, turn on intake at 1/2 distance from ball
-  chassis.set_drive_pid(map_inches_to_pid(50), 127);
+  chassis.set_drive_pid(map_inches_to_pid(50), MAX_SPEED);
   chassis.wait_until(map_inches_to_pid(25));
   set_intake_volts(12000);
   chassis.wait_drive();
 
   // turn towards to get ready to outtake the triball
-  chassis.set_turn_pid(58 - offset, 127);
+  chassis.set_turn_pid(58 - offset, MAX_SPEED);
   chassis.wait_until(25);
   set_intake_volts(0);
   chassis.wait_drive();
@@ -118,15 +118,15 @@ void five_ball() {
   set_intake_volts(-12000);
 
   // drive forwards (to ensure ball gets out)
-  chassis.set_drive_pid(map_inches_to_pid(10), 127);
+  chassis.set_drive_pid(map_inches_to_pid(10), MAX_SPEED);
   chassis.wait_drive();
 
   // drive back towards the mid bar ball
-  chassis.set_drive_pid(map_inches_to_pid(-5), 127);
+  chassis.set_drive_pid(map_inches_to_pid(-5), MAX_SPEED);
   chassis.wait_drive();
 
   // turn to face the mid bar ball
-  chassis.set_turn_pid(-39.69 - offset, 127);
+  chassis.set_turn_pid(-39.69 - offset, MAX_SPEED);
   chassis.wait_drive();
 
   // turn on intake
@@ -137,11 +137,11 @@ void five_ball() {
   chassis.set_exit_condition(chassis.turn_exit, 5, 3, 10, 7, 50, 50);
 
   // drive to the mid bar ball
-  chassis.set_drive_pid(map_inches_to_pid(17), 127);
+  chassis.set_drive_pid(map_inches_to_pid(17), MAX_SPEED);
   chassis.wait_drive();
 
   // turn towards the goal
-  chassis.set_turn_pid(90 - offset, 127);
+  chassis.set_turn_pid(90 - offset, MAX_SPEED);
   pros::delay(600);
 
   // bring back the accuracy
@@ -151,15 +151,15 @@ void five_ball() {
   set_intake_volts(-12000);
 
   // ram balls into the goal
-  chassis.set_drive_pid(map_inches_to_pid(25), 127);
+  chassis.set_drive_pid(map_inches_to_pid(25), MAX_SPEED);
   chassis.wait_drive();
 
   // back away
-  chassis.set_drive_pid(map_inches_to_pid(-10), 127);
+  chassis.set_drive_pid(map_inches_to_pid(-10), MAX_SPEED);
   chassis.wait_drive();
 
   // have back facing goal
-  chassis.set_turn_pid(-90 - offset, 127);
+  chassis.set_turn_pid(-90 - offset, MAX_SPEED);
   chassis.wait_drive();
 
   // turn off the intake
@@ -169,7 +169,7 @@ void five_ball() {
   wing_toggle(true);
 
   // ram the balls into the goal with wings
-  chassis.set_drive_pid(map_inches_to_pid(-20), 127);
+  chassis.set_drive_pid(map_inches_to_pid(-20), MAX_SPEED);
   pros::delay(750);
 }
 

@@ -68,10 +68,17 @@ void arcade_drive() {
 
 void tank_drive() {
   // Tank drive based off the joysticks and the orientation of the robot
+  int left = master.get_analog(ANALOG_LEFT_Y);
+  int right = master.get_analog(ANALOG_LEFT_X);
+
+  if (left == 0 && right == 0) {
+    chassis.tank();
+  }
+
   if (!chassis_is_reversed) {
-    chassis.set_tank(master.get_analog(ANALOG_LEFT_Y), master.get_analog(ANALOG_RIGHT_Y));
+    chassis.set_tank(left, right);
   } else {
-    chassis.set_tank(-master.get_analog(ANALOG_RIGHT_Y), -master.get_analog(ANALOG_LEFT_Y));
+    chassis.set_tank(right, left);
   }
 }
 

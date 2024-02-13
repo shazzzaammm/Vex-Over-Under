@@ -27,8 +27,6 @@ bool chassis_is_reversed = false;
 
 // Endgame
 bool endgame_enabled = false;
-int endgame_cooldown_timer = 0;
-const int ENDGAME_COOLDOWN = 2500;
 
 // Controls
 const ControlScheme t_controls(DIGITAL_R1, DIGITAL_L1, DIGITAL_RIGHT, DIGITAL_LEFT, {DIGITAL_B}, DIGITAL_R2, DIGITAL_X,

@@ -31,60 +31,60 @@ We use a tank drive with 8 motors, 2 of which are PTO motors. The pto motors are
 
 - T_Controls
 
-  | Function        | Button(s)         |
-  | --------------- | ----------------- |
-  | Hold Intake     | R1                |
-  | Hold Outtake    | L1                |
-  | Toggle Intake   | RIGHT             |
-  | Toggle Outtake  | LEFT              |
-  | Toggle Wings    | B                 |
-  | Toggle PTO      | R2                |
-  | Toggle Slapper  | X                 |
-  | Hold Slapper    | A                 |
-  | Reverse Chassis | L2                |
-  | Toggle Endgame  | R1 + R2 + L1 + L2 |
+  | Function        | Button(s) |
+  | --------------- | --------- |
+  | Hold Intake     | R1        |
+  | Hold Outtake    | L1        |
+  | Toggle Intake   | RIGHT     |
+  | Toggle Outtake  | LEFT      |
+  | Toggle Wings    | B         |
+  | Toggle PTO      | R2        |
+  | Toggle Slapper  | X         |
+  | Hold Slapper    | A         |
+  | Reverse Chassis | L2        |
+  | Toggle Endgame  | UP        |
 
 - G_Controls
 
-  | Function        | Button(s)         |
-  | --------------- | ----------------- |
-  | Hold Intake     | L1                |
-  | Hold Outtake    | L2                |
-  | Toggle Intake   | R1                |
-  | Toggle Outtake  | R2                |
-  | Toggle Wings    | A                 |
-  | Toggle PTO      | B                 |
-  | Toggle Slapper  | X                 |
-  | Hold Slapper    | Y                 |
-  | Reverse Chassis | DOWN              |
-  | Toggle Endgame  | R1 + R2 + L1 + L2 |
+  | Function        | Button(s) |
+  | --------------- | --------- |
+  | Hold Intake     | L1        |
+  | Hold Outtake    | L2        |
+  | Toggle Intake   | R1        |
+  | Toggle Outtake  | R2        |
+  | Toggle Wings    | A         |
+  | Toggle PTO      | B         |
+  | Toggle Slapper  | X         |
+  | Hold Slapper    | Y         |
+  | Reverse Chassis | DOWN      |
+  | Toggle Endgame  | UP        |
 
 - K_Controls
 
-  | Function        | Button(s)         |
-  | --------------- | ----------------- |
-  | Hold Intake     | R2                |
-  | Hold Outtake    | R1                |
-  | Toggle Intake   | L2                |
-  | Toggle Outtake  | L1                |
-  | Toggle Wings    | B                 |
-  | Toggle PTO      | A                 |
-  | Toggle Slapper  | Y                 |
-  | Hold Slapper    | X                 |
-  | Reverse Chassis | DOWN              |
-  | Toggle Endgame  | R1 + R2 + L1 + L2 |
+  | Function        | Button(s) |
+  | --------------- | --------- |
+  | Hold Intake     | R2        |
+  | Hold Outtake    | R1        |
+  | Toggle Intake   | L2        |
+  | Toggle Outtake  | L1        |
+  | Toggle Wings    | B         |
+  | Toggle PTO      | A         |
+  | Toggle Slapper  | Y         |
+  | Hold Slapper    | X         |
+  | Reverse Chassis | DOWN      |
+  | Toggle Endgame  | UP        |
 
 - A_Controls
 
-  | Function        | Button(s)         |
-  | --------------- | ----------------- |
-  | Hold Intake     | LEFT              |
-  | Hold Outtake    | RIGHT             |
-  | Toggle Intake   | R2                |
-  | Toggle Outtake  | R1                |
-  | Toggle Wings    | L2 or L1          |
-  | Toggle PTO      | A                 |
-  | Toggle Slapper  | X                 |
-  | Hold Slapper    | Y                 |
-  | Reverse Chassis | DOWN              |
-  | Toggle Endgame  | R1 + R2 + L1 + L2 |
+  | Function        | Button(s) |
+  | --------------- | --------- |
+  | Hold Intake     | LEFT      |
+  | Hold Outtake    | RIGHT     |
+  | Toggle Intake   | R2        |
+  | Toggle Outtake  | R1        |
+  | Toggle Wings    | L2 or L1  |
+  | Toggle PTO      | A         |
+  | Toggle Slapper  | X         |
+  | Hold Slapper    | Y         |
+  | Reverse Chassis | DOWN      |
+  | Toggle Endgame  | UP        |

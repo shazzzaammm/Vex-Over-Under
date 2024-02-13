@@ -32,14 +32,13 @@ const int ENDGAME_COOLDOWN = 2500;
 
 // Controls
 const ControlScheme t_controls(DIGITAL_R1, DIGITAL_L1, DIGITAL_RIGHT, DIGITAL_LEFT, {DIGITAL_B}, DIGITAL_R2, DIGITAL_X,
-                               DIGITAL_A, DIGITAL_L2, {DIGITAL_L1, DIGITAL_L2, DIGITAL_R1, DIGITAL_R2}, TANK);
+                               DIGITAL_A, DIGITAL_L2, DIGITAL_UP, TANK);
 const ControlScheme g_controls(DIGITAL_L1, DIGITAL_L2, DIGITAL_R1, DIGITAL_R2, {DIGITAL_A}, DIGITAL_B, DIGITAL_X,
-                               DIGITAL_Y, DIGITAL_DOWN, {DIGITAL_L1, DIGITAL_L2, DIGITAL_R1, DIGITAL_R2}, TANK);
+                               DIGITAL_Y, DIGITAL_DOWN, DIGITAL_UP, TANK);
 const ControlScheme k_controls(DIGITAL_R2, DIGITAL_R1, DIGITAL_L2, DIGITAL_L1, {DIGITAL_B}, DIGITAL_A, DIGITAL_Y,
-                               DIGITAL_X, DIGITAL_DOWN, {DIGITAL_L1, DIGITAL_L2, DIGITAL_R1, DIGITAL_R2}, TANK);
-const ControlScheme a_controls(DIGITAL_LEFT, DIGITAL_RIGHT, DIGITAL_R2, DIGITAL_R1, {DIGITAL_L2, DIGITAL_L1}, DIGITAL_A,
-                               DIGITAL_X, DIGITAL_Y, DIGITAL_DOWN, {DIGITAL_L1, DIGITAL_L2, DIGITAL_R1, DIGITAL_R2},
-                               TANK);
+                               DIGITAL_X, DIGITAL_DOWN, DIGITAL_UP, TANK);
+const ControlScheme a_controls(DIGITAL_RIGHT, DIGITAL_RIGHT, DIGITAL_R2, DIGITAL_R1, {DIGITAL_L2, DIGITAL_L1},
+                               DIGITAL_A, DIGITAL_X, DIGITAL_Y, DIGITAL_DOWN, DIGITAL_UP, TANK);
 ControlScheme selected_controls = a_controls;
 
 // Util

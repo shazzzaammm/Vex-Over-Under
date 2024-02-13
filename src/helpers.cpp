@@ -153,7 +153,7 @@ std::string get_button_down() {
   if (any_button_down(selected_controls.toggle_wings_buttons)) {
     return "Wings Toggle   ";
   }
-  if (multi_pressing(selected_controls.expansion_buttons)) {
+  if (master.get_digital(selected_controls.endgame_button)) {
     return "End Game       ";
   }
   if (master.get_digital(selected_controls.reverse_chassis_button)) {
@@ -342,7 +342,7 @@ void endgame_toggle(bool enable) {
 
 void endgame_control() {
   // Handle toggling the endgame in user control
-  if (multi_pressing(selected_controls.expansion_buttons)) {
+  if (master.get_digital_new_press(selected_controls.endgame_button)) {
     endgame_toggle(!endgame_enabled);
   }
 

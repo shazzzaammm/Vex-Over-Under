@@ -14,7 +14,7 @@ bool pto_6_motor_enabled = false;
 // Slapper
 const double TRIBALL_BRIGHTNESS = .0075;
 const int SLAPPER_CHARGED_ROTATION_A = 0;
-const int SLAPPER_CHARGED_ROTATION_B = 19406;
+const int SLAPPER_CHARGED_ROTATION_B = 18000;
 const int SLAPPER_CHARGED_LEEWAY = 1000;
 const int SLAPPER_VOLTAGE = -12000;
 bool slapper_auto_shoot_enabled = false;
@@ -27,19 +27,16 @@ bool chassis_is_reversed = false;
 
 // Endgame
 bool endgame_enabled = false;
-int endgame_cooldown_timer = 0;
-const int ENDGAME_COOLDOWN = 100;
 
 // Controls
 const ControlScheme t_controls(DIGITAL_R1, DIGITAL_L1, DIGITAL_RIGHT, DIGITAL_LEFT, {DIGITAL_B}, DIGITAL_R2, DIGITAL_X,
-                               DIGITAL_A, DIGITAL_L2, {DIGITAL_L1, DIGITAL_L2, DIGITAL_R1, DIGITAL_R2}, TANK);
+                               DIGITAL_A, DIGITAL_L2, DIGITAL_UP, TANK);
 const ControlScheme g_controls(DIGITAL_L1, DIGITAL_L2, DIGITAL_R1, DIGITAL_R2, {DIGITAL_A}, DIGITAL_B, DIGITAL_X,
-                               DIGITAL_Y, DIGITAL_DOWN, {DIGITAL_L1, DIGITAL_L2, DIGITAL_R1, DIGITAL_R2}, TANK);
+                               DIGITAL_Y, DIGITAL_DOWN, DIGITAL_UP, TANK);
 const ControlScheme k_controls(DIGITAL_R2, DIGITAL_R1, DIGITAL_L2, DIGITAL_L1, {DIGITAL_B}, DIGITAL_A, DIGITAL_Y,
-                               DIGITAL_X, DIGITAL_DOWN, {DIGITAL_L1, DIGITAL_L2, DIGITAL_R1, DIGITAL_R2}, TANK);
-const ControlScheme a_controls(DIGITAL_LEFT, DIGITAL_RIGHT, DIGITAL_R2, DIGITAL_R1, {DIGITAL_L2, DIGITAL_L1}, DIGITAL_A,
-                               DIGITAL_X, DIGITAL_Y, DIGITAL_DOWN, {DIGITAL_L1, DIGITAL_L2, DIGITAL_R1, DIGITAL_R2},
-                               TANK);
+                               DIGITAL_X, DIGITAL_DOWN, DIGITAL_UP, TANK);
+const ControlScheme a_controls(DIGITAL_RIGHT, DIGITAL_RIGHT, DIGITAL_R2, DIGITAL_R1, {DIGITAL_L2, DIGITAL_L1},
+                               DIGITAL_A, DIGITAL_X, DIGITAL_Y, DIGITAL_DOWN, DIGITAL_UP, TANK);
 ControlScheme selected_controls = a_controls;
 
 // Util

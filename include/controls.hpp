@@ -13,14 +13,14 @@ class ControlScheme {
   pros::controller_digital_e_t toggle_slapper_button;
   pros::controller_digital_e_t hold_slapper_button;
   pros::controller_digital_e_t reverse_chassis_button;
-  std::vector<pros::controller_digital_e_t> expansion_buttons;
+  pros::controller_digital_e_t endgame_button;
   Drive_Type drive_mode;
 
   ControlScheme(pros::controller_digital_e_t holdIntake, pros::controller_digital_e_t holdOuttake,
                 pros::controller_digital_e_t toggleIntake, pros::controller_digital_e_t toggleOuttake,
                 std::vector<pros::controller_digital_e_t> toggleWings, pros::controller_digital_e_t togglePTO,
                 pros::controller_digital_e_t toggleSlapper, pros::controller_digital_e_t holdSlapper,
-                pros::controller_digital_e_t reverseChassis, std::vector<pros::controller_digital_e_t> expansionButtons,
+                pros::controller_digital_e_t reverseChassis, pros::controller_digital_e_t endgameButton,
                 Drive_Type driveMode) {
     hold_intake_button = holdIntake;
     hold_outtake_button = holdOuttake;
@@ -31,7 +31,7 @@ class ControlScheme {
     toggle_slapper_button = toggleSlapper;
     hold_slapper_button = holdSlapper;
     reverse_chassis_button = reverseChassis;
-    expansion_buttons = expansionButtons;
+    endgame_button = endgameButton;
     drive_mode = driveMode;
   }
 };

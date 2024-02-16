@@ -37,10 +37,11 @@ void check_motors_and_get_temp() {
 void print_debug() {
   // Prints a lot of debug information (this is so i dont go fully insane)
   std::string drive_mode = pto_6_motor_enabled ? "6 motor" : "8 motor";
-  std::string endgame_state = endgame_enabled ? "on " : "off";
-  std::string slapper_state = is_slapper_charged() ? "ye" : "no";
-  std::string optic_state = is_slapper_full() ? "ye" : "no";
-  std::string slapper_rotation = std::to_string(slapper_rotation_sensor.get_angle());
+  std::string endgame_state = to_string(endgame_enabled);
+  std::string slapper_state = to_string(is_slapper_charged());
+  std::string optic_state = to_string(is_slapper_full());
+  std::string optic_brightness = to_string(slapper_optic_sensor.get_brightness());
+
 
   print_to_screen("drive mode: " + drive_mode, 0);
   print_to_screen("charged: " + slapper_state, 1);
@@ -48,7 +49,7 @@ void print_debug() {
   print_to_screen("rot: " + slapper_rotation, 3);
   check_motors_and_get_temp();
   print_to_screen("endgame enabled: " + endgame_state, 5);
-  print_to_screen("battery level: " + std::to_string(pros::battery::get_capacity()) + "%", 6);
+  print_to_screen("battery level: " + to_string(pros::battery::get_capacity()) + "%", 6);
 }
 #pragma endregion brain
 
@@ -68,10 +69,17 @@ void arcade_drive() {
 
 void tank_drive() {
   // Tank drive based off the joysticks and the orientation of the robot
+  int left = master.get_analog(ANALOG_LEFT_Y);
+  int right = master.get_analog(ANALOG_LEFT_X);
+
+  if (left == 0 && right == 0) {
+    chassis.tank();
+  }
+
   if (!chassis_is_reversed) {
-    chassis.set_tank(master.get_analog(ANALOG_LEFT_Y), master.get_analog(ANALOG_RIGHT_Y));
+    chassis.set_tank(left, right);
   } else {
-    chassis.set_tank(-master.get_analog(ANALOG_RIGHT_Y), -master.get_analog(ANALOG_LEFT_Y));
+    chassis.set_tank(right, left);
   }
 }
 

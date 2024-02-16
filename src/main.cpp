@@ -14,7 +14,6 @@ void initialize() {
   ez::as::auton_selector.add_autons({
       Auton("Bowl Auton", bowl_auton),
       Auton("Five Ball Auton", five_ball),
-      Auton("Four Ball Auton", four_ball),
       Auton("Test Auton", test_auton),
   });
 

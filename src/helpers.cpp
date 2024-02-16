@@ -259,7 +259,7 @@ void slapper_control() {
   // Shoot the slapper automatically, shoot the slapper manually, or charge the slapper automatically
   if (master.get_digital(selected_controls.hold_slapper_button) || (is_slapper_full() && slapper_auto_shoot_enabled) ||
       (!is_slapper_charged())) {
-    PTO_slapper.move_voltage(SLAPPER_VOLTAGE);
+    // PTO_slapper.move_voltage(SLAPPER_VOLTAGE);
   }
 
   // Stop the slapper
@@ -281,34 +281,23 @@ void set_intake_volts(int volts) {
 void intake_control() {
   // Toggle the intake (inward direction)
   if (master.get_digital_new_press(selected_controls.toggle_intake_button)) {
-    pto_toggle(true);
     intake_toggle_enabled = !intake_toggle_enabled;
     outtake_toggle_enabled = false;
   }
   // Toggle the intake (outward direction)
   if (master.get_digital_new_press(selected_controls.toggle_outtake_button)) {
-    pto_toggle(true);
     outtake_toggle_enabled = !outtake_toggle_enabled;
     intake_toggle_enabled = false;
   }
 
-  // Move the intake while toggled and 6 motor
-  if (pto_6_motor_enabled) {
-    if (intake_toggle_enabled) {
-      set_intake_volts(-INTAKE_VOLTAGE);
-    } else if (outtake_toggle_enabled) {
-      set_intake_volts(INTAKE_VOLTAGE);
-    }
-  }
-
-  // Hold buttons to control the intake
-  if (master.get_digital(selected_controls.hold_outtake_button)) {
+  // Move the intake if toggled or holding the buttons
+  if (master.get_digital(selected_controls.hold_outtake_button) || outtake_toggle_enabled) {
     set_intake_volts(INTAKE_VOLTAGE);
     pto_toggle(true);
-  } else if (master.get_digital(selected_controls.hold_intake_button)) {
+  } else if (master.get_digital(selected_controls.hold_intake_button) || intake_toggle_enabled) {
     set_intake_volts(-INTAKE_VOLTAGE);
     pto_toggle(true);
-  } else if (pto_6_motor_enabled && !intake_toggle_enabled && !outtake_toggle_enabled) {
+  } else if (pto_6_motor_enabled) {
     set_intake_volts(0);
   }
 }

@@ -37,18 +37,19 @@ void check_motors_and_get_temp() {
 void print_debug() {
   // Prints a lot of debug information (this is so i dont go fully insane)
   std::string drive_mode = pto_6_motor_enabled ? "6 motor" : "8 motor";
-  std::string endgame_state = endgame_enabled ? "on " : "off";
-  std::string slapper_state = is_slapper_charged() ? "ye" : "no";
-  std::string optic_state = is_slapper_full() ? "ye" : "no";
-  std::string optic_brightness = std::to_string(slapper_optic_sensor.get_brightness());
+  std::string endgame_state = to_string(endgame_enabled);
+  std::string slapper_state = to_string(is_slapper_charged());
+  std::string optic_state = to_string(is_slapper_full());
+  std::string optic_brightness = to_string(slapper_optic_sensor.get_brightness());
+  std::string slapper_rotation = to_string(slapper_rotation_sensor.get_angle());
 
   print_to_screen("drive mode: " + drive_mode, 0);
   print_to_screen("charged: " + slapper_state, 1);
   print_to_screen("full: " + optic_state, 2);
-  print_to_screen("birt: " + optic_brightness, 3);
+  print_to_screen("rot: " + slapper_rotation, 3);
   check_motors_and_get_temp();
   print_to_screen("endgame enabled: " + endgame_state, 5);
-  print_to_screen("battery level: " + std::to_string(pros::battery::get_capacity()) + "%", 6);
+  print_to_screen("battery level: " + to_string(pros::battery::get_capacity()) + "%", 6);
 }
 #pragma endregion brain
 
@@ -68,10 +69,17 @@ void arcade_drive() {
 
 void tank_drive() {
   // Tank drive based off the joysticks and the orientation of the robot
+  int left = master.get_analog(ANALOG_LEFT_Y);
+  int right = master.get_analog(ANALOG_LEFT_X);
+
+  if (left == 0 && right == 0) {
+    chassis.tank();
+  }
+
   if (!chassis_is_reversed) {
-    chassis.set_tank(master.get_analog(ANALOG_LEFT_Y), master.get_analog(ANALOG_RIGHT_Y));
+    chassis.set_tank(left, right);
   } else {
-    chassis.set_tank(-master.get_analog(ANALOG_RIGHT_Y), -master.get_analog(ANALOG_LEFT_Y));
+    chassis.set_tank(right, left);
   }
 }
 
@@ -153,7 +161,7 @@ std::string get_button_down() {
   if (any_button_down(selected_controls.toggle_wings_buttons)) {
     return "Wings Toggle   ";
   }
-  if (multi_pressing(selected_controls.expansion_buttons)) {
+  if (master.get_digital(selected_controls.endgame_button)) {
     return "End Game       ";
   }
   if (master.get_digital(selected_controls.reverse_chassis_button)) {
@@ -276,7 +284,7 @@ void slapper_control() {
   // Shoot the slapper automatically, shoot the slapper manually, or charge the slapper automatically
   if (master.get_digital(selected_controls.hold_slapper_button) || (is_slapper_full() && slapper_auto_shoot_enabled) ||
       (!is_slapper_charged())) {
-    PTO_slapper.move_voltage(SLAPPER_VOLTAGE);
+    // PTO_slapper.move_voltage(SLAPPER_VOLTAGE);
   }
 
   // Stop the slapper
@@ -298,34 +306,23 @@ void set_intake_volts(int volts) {
 void intake_control() {
   // Toggle the intake (inward direction)
   if (master.get_digital_new_press(selected_controls.toggle_intake_button)) {
-    pto_toggle(true);
     intake_toggle_enabled = !intake_toggle_enabled;
     outtake_toggle_enabled = false;
   }
   // Toggle the intake (outward direction)
   if (master.get_digital_new_press(selected_controls.toggle_outtake_button)) {
-    pto_toggle(true);
     outtake_toggle_enabled = !outtake_toggle_enabled;
     intake_toggle_enabled = false;
   }
 
-  // Move the intake while toggled and 6 motor
-  if (pto_6_motor_enabled) {
-    if (intake_toggle_enabled) {
-      set_intake_volts(-INTAKE_VOLTAGE);
-    } else if (outtake_toggle_enabled) {
-      set_intake_volts(INTAKE_VOLTAGE);
-    }
-  }
-
-  // Hold buttons to control the intake
-  if (master.get_digital(selected_controls.hold_outtake_button)) {
+  // Move the intake if toggled or holding the buttons
+  if (master.get_digital(selected_controls.hold_outtake_button) || outtake_toggle_enabled) {
     set_intake_volts(INTAKE_VOLTAGE);
     pto_toggle(true);
-  } else if (master.get_digital(selected_controls.hold_intake_button)) {
+  } else if (master.get_digital(selected_controls.hold_intake_button) || intake_toggle_enabled) {
     set_intake_volts(-INTAKE_VOLTAGE);
     pto_toggle(true);
-  } else if (pto_6_motor_enabled && !intake_toggle_enabled && !outtake_toggle_enabled) {
+  } else if (pto_6_motor_enabled) {
     set_intake_volts(0);
   }
 }
@@ -346,24 +343,17 @@ void wing_control() {
 
 #pragma region endgame
 void endgame_toggle(bool enable) {
-  if (endgame_cooldown_timer > 0) {
-    return;
-  }
   // Toggle variable
   endgame_enabled = enable;
 
+  // Toggle endgame
   hang_piston.set_value(endgame_enabled);
-
-  endgame_cooldown_timer = ENDGAME_COOLDOWN;
 }
 
 void endgame_control() {
   // Handle toggling the endgame in user control
-  if (multi_pressing(selected_controls.expansion_buttons)) {
+  if (master.get_digital_new_press(selected_controls.endgame_button)) {
     endgame_toggle(!endgame_enabled);
   }
-
-  // Timer
-  endgame_cooldown_timer -= ez::util::DELAY_TIME;
 }
 #pragma endregion endgame

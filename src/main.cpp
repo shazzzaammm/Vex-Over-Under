@@ -12,6 +12,7 @@ void initialize() {
 
   // Define autons for the selector
   ez::as::auton_selector.add_autons({
+      Auton("Bowl Auton", bowl_auton),
       Auton("Five Ball Auton", five_ball),
       Auton("Test Auton", test_auton),
   });

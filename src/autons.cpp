@@ -28,14 +28,42 @@ void test_auton() {
   chassis.set_swing_pid(ez::LEFT_SWING, 90, SWING_SPEED);
   chassis.wait_drive();
 }
+void bowl_auton() {
+  int offset = 10;
+
+  set_intake_volts(12000);
+
+  chassis.set_drive_pid(map_inches_to_pid(49), DRIVE_SPEED);
+  chassis.wait_drive();
+
+  pros::delay(200);
+
+  chassis.set_drive_pid(map_inches_to_pid(-50), DRIVE_SPEED);
+  chassis.wait_drive();
+
+  chassis.set_turn_pid(135 - offset, TURN_SPEED);
+  chassis.wait_drive();
+
+  chassis.set_drive_pid(map_inches_to_pid(-30), DRIVE_SPEED);
+  chassis.wait_drive();
+
+  chassis.set_swing_pid(RIGHT_SWING, 180 - offset, SWING_SPEED);
+  chassis.wait_drive();
+
+  chassis.set_drive_pid(map_inches_to_pid(-10), DRIVE_SPEED);
+  chassis.wait_drive();
+
+  chassis.set_swing_pid(RIGHT_SWING, 135 - offset, SWING_SPEED);
+  chassis.wait_drive();
+}
 
 void five_ball() {
   // Trade turning accuracy for speed
   chassis.set_exit_condition(chassis.turn_exit, 25, 3, 200, 7, 500, 500);
 
-  // Set the offset 
+  // Set the offset
   int offset = -90;
-  
+
   // 6 motor mode
   pto_toggle(true);
 

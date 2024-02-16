@@ -28,6 +28,7 @@ void test_auton() {
   chassis.set_swing_pid(ez::LEFT_SWING, 90, SWING_SPEED);
   chassis.wait_drive();
 }
+
 void bowl_auton() {
   int offset = 10;
 

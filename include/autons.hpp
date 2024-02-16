@@ -7,7 +7,7 @@ extern Drive chassis;
 void test_auton();
 
 void bowl_auton();
-void four_ball();
+
 void five_ball();
 void six_ball();
 

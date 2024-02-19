@@ -41,7 +41,7 @@ void print_debug() {
   std::string slapper_state = to_string(is_slapper_charged());
   std::string optic_state = to_string(is_slapper_full());
   std::string optic_brightness = to_string(slapper_optic_sensor.get_brightness());
-
+  std::string slapper_rotation = to_string(slapper_rotation_sensor.get_angle());
 
   print_to_screen("drive mode: " + drive_mode, 0);
   print_to_screen("charged: " + slapper_state, 1);

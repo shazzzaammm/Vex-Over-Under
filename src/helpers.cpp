@@ -247,10 +247,8 @@ bool is_slapper_full() {
 }
 
 bool is_slapper_charged() {
-  return (slapper_rotation_sensor.get_angle() >= SLAPPER_CHARGED_ROTATION_A - SLAPPER_CHARGED_LEEWAY &&
-          slapper_rotation_sensor.get_angle() <= SLAPPER_CHARGED_ROTATION_A + SLAPPER_CHARGED_LEEWAY) ||
-         (slapper_rotation_sensor.get_angle() >= SLAPPER_CHARGED_ROTATION_B - SLAPPER_CHARGED_LEEWAY &&
-          slapper_rotation_sensor.get_angle() <= SLAPPER_CHARGED_ROTATION_B + SLAPPER_CHARGED_LEEWAY);
+  return (slapper_rotation_sensor.get_angle() >= SLAPPER_CHARGED_ROTATION - SLAPPER_CHARGED_LEEWAY &&
+          slapper_rotation_sensor.get_angle() <= SLAPPER_CHARGED_ROTATION + SLAPPER_CHARGED_LEEWAY);
 }
 
 void slapper_control() {

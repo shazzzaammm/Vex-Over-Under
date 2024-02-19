@@ -28,6 +28,7 @@ void test_auton() {
   chassis.set_swing_pid(ez::LEFT_SWING, 90, SWING_SPEED);
   chassis.wait_drive();
 }
+
 void bowl_auton() {
   int offset = 10;
 
@@ -57,41 +58,87 @@ void bowl_auton() {
   chassis.wait_drive();
 }
 
-/*void skills() {
-  //6 motor mode
+void six_ball() {
+  chassis.set_exit_condition(chassis.turn_exit, 25, 3, 200, 7, 500, 500);
+
+  int offset = -90;
   pto_toggle(true);
 
-  //unstow
   set_intake_volts(-12000);
 
-  //drive to bar
-  chassis.set_drive_pid(map_inches_to_pid(-10), 127);
-  chassis.wait_drive();
-  chassis.set_turn_pid(75, TURN_SPEED);
-  chassis.wait_drive();
-
-  //matchload
-  pros::Task shooting_task(slapper_auton_task, NULL, "Slapper Task");
-
-  //drive under side bar & push into goal side
-  chassis.set_turn_pid(100, TURN_SPEED);
-  chassis.wait_drive();
-  chassis.set_drive_pid(map_inches_to_pid(15), DRIVE_SPEED);
-  chassis.wait_drive();
-  chassis.set_turn_pid(90, TURN_SPEED);
-  chassis.wait_drive();
-  chassis.set_drive_pid(map_inches_to_pid(70), 127);
-  chassis.wait_drive();
-  chassis.set_turn_pid(50, TURN_SPEED);
-  chassis.wait_drive();
-  chassis.set_drive_pid(map_inches_to_pid(10), 127);
+  chassis.set_drive_pid(map_inches_to_pid(12), 127);
+  chassis.wait_until(map_inches_to_pid(6));
+  set_intake_volts(12000);
   chassis.wait_drive();
 
-  //zigzag
+  chassis.set_drive_pid(map_inches_to_pid(-36), 127);
+  chassis.wait_drive();
 
-  //push into other goal side?
+  chassis.set_turn_pid(45 - 180 - offset, TURN_SPEED);
+  chassis.wait_drive();
 
-}*/
+  wing_toggle(true);
+
+  chassis.set_drive_pid(map_inches_to_pid(-18), DRIVE_SPEED);
+  chassis.wait_drive();
+
+  wing_toggle(false);
+
+  chassis.set_swing_pid(ez::LEFT_SWING, 0 - offset, 127);
+  chassis.wait_drive();
+
+  // set_intake_volts(-12000);
+
+  // chassis.set_drive_pid(map_inches_to_pid(10), 127);
+  // chassis.wait_drive();
+
+  // chassis.set_drive_pid(map_inches_to_pid(-5), 127);
+  // chassis.wait_drive();
+
+  // set_intake_volts(0);
+
+  // chassis.set_drive_pid(map_inches_to_pid(5), 127);
+  // chassis.wait_drive();
+
+  // chassis.set_drive_pid(map_inches_to_pid(-10), 127);
+  // chassis.wait_drive();
+
+  // chassis.set_turn_pid(-70 - offset, 127);
+  // chassis.wait_drive();
+
+  // chassis.set_drive_pid(map_inches_to_pid(50), 127);
+  // chassis.wait_until(25);
+  // set_intake_volts(12000);
+  // chassis.wait_drive();
+
+  // chassis.set_turn_pid(58 - offset, 127);
+  // chassis.wait_drive();
+
+  // set_intake_volts(-12000);
+
+  // chassis.set_drive_pid(map_inches_to_pid(5), 127);
+  // chassis.wait_drive();
+
+  // chassis.set_turn_pid(-39.69 - offset, 127);
+  // chassis.wait_drive();
+
+  // set_intake_volts(12000);
+
+  // chassis.set_drive_pid(map_inches_to_pid(22), 127);
+  // chassis.wait_drive();
+
+  // chassis.set_turn_pid(90 - offset, TURN_SPEED);
+  // chassis.wait_drive();
+
+  // wing_toggle(true);
+  // set_intake_volts(-12000);
+
+  // chassis.set_drive_pid(map_inches_to_pid(25), DRIVE_SPEED);
+  // chassis.wait_drive();
+
+  // chassis.set_drive_pid(map_inches_to_pid(-30), DRIVE_SPEED);
+  // chassis.wait_drive();
+}
 
 void skills() {
   /*chassis.set_turn_pid(-251, TURN_SPEED);

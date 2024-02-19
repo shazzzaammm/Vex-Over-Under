@@ -8,7 +8,10 @@ extern pros::Motor& PTO_slapper;
 void test_auton();
 
 void bowl_auton();
+
 void five_ball();
+
+void six_ball();
 
 void skills();
 

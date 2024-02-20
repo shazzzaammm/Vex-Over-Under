@@ -14,8 +14,8 @@ bool pto_6_motor_enabled = false;
 // Slapper
 const double TRIBALL_BRIGHTNESS = .0075;
 const int SLAPPER_CHARGED_ROTATION = 0;
-const int SLAPPER_CHARGED_LEEWAY = 1000;
-const int SLAPPER_VOLTAGE = -12000;
+const int SLAPPER_CHARGED_LEEWAY = 10000;
+const int SLAPPER_VOLTAGE = 12000;
 bool slapper_auto_shoot_enabled = false;
 
 // Wings

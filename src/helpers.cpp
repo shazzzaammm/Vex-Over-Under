@@ -43,6 +43,8 @@ void print_debug() {
   std::string optic_brightness = to_string(slapper_optic_sensor.get_brightness());
   std::string slapper_rotation = to_string(slapper_rotation_sensor.get_angle());
 
+  std::string right_stick = std::to_string(master.get_analog(ANALOG_RIGHT_Y));
+
   print_to_screen("drive mode: " + drive_mode, 0);
   print_to_screen("charged: " + slapper_state, 1);
   print_to_screen("full: " + optic_state, 2);
@@ -70,7 +72,7 @@ void arcade_drive() {
 void tank_drive() {
   // Tank drive based off the joysticks and the orientation of the robot
   int left = master.get_analog(ANALOG_LEFT_Y);
-  int right = master.get_analog(ANALOG_LEFT_X);
+  int right = master.get_analog(ANALOG_RIGHT_Y);
 
   if (left == 0 && right == 0) {
     chassis.tank();
@@ -262,7 +264,7 @@ void slapper_auton_task(void* parameter) {
       pros::delay(3 * ez::util::DELAY_TIME);
     }
     pros::delay(ez::util::DELAY_TIME);
-    if (total_shot>45){
+    if (total_shot > 45) {
       break;
     }
   }
@@ -282,7 +284,7 @@ void slapper_control() {
   // Shoot the slapper automatically, shoot the slapper manually, or charge the slapper automatically
   if (master.get_digital(selected_controls.hold_slapper_button) || (is_slapper_full() && slapper_auto_shoot_enabled) ||
       (!is_slapper_charged())) {
-    // PTO_slapper.move_voltage(SLAPPER_VOLTAGE);
+    PTO_slapper.move_voltage(SLAPPER_VOLTAGE);
   }
 
   // Stop the slapper

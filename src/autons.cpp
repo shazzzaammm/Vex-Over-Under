@@ -30,31 +30,76 @@ void test_auton() {
 }
 
 void bowl_auton() {
+  // Set offset
   int offset = 10;
 
-  set_intake_volts(12000);
+  // Unstow
+  set_intake_volts(-12000);
 
+  // Drive to mid triball
   chassis.set_drive_pid(map_inches_to_pid(49), DRIVE_SPEED);
+  chassis.wait_until(map_inches_to_pid(20));
+  
+  // Start intaking
+  set_intake_volts(12000);
   chassis.wait_drive();
 
+  // Wait a little so it intakes
   pros::delay(200);
 
+  // Return with triball
   chassis.set_drive_pid(map_inches_to_pid(-50), DRIVE_SPEED);
   chassis.wait_drive();
 
+  // Turn to be parallel with match load bar
   chassis.set_turn_pid(135 - offset, TURN_SPEED);
   chassis.wait_drive();
 
+  // Outtake to drop triball
+  set_intake_volts(-12000);
+
+  // Move towards goal
   chassis.set_drive_pid(map_inches_to_pid(-30), DRIVE_SPEED);
   chassis.wait_drive();
 
+  // Swing to score preload
   chassis.set_swing_pid(RIGHT_SWING, 180 - offset, SWING_SPEED);
   chassis.wait_drive();
 
-  chassis.set_drive_pid(map_inches_to_pid(-10), DRIVE_SPEED);
+  // Turn off intake (saves power idk)
+  set_intake_volts(0);
+
+  // Turn towards match load bar thing
+  chassis.set_swing_pid(RIGHT_SWING, 135 - offset, SWING_SPEED);
   chassis.wait_drive();
 
-  chassis.set_swing_pid(RIGHT_SWING, 135 - offset, SWING_SPEED);
+  // Drive towards the awp triball
+  chassis.set_drive_pid(map_inches_to_pid(25), DRIVE_SPEED);
+  chassis.wait_until(map_inches_to_pid(15));
+
+  // Wings
+  wing_toggle(true);
+  chassis.wait_drive();
+
+  // Clear triball
+  chassis.set_swing_pid(ez::RIGHT_SWING, 105 - offset, SWING_SPEED);
+  chassis.wait_drive();
+
+  // Back away (space for wings)
+  chassis.set_drive_pid(map_inches_to_pid(-6), DRIVE_SPEED);
+  chassis.wait_drive();
+
+  // Turn off wings
+  wing_toggle(false);
+
+  // Turn towards endgame bar
+  chassis.set_turn_pid(90 - offset, TURN_SPEED);
+  chassis.wait_drive();
+
+  set_intake_volts(-12000);
+
+  // Drive to endgame bar (touch bar) (BOWL BOWL BOWL BOWL)
+  chassis.set_drive_pid(map_inches_to_pid(34), DRIVE_SPEED);
   chassis.wait_drive();
 }
 

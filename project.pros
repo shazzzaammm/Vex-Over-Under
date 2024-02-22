@@ -331,7 +331,7 @@
       }
     },
     "upload_options": {
-      "after": "screen",
+      "after": "run",
       "description": "Made by 4303X",
       "icon": "X"
     }

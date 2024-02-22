@@ -186,16 +186,32 @@ void six_ball() {
 }
 
 void skills() {
-  /*chassis.set_turn_pid(-251, TURN_SPEED);
-  chassis.wait_drive();
-  chassis.set_drive_pid(map_inches_to_pid(19), DRIVE_SPEED);
+  int offset = 135;
+
+  chassis.set_drive_pid(map_inches_to_pid(-12), DRIVE_SPEED);
   chassis.wait_drive();
 
-  chassis.set_turn_pid(-72, TURN_SPEED);
+  chassis.set_swing_pid(ez::RIGHT_SWING, 180 - offset, SWING_SPEED);
   chassis.wait_drive();
-  chassis.set_drive_pid(map_inches_to_pid(28), DRIVE_SPEED);
-  chassis.wait_drive();*/
 
+  chassis.set_drive_pid(map_inches_to_pid(-13), DRIVE_SPEED);
+  chassis.wait_drive();
+
+  chassis.set_drive_pid(map_inches_to_pid(20), DRIVE_SPEED);
+  chassis.wait_drive();
+
+  chassis.set_swing_pid(ez::LEFT_SWING, 225 - offset, SWING_SPEED);
+  chassis.wait_drive();
+
+  chassis.set_swing_pid(ez::RIGHT_SWING, 255 - offset, SWING_SPEED);
+  chassis.wait_drive();
+
+  chassis.set_drive_pid(map_inches_to_pid(5), DRIVE_SPEED);
+  chassis.wait_drive();
+
+  // pros::delay(4000);
+
+  // /*
   int total_shot = 0;
   int timer = 0;
   bool p_full = false;
@@ -221,98 +237,7 @@ void skills() {
     }
   }
   PTO_slapper.move_voltage(0);
-
-  /*chassis.set_turn_pid(-91, TURN_SPEED);
-  chassis.wait_drive();
-  chassis.set_drive_pid(map_inches_to_pid(81), DRIVE_SPEED);
-  chassis.wait_drive();
-
-  chassis.set_turn_pid(-135, TURN_SPEED);
-  chassis.wait_drive();
-  chassis.set_drive_pid(map_inches_to_pid(21), DRIVE_SPEED);
-  chassis.wait_drive();
-
-  chassis.set_turn_pid(-182, TURN_SPEED);
-  chassis.wait_drive();
-  chassis.set_drive_pid(map_inches_to_pid(18), DRIVE_SPEED);
-  chassis.wait_drive();
-
-  chassis.set_turn_pid(-3, TURN_SPEED);
-  chassis.wait_drive();
-  chassis.set_drive_pid(map_inches_to_pid(9), DRIVE_SPEED);
-  chassis.wait_drive();
-
-  chassis.set_turn_pid(90, TURN_SPEED);
-  chassis.wait_drive();
-  chassis.set_drive_pid(map_inches_to_pid(54), DRIVE_SPEED);
-  chassis.wait_drive();
-
-  chassis.set_turn_pid(-179, TURN_SPEED);
-  chassis.wait_drive();
-  chassis.set_drive_pid(map_inches_to_pid(14), DRIVE_SPEED);
-  chassis.wait_drive();
-
-  //wings on
-
-  chassis.set_turn_pid(-106, TURN_SPEED);
-  chassis.wait_drive();
-  chassis.set_drive_pid(map_inches_to_pid(37), DRIVE_SPEED);
-  chassis.wait_drive();
-
-  chassis.set_turn_pid(-270, TURN_SPEED);
-  chassis.wait_drive();
-  chassis.set_drive_pid(map_inches_to_pid(37), DRIVE_SPEED);
-  chassis.wait_drive();
-
-  //wings off
-
-  chassis.set_turn_pid(-179, TURN_SPEED);
-  chassis.wait_drive();
-  chassis.set_drive_pid(map_inches_to_pid(17), DRIVE_SPEED);
-  chassis.wait_drive();
-
-  //wings on
-
-  chassis.set_turn_pid(-91, TURN_SPEED);
-  chassis.wait_drive();
-  chassis.set_drive_pid(map_inches_to_pid(35), DRIVE_SPEED);
-  chassis.wait_drive();
-
-  chassis.set_turn_pid(-251, TURN_SPEED);
-  chassis.wait_drive();
-  chassis.set_drive_pid(map_inches_to_pid(37), DRIVE_SPEED);
-  chassis.wait_drive();
-
-  //wings off
-
-  chassis.set_turn_pid(-180, TURN_SPEED);
-  chassis.wait_drive();
-  chassis.set_drive_pid(map_inches_to_pid(18), DRIVE_SPEED);
-  chassis.wait_drive();
-
-  //wings on
-
-  chassis.set_turn_pid(-105, TURN_SPEED);
-  chassis.wait_drive();
-  chassis.set_drive_pid(map_inches_to_pid(25), DRIVE_SPEED);
-  chassis.wait_drive();
-
-  chassis.set_turn_pid(-168, TURN_SPEED);
-  chassis.wait_drive();
-  chassis.set_drive_pid(map_inches_to_pid(22), DRIVE_SPEED);
-  chassis.wait_drive();
-
-  //wings off
-
-  chassis.set_turn_pid(-50, TURN_SPEED);
-  chassis.wait_drive();
-  chassis.set_drive_pid(map_inches_to_pid(29), DRIVE_SPEED);
-  chassis.wait_drive();
-
-  chassis.set_turn_pid(0, TURN_SPEED);
-  chassis.wait_drive();
-  chassis.set_drive_pid(map_inches_to_pid(21), DRIVE_SPEED);
-  chassis.wait_drive();*/
+// */
 }
 
 void five_ball() {

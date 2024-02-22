@@ -81,7 +81,7 @@ void tank_drive() {
   if (!chassis_is_reversed) {
     chassis.set_tank(left, right);
   } else {
-    chassis.set_tank(right, left);
+    chassis.set_tank(-right, -left);
   }
 }
 

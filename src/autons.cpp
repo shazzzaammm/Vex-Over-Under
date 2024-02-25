@@ -196,58 +196,198 @@ void six_ball() {
 }
 
 void skills() {
+  pto_toggle(true);
   int offset = 135;
 
-  chassis.set_drive_pid(map_inches_to_pid(-12), DRIVE_SPEED);
+  chassis.set_drive_pid(map_inches_to_pid(-12), MAX_SPEED);
   chassis.wait_drive();
 
-  chassis.set_swing_pid(ez::RIGHT_SWING, 180 - offset, SWING_SPEED);
+  chassis.set_swing_pid(ez::RIGHT_SWING, 180 - offset, MAX_SPEED);
   chassis.wait_drive();
 
-  chassis.set_drive_pid(map_inches_to_pid(-13), DRIVE_SPEED);
+  chassis.set_drive_pid(map_inches_to_pid(-13), MAX_SPEED);
   chassis.wait_drive();
 
-  chassis.set_drive_pid(map_inches_to_pid(20), DRIVE_SPEED);
+  chassis.set_drive_pid(map_inches_to_pid(20), MAX_SPEED);
   chassis.wait_drive();
 
-  chassis.set_swing_pid(ez::LEFT_SWING, 225 - offset, SWING_SPEED);
+  chassis.set_swing_pid(ez::LEFT_SWING, 220 - offset, MAX_SPEED);
   chassis.wait_drive();
 
-  chassis.set_swing_pid(ez::RIGHT_SWING, 255 - offset, SWING_SPEED);
+  chassis.set_swing_pid(ez::RIGHT_SWING, 245 - offset, MAX_SPEED);
   chassis.wait_drive();
 
-  chassis.set_drive_pid(map_inches_to_pid(5), DRIVE_SPEED);
+  chassis.set_drive_pid(map_inches_to_pid(5), MAX_SPEED);
   chassis.wait_drive();
 
-  // pros::delay(4000);
+  // //* Start auto shoot
+  // // Initialize tracking variables
+  // int total_shot = 0;
+  // int timer = 0;
+  // bool p_full = false;
+  // const int magic_number = 69;
+  // const int max_time = 10000;
+  // const int shoot_goal = 2;
+  // while (true) {
+  //   // Debug info (so we can fix it when it breaks)
+  //   print_to_screen("Shot: " + std::to_string(total_shot / magic_number), 0);
+  //   print_to_screen("Timer: " + std::to_string(timer), 1);
 
-  // /*
-  int total_shot = 0;
-  int timer = 0;
-  bool p_full = false;
-  while (true) {
-    print_to_screen("Shot: " + std::to_string(total_shot / 69), 0);
-    print_to_screen("Timer: " + std::to_string(timer), 1);
-    if (!is_slapper_charged()) {
-      PTO_slapper.move_voltage(-12000);
-      if (!p_full) {
-        total_shot++;
-      }
-    } else if (is_slapper_full() && is_slapper_charged()) {
-      PTO_slapper.move_voltage(-12000);
-      pros::delay(3 * ez::util::DELAY_TIME);
-    } else {
-      PTO_slapper.move_voltage(0);
-    }
-    pros::delay(ez::util::DELAY_TIME);
-    timer += ez::util::DELAY_TIME;
-    p_full = is_slapper_full();
-    if (total_shot / 69 >= 46 || timer >= 30000) {
-      break;
-    }
-  }
-  PTO_slapper.move_voltage(0);
-// */
+  //   // Charge if not charged
+  //   if (!is_slapper_charged()) {
+  //     PTO_slapper.move_voltage(12000);
+
+  //     // If we had a triball and now we arent charged, we shot
+  //     if (!p_full) {
+  //       total_shot++;
+  //     }
+  //   }
+
+  //   // If have triball and are charged, shoot
+  //   else if (is_slapper_full() && is_slapper_charged()) {
+  //     PTO_slapper.move_voltage(12000);
+  //     pros::delay(3 * ez::util::DELAY_TIME);
+  //   }
+
+  //   // If we are charged but without a triball, await a triball
+  //   else {
+  //     PTO_slapper.move_voltage(0);
+  //   }
+
+  //   // Delay (for timer)
+  //   pros::delay(ez::util::DELAY_TIME);
+
+  //   // Update variables
+  //   timer += ez::util::DELAY_TIME;
+  //   p_full = is_slapper_full();
+
+  //   // Terminate auto shoot if we shot all triballs or have been shooting for 30 seconds
+  //   if (total_shot / magic_number >= shoot_goal || timer > max_time) {
+  //     break;
+  //   }
+  // }
+
+  // // Stop slapper
+  // PTO_slapper.move_voltage(0);
+  //* End auto shoot
+
+  // Switch to eight motor
+  pto_toggle(false);
+
+  //delay
+  // pros::delay(30000);
+  pros::delay(5000);
+
+  // Drive towards the mid bar
+  chassis.set_drive_pid(map_inches_to_pid(-50), MAX_SPEED);
+  chassis.wait_drive();
+
+  // Align to be parallel with mid bar
+  chassis.set_turn_pid(185 - offset, MAX_SPEED);
+  chassis.wait_drive();
+
+  // Clear the triballs near/touching mid bar (pole riding)
+  chassis.set_drive_pid(map_inches_to_pid(-71), MAX_SPEED);
+  chassis.wait_drive();
+
+  // Move forward (for turning clearance)
+  chassis.set_drive_pid(map_inches_to_pid(5), MAX_SPEED);
+  chassis.wait_drive();
+
+  // Turn perpendicular to mid bar
+  chassis.set_turn_pid(-90 - offset, MAX_SPEED);
+  chassis.wait_drive();
+
+  // Drive away from mid bar
+  chassis.set_drive_pid(map_inches_to_pid(20), MAX_SPEED);
+  chassis.wait_drive();
+
+  chassis.set_turn_pid(0 - offset, MAX_SPEED);
+  chassis.wait_drive();
+
+  chassis.set_drive_pid(map_inches_to_pid(18), MAX_SPEED);
+  chassis.wait_drive();
+
+  // Turn towards alley
+  chassis.set_swing_pid(ez::LEFT_SWING, 90 - offset, MAX_SPEED);
+  chassis.wait_drive();
+
+  // Drive through alley
+  chassis.set_drive_pid(map_inches_to_pid(64), MAX_SPEED);
+  chassis.wait_drive();
+
+  // Turn towards the side of the goal
+  chassis.set_swing_pid(ez::LEFT_SWING, 135 - offset, MAX_SPEED);
+  chassis.wait_drive();
+
+  // Drive towards the side of the goal
+  chassis.set_drive_pid(map_inches_to_pid(32), MAX_SPEED);
+  chassis.wait_drive();
+
+  // Turn to face the side of the goal
+  chassis.set_swing_pid(ez::LEFT_SWING, 180 - offset, MAX_SPEED);
+  chassis.wait_drive();
+
+  // Score in the side of the goal
+  chassis.set_drive_pid(map_inches_to_pid(7), MAX_SPEED);
+  chassis.wait_drive();
+
+  // Back away from the goal
+  chassis.set_drive_pid(map_inches_to_pid(-24), MAX_SPEED);
+  chassis.wait_drive();
+
+  // Turn away from the goal
+  chassis.set_turn_pid(65 - offset, MAX_SPEED);
+  chassis.wait_drive();
+
+  // Drive towards mid bar
+  chassis.set_drive_pid(map_inches_to_pid(-50), MAX_SPEED);
+  chassis.wait_drive();
+
+  // Align with goal
+  chassis.set_turn_pid(-70 - offset, MAX_SPEED);
+  chassis.wait_drive();
+
+  // Wings
+  wing_toggle(true);
+
+  // Score
+  chassis.set_drive_pid(map_inches_to_pid(-38), MAX_SPEED);
+  chassis.wait_drive();
+
+  wing_toggle(false);
+
+  chassis.set_turn_pid(-100 - offset, MAX_SPEED);
+  chassis.wait_drive();
+
+  // Drive towards mid bar
+  chassis.set_drive_pid(map_inches_to_pid(28), MAX_SPEED);
+  chassis.wait_drive();
+
+  // Align with goal
+  chassis.set_turn_pid(-60 - offset, MAX_SPEED);
+  chassis.wait_drive();
+
+  wing_toggle(true);
+
+  // Score
+  chassis.set_drive_pid(map_inches_to_pid(-47), MAX_SPEED);
+  chassis.wait_drive();
+
+  //
+  wing_toggle(false);
+  
+  //
+  chassis.set_drive_pid(map_inches_to_pid(32), MAX_SPEED);
+  chassis.wait_drive();
+
+  chassis.set_turn_pid(-70 - offset, TURN_SPEED);
+  chassis.wait_drive();
+
+  wing_toggle(true);
+
+  chassis.set_drive_pid(map_inches_to_pid(-35), DRIVE_SPEED);
+  chassis.wait_drive();
 }
 
 void five_ball() {

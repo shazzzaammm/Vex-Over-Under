@@ -12,7 +12,7 @@ bool outtake_toggle_enabled = false;
 bool pto_6_motor_enabled = false;
 
 // Slapper
-const double TRIBALL_BRIGHTNESS = .0075;
+const double TRIBALL_BRIGHTNESS = .0035;
 const int SLAPPER_CHARGED_ROTATION = 0;
 const int SLAPPER_CHARGED_LEEWAY = 10000;
 const int SLAPPER_VOLTAGE = 12000;

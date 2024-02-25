@@ -42,7 +42,7 @@ void bowl_auton() {
   // Drive to mid triball
   chassis.set_drive_pid(map_inches_to_pid(49), DRIVE_SPEED);
   chassis.wait_until(map_inches_to_pid(20));
-  
+
   // Start intaking
   set_intake_volts(12000);
   chassis.wait_drive();
@@ -51,7 +51,7 @@ void bowl_auton() {
   pros::delay(200);
 
   // Return with triball
-  chassis.set_drive_pid(map_inches_to_pid(-50), DRIVE_SPEED);
+  chassis.set_drive_pid(map_inches_to_pid(-48), DRIVE_SPEED);
   chassis.wait_drive();
 
   // Turn to be parallel with match load bar
@@ -88,21 +88,28 @@ void bowl_auton() {
   chassis.set_swing_pid(ez::RIGHT_SWING, 105 - offset, SWING_SPEED);
   chassis.wait_drive();
 
-  // Back away (space for wings)
-  chassis.set_drive_pid(map_inches_to_pid(-6), DRIVE_SPEED);
+  chassis.set_swing_pid(ez::LEFT_SWING, 97 - offset, SWING_SPEED);
   chassis.wait_drive();
 
   // Turn off wings
   wing_toggle(false);
 
-  // Turn towards endgame bar
-  chassis.set_turn_pid(90 - offset, TURN_SPEED);
+  // Back away (space for wings)
+  chassis.set_drive_pid(map_inches_to_pid(-11), DRIVE_SPEED);
+  chassis.wait_drive();
+
+  // Turn off wings
+  wing_toggle(false);
+
+  chassis.set_swing_pid(ez::RIGHT_SWING, 98 - offset, SWING_SPEED);
+  chassis.wait_drive();
+
+  chassis.set_turn_pid(94 - offset, TURN_SPEED);
   chassis.wait_drive();
 
   set_intake_volts(-12000);
 
-  // Drive to endgame bar (touch bar) (BOWL BOWL BOWL BOWL)
-  chassis.set_drive_pid(map_inches_to_pid(34), DRIVE_SPEED);
+  chassis.set_drive_pid(map_inches_to_pid(30), DRIVE_SPEED);
   chassis.wait_drive();
 }
 

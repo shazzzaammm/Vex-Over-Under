@@ -28,7 +28,16 @@ double map_inches_to_pid(double inches) {
 }
 
 void test_auton() {
-  chassis.set_swing_pid(ez::LEFT_SWING, 90, SWING_SPEED);
+  chassis.set_drive_pid(map_inches_to_pid(20), DRIVE_SPEED);
+  chassis.wait_drive();
+
+  chassis.set_drive_pid(map_inches_to_pid(-20), DRIVE_SPEED);
+  chassis.wait_drive();
+
+  chassis.set_turn_pid(180, TURN_SPEED);
+  chassis.wait_drive();
+
+  chassis.set_turn_pid(0, TURN_SPEED);
   chassis.wait_drive();
 }
 

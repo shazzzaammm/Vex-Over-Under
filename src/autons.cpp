@@ -15,9 +15,12 @@ void default_constants() {
 }
 
 void exit_condition_defaults() {
-  chassis.set_exit_condition(chassis.turn_exit, 100, 3, 500, 7, 500, 500);
-  chassis.set_exit_condition(chassis.swing_exit, 100, 3, 500, 7, 500, 500);
-  chassis.set_exit_condition(chassis.drive_exit, 80, 50, 300, 150, 500, 500);
+  // chassis.set_exit_condition(chassis.turn_exit, 100, 3, 500, 7, 500, 500);
+  // chassis.set_exit_condition(chassis.swing_exit, 100, 3, 500, 7, 500, 500);
+  // chassis.set_exit_condition(chassis.drive_exit, 80, 50, 300, 150, 500, 500);
+  chassis.set_exit_condition(chassis.turn_exit, 100, 3, 100, 7, 100, 500);
+  chassis.set_exit_condition(chassis.swing_exit, 100, 3, 50, 7, 100, 500);
+  chassis.set_exit_condition(chassis.drive_exit, 80, 50, 50, 150, 100, 500);
 }
 
 double map_inches_to_pid(double inches) {

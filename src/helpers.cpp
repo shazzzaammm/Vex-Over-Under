@@ -276,20 +276,29 @@ void slapper_control() {
     return;
   }
 
-  // Toggle automatic shooting (for match loading)
-  if (master.get_digital_new_press(selected_controls.toggle_slapper_button)) {
-    slapper_auto_shoot_toggle();
-  }
+  if (endgame_enabled) {
+    if (is_slapper_charged()) {
+      PTO_slapper.move_voltage(SLAPPER_VOLTAGE);
+    } else {
+      PTO_slapper.brake();
+    }
+  } else {
 
-  // Shoot the slapper automatically, shoot the slapper manually, or charge the slapper automatically
-  if (master.get_digital(selected_controls.hold_slapper_button) || (is_slapper_full() && slapper_auto_shoot_enabled) ||
-      (!is_slapper_charged())) {
-    PTO_slapper.move_voltage(SLAPPER_VOLTAGE);
-  }
+    // Toggle automatic shooting (for match loading)
+    if (master.get_digital_new_press(selected_controls.toggle_slapper_button)) {
+      slapper_auto_shoot_toggle();
+    }
 
-  // Stop the slapper
-  else {
-    PTO_slapper.brake();
+    // Shoot the slapper automatically, shoot the slapper manually, or charge the slapper automatically
+    if (master.get_digital(selected_controls.hold_slapper_button) ||
+        (is_slapper_full() && slapper_auto_shoot_enabled) || (!is_slapper_charged())) {
+      PTO_slapper.move_voltage(SLAPPER_VOLTAGE);
+    }
+
+    // Stop the slapper
+    else {
+      PTO_slapper.brake();
+    }
   }
 }
 #pragma endregion slapper

@@ -205,18 +205,31 @@ void six_ball() {
 }
 
 void skills() {
-  pto_toggle(true);
+  // Set turning offset
   int offset = 135;
 
+  // Switch to 8 motor
+  pto_toggle(false);
+
+  // Unstow
+  set_intake_volts(-12000);
+
+  // Drive towards goal
   chassis.set_drive_pid(map_inches_to_pid(-12), MAX_SPEED);
   chassis.wait_drive();
 
+  // Align with goal
   chassis.set_swing_pid(ez::RIGHT_SWING, 180 - offset, MAX_SPEED);
   chassis.wait_drive();
 
+  // Score two preloads
   chassis.set_drive_pid(map_inches_to_pid(-13), MAX_SPEED);
   chassis.wait_drive();
 
+  // Stop intake (by now we arent stowed)
+  set_intake_volts(0);
+
+  //* Start aligning
   chassis.set_drive_pid(map_inches_to_pid(20), MAX_SPEED);
   chassis.wait_drive();
 
@@ -228,64 +241,64 @@ void skills() {
 
   chassis.set_drive_pid(map_inches_to_pid(5), MAX_SPEED);
   chassis.wait_drive();
+  //* Finish aligning
 
-  // //* Start auto shoot
-  // // Initialize tracking variables
-  // int total_shot = 0;
-  // int timer = 0;
-  // bool p_full = false;
-  // const int magic_number = 69;
-  // const int max_time = 10000;
-  // const int shoot_goal = 2;
-  // while (true) {
-  //   // Debug info (so we can fix it when it breaks)
-  //   print_to_screen("Shot: " + std::to_string(total_shot / magic_number), 0);
-  //   print_to_screen("Timer: " + std::to_string(timer), 1);
+  //* Start auto shoot
+  // Initialize tracking variables
+  int total_shot = 0;
+  int timer = 0;
+  bool p_full = false;
+  const int magic_number = 69;
+  const int max_time = 10000;
+  const int shoot_goal = 2;
+  while (true) {
+    // Debug info (so we can fix it when it breaks)
+    print_to_screen("Shot: " + std::to_string(total_shot / magic_number), 0);
+    print_to_screen("Timer: " + std::to_string(timer), 1);
 
-  //   // Charge if not charged
-  //   if (!is_slapper_charged()) {
-  //     PTO_slapper.move_voltage(12000);
+    // Charge if not charged
+    if (!is_slapper_charged()) {
+      PTO_slapper.move_voltage(12000);
 
-  //     // If we had a triball and now we arent charged, we shot
-  //     if (!p_full) {
-  //       total_shot++;
-  //     }
-  //   }
+      // If we had a triball and now we arent charged, we shot
+      if (!p_full) {
+        total_shot++;
+      }
+    }
 
-  //   // If have triball and are charged, shoot
-  //   else if (is_slapper_full() && is_slapper_charged()) {
-  //     PTO_slapper.move_voltage(12000);
-  //     pros::delay(3 * ez::util::DELAY_TIME);
-  //   }
+    // If have triball and are charged, shoot
+    else if (is_slapper_full() && is_slapper_charged()) {
+      PTO_slapper.move_voltage(12000);
+      pros::delay(3 * ez::util::DELAY_TIME);
+    }
 
-  //   // If we are charged but without a triball, await a triball
-  //   else {
-  //     PTO_slapper.move_voltage(0);
-  //   }
+    // If we are charged but without a triball, await a triball
+    else {
+      PTO_slapper.move_voltage(0);
+    }
 
-  //   // Delay (for timer)
-  //   pros::delay(ez::util::DELAY_TIME);
+    // Delay (for timer)
+    pros::delay(ez::util::DELAY_TIME);
 
-  //   // Update variables
-  //   timer += ez::util::DELAY_TIME;
-  //   p_full = is_slapper_full();
+    // Update variables
+    timer += ez::util::DELAY_TIME;
+    p_full = is_slapper_full();
 
-  //   // Terminate auto shoot if we shot all triballs or have been shooting for 30 seconds
-  //   if (total_shot / magic_number >= shoot_goal || timer > max_time) {
-  //     break;
-  //   }
-  // }
+    // Terminate auto shoot if we shot all triballs or have been shooting for 30 seconds
+    if (total_shot / magic_number >= shoot_goal || timer > max_time) {
+      break;
+    }
+  }
 
-  // // Stop slapper
-  // PTO_slapper.move_voltage(0);
+  // Stop slapper
+  PTO_slapper.move_voltage(0);
   //* End auto shoot
 
   // Switch to eight motor
   pto_toggle(false);
 
   //delay
-  // pros::delay(30000);
-  pros::delay(5000);
+  pros::delay(500);
 
   // Drive towards the mid bar
   chassis.set_drive_pid(map_inches_to_pid(-50), MAX_SPEED);
@@ -385,7 +398,7 @@ void skills() {
 
   //
   wing_toggle(false);
-  
+
   //
   chassis.set_drive_pid(map_inches_to_pid(32), MAX_SPEED);
   chassis.wait_drive();

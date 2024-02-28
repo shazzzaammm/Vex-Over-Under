@@ -467,7 +467,7 @@ void five_ball() {
   // Intake the ball under endgame bar
   set_intake_volts(12000);
   chassis.wait_drive();
-
+  pros::delay(400);
   // Back up towards goal
   chassis.set_drive_pid(map_inches_to_pid(-34), MAX_SPEED);
   chassis.wait_drive();
@@ -488,7 +488,7 @@ void five_ball() {
   set_intake_volts(-12000);
 
   // Score preload and previously scored ball
-  chassis.set_drive_pid(map_inches_to_pid(10), MAX_SPEED);
+  chassis.set_drive_pid(map_inches_to_pid(10.7), MAX_SPEED);
   chassis.wait_drive();
 
   // Back up

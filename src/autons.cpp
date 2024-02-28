@@ -60,7 +60,7 @@ void bowl_auton() {
   pros::delay(200);
 
   // Return with triball
-  chassis.set_drive_pid(map_inches_to_pid(-48), DRIVE_SPEED);
+  chassis.set_drive_pid(map_inches_to_pid(-52), DRIVE_SPEED);
   chassis.wait_drive();
 
   // Turn to be parallel with match load bar
@@ -71,7 +71,7 @@ void bowl_auton() {
   set_intake_volts(-12000);
 
   // Move towards goal
-  chassis.set_drive_pid(map_inches_to_pid(-30), DRIVE_SPEED);
+  chassis.set_drive_pid(map_inches_to_pid(-26), DRIVE_SPEED);
   chassis.wait_drive();
 
   // Swing to score preload
@@ -80,6 +80,12 @@ void bowl_auton() {
 
   // Turn off intake (saves power idk)
   set_intake_volts(0);
+
+  chassis.set_drive_pid(map_inches_to_pid(-5), DRIVE_SPEED);
+  chassis.wait_drive();
+
+  chassis.set_drive_pid(map_inches_to_pid(5), DRIVE_SPEED);
+  chassis.wait_drive();
 
   // Turn towards match load bar thing
   chassis.set_swing_pid(RIGHT_SWING, 135 - offset, SWING_SPEED);
@@ -118,7 +124,7 @@ void bowl_auton() {
 
   set_intake_volts(-12000);
 
-  chassis.set_drive_pid(map_inches_to_pid(30), DRIVE_SPEED);
+  chassis.set_drive_pid(map_inches_to_pid(38), DRIVE_SPEED);
   chassis.wait_drive();
 }
 

@@ -276,13 +276,22 @@ void slapper_control() {
     return;
   }
 
+  // If we are trying to hang
   if (endgame_enabled) {
+
+    // Move until the slapper is up (out of the way of our hang)
     if (is_slapper_charged()) {
       PTO_slapper.move_voltage(SLAPPER_VOLTAGE);
-    } else {
+    }
+
+    // Stop the slapper once its out of the way
+    else {
       PTO_slapper.brake();
     }
-  } else {
+  }
+
+  // If we arent trying to hang
+  else {
 
     // Toggle automatic shooting (for match loading)
     if (master.get_digital_new_press(selected_controls.toggle_slapper_button)) {

@@ -37,6 +37,7 @@ void autonomous() {
 void opcontrol() {
   // Handle printing stats to the controller
   master.clear();
+  // skills_macro();
   pros::Task controller_task(controller_stats_task, NULL, "Controller Print Task");
   while (true) {
     // Handle chassis control

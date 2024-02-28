@@ -204,6 +204,35 @@ void six_ball() {
   // chassis.wait_drive();
 }
 
+void skills_macro() {
+  //TODO PLEASE MAKE IT NOT TIME BASED IM CRYING AHHHHHH
+  pto_toggle(true);
+
+  set_intake_volts(-12000);
+
+  chassis.set_tank(-127, -127);
+  pros::delay(275);
+
+  chassis.set_tank(-20, -127);
+  pros::delay(250);
+
+  set_intake_volts(0);
+
+  chassis.set_tank(-127, -127);
+  pros::delay(700);
+
+  chassis.set_tank(127, 127);
+  pros::delay(550);
+
+  chassis.set_tank(127, -127);
+  pros::delay(450);
+
+  chassis.set_tank(-100, 20);
+  pros::delay(100);
+
+  master.rumble("-");
+}
+
 void skills() {
   // Set turning offset
   int offset = 135;

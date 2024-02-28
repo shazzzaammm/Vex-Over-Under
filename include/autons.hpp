@@ -14,6 +14,7 @@ void five_ball();
 void six_ball();
 
 void skills();
+void skills_macro();
 
 void default_constants();
 void exit_condition_defaults();

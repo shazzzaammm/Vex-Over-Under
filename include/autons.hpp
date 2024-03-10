@@ -9,9 +9,11 @@ void test_auton();
 
 void bowl_auton();
 
-void five_ball();
+void closer_awp();
+void close_awp();
 
-void six_ball();
+void five_ball_elim();
+void five_ball_qual();
 
 void skills();
 void skills_macro();

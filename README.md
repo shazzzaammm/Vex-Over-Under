@@ -2,15 +2,19 @@
 
 ### Description
 
-This program is the only program that 4303X is using this year. The main branch will always be the current version on our robot, and any other branch is used for testing new features without ruining our regular program (though usually we just ruin it anyways because merging isnt fun :c).
+This program is the only program that 4303X used in the 2023-2024 vex over under year. We made it to states but unfortunately did not qualify for worlds. Since we are all seniors, this program will become something that future 4303 members might like to look at to see what we did in this year. Enjoy! - K :3
+
+### Software
+
+We used ez template to program our PIDs and auton selector. We used version 2.x, but there is definitely a higher version out there right now. The documentation can be found [here](https://ez-robotics.github.io/EZ-Template/). Everything else was made using pros. Pros is the main way that everyone programs their robot (PLEASE USE IT PLEASE PLEASE PLEASE). The documentation can be found [here](https://pros.cs.purdue.edu/v5/). If you have any questions about programming, first check those two sources. Second, try asking your teamates (4303 definitely has people that know the answer). Only after that (assuming youre on 4303) should you ask coach (he will probably just ask me to be honest).
 
 ### Autons
 
-We have multiple autons in the works, but we are only likely to end up using two or three in matches. We will have a far side 6 ball auton (similar to 80508X korvex), a close side 1 ball awp that ends with us touching the endgame bar (similar to 80708Y exobits), and a close side bowl setup auton that lets us bowl three or four triballs as soon as matches start (similar to 19589A hope robotics). We will also have a skills auton. The plan is to match load until we cant anymore, push them all in the goal, and hang (like robokauz).
+Our autons were created using "rapid prototyping" and [this tool](https://shazzzaammm.github.io/Auton-Creation-Tool/) that might be updated to your years game. If it isnt, just fork it and replace the image with an image of the desired field. Check out our autons.cpp file to see what the structure we used is.
 
 ### User Control
 
-We use a tank drive with 8 motors, 2 of which are PTO motors. The pto motors are allocated to the slapper and the intake. We have three sensors, each one used very often. Our inertial sensor is used for our chassis pid, our optic sensor is used to automatically detect triballs when we are match loading, and our rotation sensor ensures that our slapper is always charged and ready to shoot. Our endgame, PTO, and wings are all powered by pneumatic pistons.
+We used a tank drive with 8 motors, 2 of which were PTO motors. The pto motors were allocated to the slapper and the intake. We had three sensors, each one used very often. Our inertial sensor was used for our chassis pid, our optic sensor was used to automatically detect triballs when we were match loading, and our rotation sensor ensured that our slapper was always charged and ready to shoot. Our endgame, PTO, and wings were all powered by pneumatic pistons. Most of the logic for our user control was contained in the helpers.cpp file (something i probably should have changed). The functions that end with "\_control" were the user control functions.
 
 ### Ports
 

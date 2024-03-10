@@ -158,8 +158,7 @@ void skills_macro() {
 }
 
 void skills() {
-  // int offset = 90;
-
+  // Set offset
   int offset = 135;
 
   // Unstow
@@ -249,9 +248,10 @@ void skills() {
   // Switch to eight motor
   pto_toggle(false);
 
-  //delay
+  // Delay (so our pto doesnt mess up)
   pros::delay(500);
 
+  // Align with mid bar
   chassis.set_turn_pid(225 - offset, TURN_SPEED);
   chassis.wait_drive();
 
@@ -275,9 +275,11 @@ void skills() {
   chassis.set_drive_pid(map_inches_to_pid(-50), MAX_SPEED);
   chassis.wait_drive();
 
+  // Turn towards the corner (to clear some)
   chassis.set_turn_pid(25 - offset, TURN_SPEED);
   chassis.wait_drive();
-
+  
+  // Clear some triballs
   chassis.set_drive_pid(map_inches_to_pid(24), DRIVE_SPEED);
   chassis.wait_drive();
 
@@ -328,8 +330,10 @@ void skills() {
   chassis.set_drive_pid(map_inches_to_pid(-38), 100);
   chassis.wait_drive();
 
+  // Turn off wings
   wing_toggle(false);
 
+  // Align with mid bar
   chassis.set_turn_pid(-100 - offset, MAX_SPEED);
   chassis.wait_drive();
 
@@ -341,6 +345,7 @@ void skills() {
   chassis.set_turn_pid(0 - offset, MAX_SPEED);
   chassis.wait_drive();
 
+  // I cant be bothered to comment the rest, youll understand :3
   chassis.set_drive_pid(map_inches_to_pid(-37.5), DRIVE_SPEED);
   chassis.wait_drive();
 

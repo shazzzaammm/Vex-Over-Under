@@ -36,6 +36,7 @@ const ControlScheme k_controls(DIGITAL_R2, DIGITAL_R1, DIGITAL_L2, DIGITAL_L1, {
                                DIGITAL_X, DIGITAL_DOWN, DIGITAL_UP, TANK);
 const ControlScheme a_controls(DIGITAL_RIGHT, DIGITAL_RIGHT, DIGITAL_R2, DIGITAL_R1, {DIGITAL_L2, DIGITAL_L1},
                                DIGITAL_A, DIGITAL_X, DIGITAL_Y, DIGITAL_DOWN, DIGITAL_UP, TANK);
+// We would change this every time someone else was holding the controller (if i felt like it)
 ControlScheme selected_controls = a_controls;
 
 // Util

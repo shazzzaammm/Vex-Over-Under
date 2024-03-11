@@ -10,7 +10,7 @@ We used ez template to program our PIDs and auton selector. We used version 2.x,
 
 ### Autons
 
-Our autons were created using "rapid prototyping" and [this tool](https://shazzzaammm.github.io/Auton-Creation-Tool/) that might be updated to your years game. If it isnt, just fork it and replace the image with an image of the desired field. Check out our autons.cpp file to see what the structure we used is.
+Our autons were created using "rapid prototyping" and [this tool](https://shazzzaammm.github.io/Auton-Creation-Tool/) that might be updated to your years game. If it isnt, just fork it and replace the image with an image of the desired field. Mobile isnt supported as of writing this, but someone might have done it by the time youre reading this. Check out our autons.cpp file to see what the structure we used is.
 
 ### User Control
 

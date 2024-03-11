@@ -7,6 +7,7 @@ void initialize() {
   chassis.toggle_modify_curve_with_controller(false);
   chassis.set_active_brake(0.1);
 
+  // Set the constants
   default_constants();
   exit_condition_defaults();
 
@@ -24,6 +25,8 @@ void initialize() {
   // Initialize
   chassis.initialize();
   ez::as::initialize();
+
+  // Switch to 6 motor
   pto_toggle(true);
 }
 
@@ -39,6 +42,8 @@ void autonomous() {
 void opcontrol() {
   // Handle printing stats to the controller
   master.clear();
+
+  // Uncommented this only when we were running skills
   // skills_macro();
   pros::Task controller_task(controller_stats_task, NULL, "Controller Print Task");
   while (true) {

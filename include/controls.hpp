@@ -2,6 +2,9 @@
 
 enum Drive_Type { TANK, ARCADE };
 
+// Honestly this might actually be something people use :O
+// Ur free to do that btw no need for credit :3
+// Modify the names and amount of variables and stuff to fit your needs :D
 class ControlScheme {
  public:
   pros::controller_digital_e_t hold_intake_button;

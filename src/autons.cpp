@@ -5,6 +5,7 @@ const int SWING_SPEED = 90;
 const int MAX_SPEED = 127;
 
 void default_constants() {
+  // You can probably leave these at defaults but like tuning them might make it better
   chassis.set_slew_min_power(80, 80);
   chassis.set_slew_distance(7, 7);
   chassis.set_pid_constants(&chassis.headingPID, 11, 0, 20, 0);
@@ -15,16 +16,19 @@ void default_constants() {
 }
 
 void exit_condition_defaults() {
+  // PLEASE PLEASE PLEASE TUNE UR EXITS IT GENUINELY MADE US 40% FASTER IN AUTOS
   chassis.set_exit_condition(chassis.turn_exit, 100, 3, 100, 7, 100, 500);
   chassis.set_exit_condition(chassis.swing_exit, 100, 3, 50, 7, 100, 500);
   chassis.set_exit_condition(chassis.drive_exit, 80, 50, 50, 150, 100, 500);
 }
 
 double map_inches_to_pid(double inches) {
+  // Hopefully ez or pros fixed this issue so yall dont have to do something like this
   return inches * 3.6;
 }
 
 void test_auton() {
+  // This was used to tune stuff
   chassis.set_turn_pid(180, TURN_SPEED);
   chassis.wait_drive();
 }
@@ -117,7 +121,9 @@ void bowl_auton() {
 }
 
 void skills_macro() {
-  //TODO PLEASE MAKE IT NOT TIME BASED IM CRYING AHHHHHH
+  // This was how we ran part of our auto in driver control
+  // Please figure out a smarter way to do this because i went insane working on it
+  
   pto_toggle(true);
 
   set_intake_volts(-12000);
@@ -142,10 +148,6 @@ void skills_macro() {
   
   chassis.set_tank(127, 0);
   pros::delay(100);
-
-
-
-
 
   set_intake_volts(0);
   master.rumble("-");
@@ -388,6 +390,8 @@ void skills() {
 }
 
 void closer_awp() {
+  //! This auto was never finished so ignore it probably
+
   // Set the offset
   int offset = -90;
 
@@ -480,6 +484,8 @@ void closer_awp() {
 }
 
 void close_awp() {
+  //! Tbh we didnt run this once at states so im not commenting it :3
+
   int offset = -135;
 
   chassis.set_drive_pid(map_inches_to_pid(-10), DRIVE_SPEED);
@@ -510,6 +516,7 @@ void close_awp() {
 }
 
 void five_ball_qual() {
+  //! This auto was never finished (ignore)
   int offset = -30;
 
   set_intake_volts(12000);
@@ -568,6 +575,8 @@ void five_ball_qual() {
 }
 
 void five_ball_elim() {
+  // This is the only good auto we had tbh so enjoy
+
   // Set the offset
   int offset = -90;
 

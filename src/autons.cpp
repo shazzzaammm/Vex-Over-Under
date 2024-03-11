@@ -15,9 +15,6 @@ void default_constants() {
 }
 
 void exit_condition_defaults() {
-  // chassis.set_exit_condition(chassis.turn_exit, 100, 3, 500, 7, 500, 500);
-  // chassis.set_exit_condition(chassis.swing_exit, 100, 3, 500, 7, 500, 500);
-  // chassis.set_exit_condition(chassis.drive_exit, 80, 50, 300, 150, 500, 500);
   chassis.set_exit_condition(chassis.turn_exit, 100, 3, 100, 7, 100, 500);
   chassis.set_exit_condition(chassis.swing_exit, 100, 3, 50, 7, 100, 500);
   chassis.set_exit_condition(chassis.drive_exit, 80, 50, 50, 150, 100, 500);
@@ -30,9 +27,6 @@ double map_inches_to_pid(double inches) {
 void test_auton() {
   chassis.set_turn_pid(180, TURN_SPEED);
   chassis.wait_drive();
-
-  // chassis.set_turn_pid(0, TURN_SPEED);
-  // chassis.wait_drive();
 }
 
 void bowl_auton() {
@@ -349,35 +343,48 @@ void skills() {
   chassis.set_drive_pid(map_inches_to_pid(-37.5), DRIVE_SPEED);
   chassis.wait_drive();
 
+  // I actually dont think i couldve continued to work on this auto after states
   chassis.set_turn_pid(-123 - offset, TURN_SPEED);
   chassis.wait_drive();
 
+  // Like it was driving me insane 
   wing_toggle(true);
 
+  // I would borderline skip class to work on it
   chassis.set_drive_pid(map_inches_to_pid(-38), 100);
   chassis.wait_drive();
 
+  // I fell asleep thinking about it
   wing_toggle(false);
 
+  // Woke up to new ideas in my head about it
   chassis.set_drive_pid(map_inches_to_pid(30), DRIVE_SPEED);
   chassis.wait_drive();
 
+  // And all that for what
   chassis.set_turn_pid(0 - offset, TURN_SPEED);
   chassis.wait_drive();
 
+  // Me to throw while match loading and net us a solid 26 instead of a 160
   chassis.set_drive_pid(map_inches_to_pid(30), DRIVE_SPEED);
   chassis.wait_drive();
 
+  // I hate that we couldve made worlds if I tried more
   chassis.set_turn_pid(-90 - offset, TURN_SPEED);
   chassis.wait_drive();
 
+  // But then what
   wing_toggle(true);
 
+  // Keep feeding the vex addiction?
   chassis.set_drive_pid(map_inches_to_pid(-35), DRIVE_SPEED);
   chassis.wait_drive();
 
+  // Im going to be doing vexu in college (probably)
   chassis.set_drive_pid(map_inches_to_pid(15), DRIVE_SPEED);
   chassis.wait_drive();
+
+  // Hopefully it is better there
 }
 
 void closer_awp() {
